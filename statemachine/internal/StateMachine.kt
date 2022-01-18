@@ -7,7 +7,7 @@ class StateNotFoundError(s: StateName) : RuntimeException("Could not find state 
 class StateMachine<T : StateName>(
     private val stateMap: HashMap<T, State>,
     firstStateName: T,
-    states: Array<T>,
+    states: Array<out T>,
 ) {
 
     var currName = firstStateName

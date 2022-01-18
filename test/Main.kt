@@ -1,5 +1,6 @@
 package electronvolts.test
 
+import electronvolts.statemachine.StateMachineBuilder
 import electronvolts.statemachine.internal.State
 import electronvolts.statemachine.internal.StateMachine
 import electronvolts.statemachine.internal.StateName
@@ -31,6 +32,7 @@ fun main() {
         }
     }
 
+    val machineBuilder = StateMachineBuilder(States.START, States.values())
     val machine = StateMachine(stateMap, States.START, States.values())
 
     assertEquals(machine.currName, States.START)
