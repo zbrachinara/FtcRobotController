@@ -18,5 +18,6 @@ apply plugin: 'kotlin-android'
 
 dependencies {
     implementation project(':FtcRobotController')
+    implementation 'junit:junit:4.12'
     annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
 }
