@@ -5,7 +5,7 @@ private typealias StateMap = Map<StateName, State>
 class StateNotFoundError(s: StateName) : RuntimeException("Could not find state ${s.name}")
 
 class StateMachine<T : StateName>(
-    private val stateMap: StateMap,
+    private val stateMap: HashMap<T, State>,
     firstStateName: T,
     states: Array<T>,
 ) {

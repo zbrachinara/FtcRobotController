@@ -1,6 +1,7 @@
 package electronvolts.statemachine
 
 import electronvolts.statemachine.internal.State
+import electronvolts.statemachine.internal.StateMachine
 import electronvolts.statemachine.internal.StateName
 
 class StateMachineBuilder<T : StateName>(
@@ -14,5 +15,7 @@ class StateMachineBuilder<T : StateName>(
         stateMap[name as T] = state
         return this
     }
+
+    fun build() = StateMachine(stateMap, first, allNames)
 
 }
