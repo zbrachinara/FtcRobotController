@@ -8,6 +8,14 @@ fun Int.dunit(): DiscreteUnit<Int> {
     }
 }
 
+fun Long.dunit(): DiscreteUnit<Long> {
+    val i = this
+    return object : DiscreteUnit<Long> {
+        override fun fromRaw(raw: Long) = raw
+        override fun raw() = i
+    }
+}
+
 fun Double.cunit(): ContinuousUnit<Double> {
     val i = this
     return object : ContinuousUnit<Double> {
@@ -23,13 +31,13 @@ interface DiscreteUnit<Unit> : Comparable<DiscreteUnit<Unit>> {
     // This will allow any unit to be combined with any other unit
     // kind of flawed design choice, but it's the only way to cleanly implement scaling
 
-    fun <RHS> plus(rhs: DiscreteUnit<RHS>) = fromRaw(this.raw() + rhs.raw())
+    operator fun <RHS> plus(rhs: DiscreteUnit<RHS>) = fromRaw(this.raw() + rhs.raw())
 
-    fun <RHS> minus(rhs: DiscreteUnit<RHS>) = fromRaw(this.raw() - rhs.raw())
+    operator fun <RHS> minus(rhs: DiscreteUnit<RHS>) = fromRaw(this.raw() - rhs.raw())
 
-    fun <RHS> times(rhs: DiscreteUnit<RHS>) = fromRaw(this.raw() * rhs.raw())
+    operator fun <RHS> times(rhs: DiscreteUnit<RHS>) = fromRaw(this.raw() * rhs.raw())
 
-    fun <RHS> div(rhs: DiscreteUnit<RHS>) = fromRaw(this.raw() / rhs.raw())
+    operator fun <RHS> div(rhs: DiscreteUnit<RHS>) = fromRaw(this.raw() / rhs.raw())
 
     fun zero() = fromRaw(0)
 
@@ -43,13 +51,13 @@ interface ContinuousUnit<Unit> : Comparable<ContinuousUnit<Unit>> {
     // This will allow any unit to be combined with any other unit
     // kind of flawed design choice, but it's the only way to cleanly implement scaling
 
-    fun <RHS> plus(rhs: ContinuousUnit<RHS>) = fromRaw(this.raw() + rhs.raw())
+    operator fun <RHS> plus(rhs: ContinuousUnit<RHS>) = fromRaw(this.raw() + rhs.raw())
 
-    fun <RHS> minus(rhs: ContinuousUnit<RHS>) = fromRaw(this.raw() - rhs.raw())
+    operator fun <RHS> minus(rhs: ContinuousUnit<RHS>) = fromRaw(this.raw() - rhs.raw())
 
-    fun <RHS> times(rhs: ContinuousUnit<RHS>) = fromRaw(this.raw() * rhs.raw())
+    operator fun <RHS> times(rhs: ContinuousUnit<RHS>) = fromRaw(this.raw() * rhs.raw())
 
-    fun <RHS> div(rhs: ContinuousUnit<RHS>) = fromRaw(this.raw() / rhs.raw())
+    operator fun <RHS> div(rhs: ContinuousUnit<RHS>) = fromRaw(this.raw() / rhs.raw())
 
     fun zero() = fromRaw(0.0)
 
