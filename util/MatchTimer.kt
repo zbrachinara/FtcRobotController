@@ -2,14 +2,14 @@ package electronvolts.util
 
 import electronvolts.util.unit.Duration
 import electronvolts.util.unit.Instant
+import electronvolts.util.unit.*
 
 class MatchTimer(
-    private val time: Duration,
+    time: Duration,
 ){
 
-    val matchTime = time.milliseconds();
+    val matchTime = time.milliseconds().toLong()
 
-    var finished = false;
     lateinit var startTime: Instant
     lateinit var previousTime: Instant
 
@@ -17,5 +17,11 @@ class MatchTimer(
         startTime = Instant.now()
         previousTime = startTime
     }
+
+    fun update() {
+        previousTime = Instant.now()
+    }
+
+    fun finished() = Instant.now() > (startTime + matchTime.dunit())
 
 }
