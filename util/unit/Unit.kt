@@ -16,7 +16,7 @@ fun Double.cunit(): ContinuousUnit<Double> {
     }
 }
 
-interface DiscreteUnit<Unit> {
+interface DiscreteUnit<Unit> : Comparable<DiscreteUnit<Unit>> {
     fun fromRaw(raw: Long): Unit
     fun raw(): Long
 
@@ -32,9 +32,11 @@ interface DiscreteUnit<Unit> {
     fun <RHS> div(rhs: DiscreteUnit<RHS>) = fromRaw(this.raw() / rhs.raw())
 
     fun zero() = fromRaw(0)
+
+    override fun compareTo(other: DiscreteUnit<Unit>) = this.raw().compareTo(other.raw())
 }
 
-interface ContinuousUnit<Unit> {
+interface ContinuousUnit<Unit> : Comparable<ContinuousUnit<Unit>> {
     fun fromRaw(raw: Double): Unit
     fun raw(): Double
 
@@ -50,5 +52,7 @@ interface ContinuousUnit<Unit> {
     fun <RHS> div(rhs: ContinuousUnit<RHS>) = fromRaw(this.raw() / rhs.raw())
 
     fun zero() = fromRaw(0.0)
+
+    override fun compareTo(other: ContinuousUnit<Unit>) = this.raw().compareTo(other.raw())
 
 }
