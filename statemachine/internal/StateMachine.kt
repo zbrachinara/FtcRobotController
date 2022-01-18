@@ -2,7 +2,7 @@ package electronvolts.statemachine.internal
 
 private typealias StateMap = Map<StateName, State>
 
-class StateNotFoundError(s: StateName) : RuntimeException("Could not find state $(s.name}")
+class StateNotFoundError(s: StateName) : RuntimeException("Could not find state ${s.name}")
 
 class StateMachine<T : StateName>(
     private val stateMap: StateMap,
@@ -29,10 +29,10 @@ class StateMachine<T : StateName>(
 
     fun act() {
         when (val next = curr.act()) {
-            currName -> null
-            null -> null
+            currName -> return
+            null -> return
             else -> {
-                currName = next as T;
+                currName = next as T
                 curr = stateMap[next]!!
             }
         }
