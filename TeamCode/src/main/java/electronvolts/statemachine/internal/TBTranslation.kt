@@ -33,6 +33,10 @@ fun TaskList.finishedTask(): Task? {
     }
 }
 
+fun taskBehavior(tasks: TaskList, behavior: Behavior): State = taskBehavior(tasks, listOf(behavior))
+
+fun taskBehavior(task: Task, behaviors: BehaviorList): State = taskBehavior(listOf(task), behaviors)
+
 fun taskBehavior(tasks: TaskList, behaviors: BehaviorList): State {
     return object : State {
         var init = false
