@@ -24,4 +24,11 @@ class MatchTimer(
 
     fun finished() = Instant.now() > (startTime + matchTime.dunit())
 
+    fun justFinished(): Boolean {
+        val finish = startTime + matchTime.dunit()
+        val now = Instant.now()
+
+        return previousTime < finish && finish < now
+    }
+
 }
