@@ -9,6 +9,7 @@ abstract class AbstractOpMode<Config : RobotCfg> : OpMode() {
 
     protected abstract fun createRobotCfg(): Config
 
+    protected abstract fun preSetup()
     protected abstract fun setup()
     protected abstract fun setupAct()
     protected abstract fun go()
@@ -24,6 +25,7 @@ abstract class AbstractOpMode<Config : RobotCfg> : OpMode() {
 
     override fun init() {
         robotConfig = createRobotCfg()
+        preSetup()
         setup()
     }
 
