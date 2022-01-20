@@ -8,10 +8,8 @@ package electronvolts.gamepad
  */
 class DigitalInput(
     private val extractor: () -> Boolean,
-    private val alive: () -> Boolean
+    private val alive: () -> Boolean = {true},
 ) : () -> Boolean {
-
-    constructor(extractor: () -> Boolean) : this(extractor, {true})
 
     // set currentValue and previousValue to the reading so no edges are triggered
     private var value = extractor()
