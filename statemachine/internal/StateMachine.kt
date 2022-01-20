@@ -1,11 +1,11 @@
 package electronvolts.statemachine.internal
 
-private typealias StateMap = Map<StateName, State>
+private typealias StateMap<T> = Map<T, State>
 
 class StateNotFoundError(s: StateName) : RuntimeException("Could not find state ${s.name}")
 
 class StateMachine<T : StateName>(
-    private val stateMap: HashMap<T, State>,
+    private val stateMap: StateMap<T>,
     firstStateName: T,
     states: Array<out T>,
 ) {
