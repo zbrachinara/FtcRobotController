@@ -9,10 +9,10 @@ class StateMachineBuilder<T : StateName>(
     private val allNames: Array<T>
 ) {
 
-    private val stateMap = HashMap<T, State>()
+    private val stateMap = HashMap<StateName, State>()
 
     fun add(name: StateName, state: State): StateMachineBuilder<T> {
-        stateMap[name as T] = state
+        stateMap[name] = state
         return this
     }
 
