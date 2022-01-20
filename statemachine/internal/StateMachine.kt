@@ -10,7 +10,7 @@ class StateMachine<T : StateName>(
     states: Array<out T>,
 ) {
 
-    var currName = firstStateName
+    var currName: StateName = firstStateName
         private set
     private var curr: State
 
@@ -32,7 +32,7 @@ class StateMachine<T : StateName>(
             currName -> return
             null -> return
             else -> {
-                currName = next as T
+                currName = next
                 curr = stateMap[next]!!
             }
         }
