@@ -13,15 +13,12 @@ class Path private constructor(
 
     private val components: MutableList<String> = raw.toMutableList()
 
-    operator fun plus(rhs: Path): Path {
-        when (rhs.absolute) {
-            false -> {
-                val rightIterator: Iterable<String> = rhs.components.asIterable()
-                return Path(this.components + rightIterator, this.absolute)
-            }
-            true -> throw IllegalArgumentException("Attempted to add an absolute path to a path")
+    operator fun plus(rhs: Path) = when (rhs.absolute) {
+        false -> {
+            val rightIterator: Iterable<String> = rhs.components.asIterable()
+            Path(this.components + rightIterator, this.absolute)
         }
-
+        true -> throw IllegalArgumentException("Attempted to add an absolute path to a path")
     }
 
     override fun toString() =
