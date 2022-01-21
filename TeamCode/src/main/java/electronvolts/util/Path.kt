@@ -9,10 +9,11 @@ class Path private constructor(
 ) {
 
     constructor(path: String) : this(path.split('/').filter { it != "" }, path[0] == '/')
+    constructor(file: File) : this(file.path)
 
     private val components: MutableList<String> = raw.toMutableList()
 
-    fun plus(rhs: Path): Path {
+    operator fun plus(rhs: Path): Path {
         when (rhs.absolute) {
             false -> {
                 val rightIterator: Iterable<String> = rhs.components.asIterable()
