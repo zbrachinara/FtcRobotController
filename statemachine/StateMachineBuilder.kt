@@ -16,6 +16,6 @@ class StateMachineBuilder<T : StateName>(
         return this
     }
 
-    fun build() = StateMachine(stateMap, first, allNames)
+    fun build() = StateMachine(stateMap as Map<T, State>, first, allNames)
 
 }
