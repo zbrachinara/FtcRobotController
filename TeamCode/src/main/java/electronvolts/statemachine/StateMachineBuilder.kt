@@ -11,7 +11,7 @@ class StateMachineBuilder<T : StateName>(
 
     private val stateMap = HashMap<StateName, State>()
 
-    fun add(name: StateName, state: State): StateMachineBuilder<T> {
+    fun add(name: T, state: State): StateMachineBuilder<T> {
         stateMap[name] = state
         return this
     }
