@@ -1,3 +1,3 @@
 package electronvolts.gamepad
 
-internal typealias Function = (Double) -> Double
+typealias Function = (Double) -> Double
