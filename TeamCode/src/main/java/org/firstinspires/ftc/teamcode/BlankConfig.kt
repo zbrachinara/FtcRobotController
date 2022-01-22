@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode
 
 import com.qualcomm.robotcore.hardware.HardwareMap
-import electronvolts.RobotCfg
+import org.electronvolts.evlib.RobotCfg
 
 class BlankConfig(hardwareMap: HardwareMap): RobotCfg(hardwareMap) {
 }

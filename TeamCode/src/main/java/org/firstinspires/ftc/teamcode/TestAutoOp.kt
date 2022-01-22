@@ -1,11 +1,11 @@
 package org.firstinspires.ftc.teamcode
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
-import electronvolts.opmode.AbstractAutoOp
-import electronvolts.statemachine.StateMachineBuilder
-import electronvolts.statemachine.addEnd
-import electronvolts.statemachine.internal.StateMachine
-import electronvolts.statemachine.internal.StateName
+import org.electronvolts.evlib.opmode.AbstractAutoOp
+import org.electronvolts.evlib.statemachine.StateMachineBuilder
+import org.electronvolts.evlib.statemachine.addEnd
+import org.electronvolts.evlib.statemachine.internal.StateMachine
+import org.electronvolts.evlib.statemachine.internal.StateName
 
 enum class TestStates : StateName {
     START,

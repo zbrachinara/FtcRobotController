@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode
 
-import electronvolts.options.OptionClass
-import electronvolts.options.TypeData
+import org.electronvolts.evlib.options.OptionClass
+import org.electronvolts.evlib.options.TypeData
 
 val TestOptions = object {
 
