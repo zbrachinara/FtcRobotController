@@ -23,22 +23,22 @@ abstract class AbstractOpMode<Config : RobotCfg> : OpMode() {
 
     protected lateinit var robotConfig: RobotCfg
 
-    override fun init() {
+    final override fun init() {
         robotConfig = createRobotCfg()
         preSetup()
         setup()
     }
 
-    override fun init_loop() {
+    final override fun init_loop() {
         setupAct()
     }
 
-    override fun start() {
+    final override fun start() {
         timer.start()
         go()
     }
 
-    override fun loop() {
+    final override fun loop() {
         if (timer.justFinished()) stop()
         if (timer.finished()) return
 
@@ -47,7 +47,7 @@ abstract class AbstractOpMode<Config : RobotCfg> : OpMode() {
         postAct()
     }
 
-    override fun stop() {
+    final override fun stop() {
         end()
     }
 
