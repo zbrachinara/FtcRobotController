@@ -93,12 +93,12 @@ class GamepadManager(
             InitButton.A -> {
                 val rawA = DigitalInput({gamepad.a})
                 detectors.add(rawA)
-                ButtonAlivenessTester(rawA, rawStart)::isAlive
+                ButtonAlive(rawA, rawStart)::isAlive
             }
             InitButton.B -> {
                 val rawB = DigitalInput({gamepad.b})
                 detectors.add(rawB)
-                ButtonAlivenessTester(rawB, rawStart)::isAlive
+                ButtonAlive(rawB, rawStart)::isAlive
             }
             null -> {
                 {true}
