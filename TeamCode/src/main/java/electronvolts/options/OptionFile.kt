@@ -9,7 +9,7 @@ import java.io.FileReader
 import java.io.FileWriter
 
 // TODO: 1/21/22 Options with conflicting names can overwrite each other. Enforce!
-class OptionsFile(path: File) {
+class OptionFile(path: File) {
 
     private val file: File = (
             Path(Environment.getExternalStorageDirectory())
