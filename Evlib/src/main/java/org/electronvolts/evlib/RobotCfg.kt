@@ -1,4 +1,4 @@
-package electronvolts
+package org.electronvolts.evlib
 
 import com.qualcomm.robotcore.hardware.HardwareMap
 

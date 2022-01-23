@@ -1,4 +1,4 @@
-package electronvolts.statemachine.internal
+package org.electronvolts.evlib.statemachine.internal
 
 private typealias TaskList = List<Task>
 private typealias BehaviorList = List<Behavior>

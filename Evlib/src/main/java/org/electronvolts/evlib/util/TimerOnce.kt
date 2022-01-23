@@ -1,6 +1,6 @@
-package electronvolts.util
+package org.electronvolts.evlib.util
 
-import electronvolts.util.unit.Duration
+import org.electronvolts.evlib.util.unit.Duration
 import java.util.*
 
 class TimerOnce(private val duration: Duration) {

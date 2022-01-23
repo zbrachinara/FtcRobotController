@@ -1,4 +1,6 @@
-package electronvolts.statemachine.internal
+package org.electronvolts.evlib.statemachine.internal
+
+import org.electronvolts.evlib.statemachine.internal.StateName
 
 interface Task {
     fun init()

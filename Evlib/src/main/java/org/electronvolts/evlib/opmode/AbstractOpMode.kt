@@ -1,9 +1,9 @@
-package electronvolts.opmode
+package org.electronvolts.evlib.opmode
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
-import electronvolts.RobotCfg
-import electronvolts.util.MatchTimer
-import electronvolts.util.unit.Duration
+import org.electronvolts.evlib.RobotCfg
+import org.electronvolts.evlib.util.MatchTimer
+import org.electronvolts.evlib.util.unit.Duration
 
 abstract class AbstractOpMode<Config : RobotCfg> : OpMode() {
 

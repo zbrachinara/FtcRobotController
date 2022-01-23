@@ -1,4 +1,4 @@
-package electronvolts.util
+package org.electronvolts.evlib.util
 
 fun Int.clamp(min: Int, max: Int): Int = when {
     this > max -> max

@@ -1,4 +1,4 @@
-package electronvolts.util.unit
+package org.electronvolts.evlib.util.unit
 
 fun Int.dunit(): DiscreteUnit<Int> {
     val i = this

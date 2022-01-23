@@ -1,4 +1,4 @@
-package electronvolts.gamepad
+package org.electronvolts.evlib.gamepad
 
 import com.qualcomm.robotcore.hardware.Gamepad
 import java.util.ArrayList
@@ -17,33 +17,33 @@ enum class InitButton {A, B}
  */
 class GamepadManager(
     gamepad: Gamepad,
-    scalingFunction: Function = {x -> x},
+    scalingFunction: Function = { x -> x},
     initButton: InitButton? = null,
 ) {
 
     //this stores all the wrapped digital inputs
-    val a:DigitalInput
-    val b:DigitalInput
-    val x:DigitalInput
-    val y:DigitalInput
-    val left_bumper:DigitalInput
-    val right_bumper:DigitalInput
-    val dpad_up:DigitalInput
-    val dpad_down:DigitalInput
-    val dpad_left:DigitalInput
-    val dpad_right:DigitalInput
-    val left_stick_button:DigitalInput
-    val right_stick_button:DigitalInput
-    val back:DigitalInput
-    val start:DigitalInput
+    val a: DigitalInput
+    val b: DigitalInput
+    val x: DigitalInput
+    val y: DigitalInput
+    val left_bumper: DigitalInput
+    val right_bumper: DigitalInput
+    val dpad_up: DigitalInput
+    val dpad_down: DigitalInput
+    val dpad_left: DigitalInput
+    val dpad_right: DigitalInput
+    val left_stick_button: DigitalInput
+    val right_stick_button: DigitalInput
+    val back: DigitalInput
+    val start: DigitalInput
 
     //this stores all the wrapped analog inputs
-    val left_stick_x:AnalogInput
-    val left_stick_y:AnalogInput
-    val right_stick_x:AnalogInput
-    val right_stick_y:AnalogInput
-    val left_trigger:AnalogInput
-    val right_trigger:AnalogInput
+    val left_stick_x: AnalogInput
+    val left_stick_y: AnalogInput
+    val right_stick_x: AnalogInput
+    val right_stick_y: AnalogInput
+    val left_trigger: AnalogInput
+    val right_trigger: AnalogInput
     private val detectors: MutableList<DigitalInput>
 
     //TODO: More pragmatic way to do this perhaps..?
