@@ -1,4 +1,4 @@
-package electronvolts.util.unit
+package org.electronvolts.evlib.util.unit
 
 internal const val SEC_PER_MSC = 0.001
 internal const val SEC_PER_MIN = 60.0

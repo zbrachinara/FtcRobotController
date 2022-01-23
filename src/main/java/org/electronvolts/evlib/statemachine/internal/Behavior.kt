@@ -1,4 +1,4 @@
-package electronvolts.statemachine.internal
+package org.electronvolts.evlib.statemachine.internal
 
 interface Behavior {
 

@@ -1,10 +1,9 @@
-package electronvolts.opmode
+package org.electronvolts.evlib.opmode
 
-import electronvolts.RobotCfg
-import electronvolts.statemachine.StateMachineBuilder
-import electronvolts.statemachine.internal.StateMachine
-import electronvolts.statemachine.internal.StateName
-import electronvolts.util.unit.Duration
+import org.electronvolts.evlib.RobotCfg
+import org.electronvolts.evlib.statemachine.internal.StateMachine
+import org.electronvolts.evlib.statemachine.internal.StateName
+import org.electronvolts.evlib.util.unit.Duration
 
 abstract class AbstractAutoOp<Config: RobotCfg, State: StateName>: AbstractOpMode<Config>() {
 

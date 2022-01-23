@@ -1,8 +1,8 @@
-package electronvolts.util
+package org.electronvolts.evlib.util
 
-import electronvolts.util.unit.Duration
-import electronvolts.util.unit.Instant
-import electronvolts.util.unit.*
+import org.electronvolts.evlib.util.unit.Duration
+import org.electronvolts.evlib.util.unit.Instant
+import org.electronvolts.evlib.util.unit.dunit
 
 class MatchTimer(
     time: Duration,

@@ -1,4 +1,4 @@
-package electronvolts.gamepad
+package org.electronvolts.evlib.gamepad
 
 /**
  * A note on this class:

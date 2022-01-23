@@ -1,8 +1,7 @@
-package electronvolts.options
+package org.electronvolts.evlib.options
 
-import electronvolts.gamepad.GamepadManager
-import electronvolts.util.clamp
-import kotlin.reflect.KClass
+import org.electronvolts.evlib.gamepad.GamepadManager
+import org.electronvolts.evlib.util.clamp
 
 private typealias Mutator<T> = (GamepadManager, T) -> T?
 

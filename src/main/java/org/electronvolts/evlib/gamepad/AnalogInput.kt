@@ -1,4 +1,4 @@
-package electronvolts.gamepad
+package org.electronvolts.evlib.gamepad
 
 /**
  * This file was made by the electronVolts, FTC team 7393

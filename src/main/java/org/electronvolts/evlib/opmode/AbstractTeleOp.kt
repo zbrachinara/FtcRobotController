@@ -1,10 +1,10 @@
-package electronvolts.opmode
+package org.electronvolts.evlib.opmode
 
-import electronvolts.RobotCfg
-import electronvolts.gamepad.GamepadManager
-import electronvolts.util.unit.Duration
-import electronvolts.gamepad.Function
-import electronvolts.gamepad.InitButton
+import org.electronvolts.evlib.RobotCfg
+import org.electronvolts.evlib.gamepad.GamepadManager
+import org.electronvolts.evlib.util.unit.Duration
+import org.electronvolts.evlib.gamepad.Function
+import org.electronvolts.evlib.gamepad.InitButton
 
 abstract class AbstractTeleOp<Config: RobotCfg> : AbstractOpMode<Config>() {
 

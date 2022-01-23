@@ -1,4 +1,4 @@
-package electronvolts.util.unit
+package org.electronvolts.evlib.util.unit
 
 class Instant private constructor(
     private val ms: Long

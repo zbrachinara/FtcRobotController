@@ -1,8 +1,8 @@
-package electronvolts.statemachine
+package org.electronvolts.evlib.statemachine
 
-import electronvolts.statemachine.internal.State
-import electronvolts.statemachine.internal.StateMachine
-import electronvolts.statemachine.internal.StateName
+import org.electronvolts.evlib.statemachine.internal.State
+import org.electronvolts.evlib.statemachine.internal.StateMachine
+import org.electronvolts.evlib.statemachine.internal.StateName
 
 fun <T : StateName> StateMachineBuilder<T>.addBlank(curr: T, next: T?) =
     this.add(curr, object : State {

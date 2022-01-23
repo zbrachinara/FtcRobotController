@@ -1,4 +1,4 @@
-package electronvolts.util.unit
+package org.electronvolts.evlib.util.unit
 
 class Duration private constructor(
     private val seconds: Double

@@ -1,3 +1,3 @@
-package electronvolts.gamepad
+package org.electronvolts.evlib.gamepad
 
 typealias Function = (Double) -> Double

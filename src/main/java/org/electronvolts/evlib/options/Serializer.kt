@@ -1,4 +1,4 @@
-package electronvolts.options
+package org.electronvolts.evlib.options
 
 interface Serializer<T> {
     fun toString(o: T): String
