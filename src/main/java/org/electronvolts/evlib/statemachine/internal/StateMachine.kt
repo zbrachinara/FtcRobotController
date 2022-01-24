@@ -1,6 +1,6 @@
 package org.electronvolts.evlib.statemachine.internal
 
-private typealias StateMap<T> = Map<T, State>
+private typealias StateMap<T> = Map<T, State<T>>
 
 class StateNotFoundError(s: StateName) : RuntimeException("Could not find state ${s.name}")
 
@@ -12,7 +12,7 @@ class StateMachine<T : StateName>(
 
     var currName: StateName = firstStateName
         private set
-    private var curr: State
+    private var curr: State<T>
 
     init {
         // load the first state

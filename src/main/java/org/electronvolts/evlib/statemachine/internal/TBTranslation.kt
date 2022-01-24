@@ -1,6 +1,6 @@
 package org.electronvolts.evlib.statemachine.internal
 
-private typealias TaskList = List<Task>
+private typealias TaskList<T> = List<Task<T>>
 private typealias BehaviorList = List<Behavior>
 
 fun BehaviorList.initBehaviors() {
@@ -21,26 +21,26 @@ fun BehaviorList.dropBehaviors() {
     }
 }
 
-fun TaskList.initTasks() {
+fun <T: StateName> TaskList<T>.initTasks() {
     this.forEach {
         it.init()
     }
 }
 
-fun TaskList.finishedTask(): Task? {
+fun <T: StateName> TaskList<T>.finishedTask(): Task<T>? {
     return this.find {
         it.isDone()
     }
 }
 
-fun taskBehavior(tasks: TaskList, behavior: Behavior) = taskBehavior(tasks, listOf(behavior))
+fun <T: StateName> taskBehavior(tasks: TaskList<T>, behavior: Behavior) = taskBehavior<T>(tasks, listOf(behavior))
 
-fun taskBehavior(task: Task, behaviors: BehaviorList) = taskBehavior(listOf(task), behaviors)
+fun <T: StateName> taskBehavior(task: Task<T>, behaviors: BehaviorList) = taskBehavior<T>(listOf(task), behaviors)
 
-fun taskBehavior(tasks: TaskList, behaviors: BehaviorList): State {
-    return object : State {
+fun <T: StateName> taskBehavior(tasks: TaskList<T>, behaviors: BehaviorList): State<T> {
+    return object : State<T> {
         var init = false
-        override fun act(): StateName? {
+        override fun act(): T? {
             if (!init) {
                 tasks.initTasks()
                 behaviors.initBehaviors()

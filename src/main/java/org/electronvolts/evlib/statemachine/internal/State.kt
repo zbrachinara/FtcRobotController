@@ -1,7 +1,7 @@
 package org.electronvolts.evlib.statemachine.internal
 
-interface State {
-    fun act(): StateName?
+interface State<T: StateName> {
+    fun act(): T?
 }
 
 interface StateName {
