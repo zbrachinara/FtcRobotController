@@ -23,6 +23,7 @@ class StateMachineBuilder<T : StateName>(
         return this
     }
 
+    @Suppress("UNCHECKED_CAST")
     fun build() = StateMachine(stateMap as Map<T, State>, first, allNames)
 
 }
