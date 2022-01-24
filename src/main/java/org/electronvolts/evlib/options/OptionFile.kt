@@ -28,6 +28,7 @@ class OptionFile(path: File) {
     // incorrectly) outside of this function. The return type is therefore kept to prevent incorrect
     // behavior from leaking out.
     fun <T> get(option: OptionClass<T>): T {
+        @Suppress("UNCHECKED_CAST")
         return optionMap[option.name] as T ?: run {
             val serializer = option.typeData.serializer
             optionMap[option.name] = serializer.toString(option.typeData.default)
