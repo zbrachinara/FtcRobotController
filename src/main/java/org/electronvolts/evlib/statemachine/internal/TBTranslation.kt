@@ -33,27 +33,27 @@ fun <T : StateName> taskBehavior(descriptor: TaskBehavior<T>): State<T> {
     }
 }
 
-// tailless version
-data class TaillessTaskBehavior<T : StateName>(
-    val taskList: TaillessTaskList<T>,
+// open version
+data class OpenTaskBehavior<T : StateName>(
+    val taskList: OpenTaskList<T>,
     val behaviorList: BehaviorList,
 ) {
-    constructor(taillessTask: TaillessTask<T>, behaviorList: BehaviorList) : this(
-        listOf(taillessTask),
+    constructor(openTask: OpenTask<T>, behaviorList: BehaviorList) : this(
+        listOf(openTask),
         behaviorList,
     )
 
-    constructor(taillessTaskList: TaillessTaskList<T>, behavior: Behavior) : this(
-        taillessTaskList,
+    constructor(openTaskList: OpenTaskList<T>, behavior: Behavior) : this(
+        openTaskList,
         listOf(behavior),
     )
 
-    constructor(taillessTask: TaillessTask<T>, behavior: Behavior) : this(
-        listOf(taillessTask), listOf(behavior)
+    constructor(openTask: OpenTask<T>, behavior: Behavior) : this(
+        listOf(openTask), listOf(behavior)
     )
 }
 
-fun <T: StateName> taillessTaskBehavior(descriptor: TaillessTaskBehavior<T>): TaillessState<T> {
+fun <T: StateName> openTaskBehavior(descriptor: OpenTaskBehavior<T>): OpenState<T> {
     val (tasks, behaviors) = descriptor
 
     return {
@@ -61,11 +61,11 @@ fun <T: StateName> taillessTaskBehavior(descriptor: TaillessTaskBehavior<T>): Ta
             var init = false
             override fun act(): T? {
                 if (!init) {
-                    tasks.initTaillessTasks()
+                    tasks.initOpenTask()
                     behaviors.initBehaviors()
                     init = true
                 }
-                return when (val finished = tasks.finishedTaillessTask()) {
+                return when (val finished = tasks.finishedOpenTask()) {
                     null -> {
                         behaviors.actBehaviors()
                         null
