@@ -21,23 +21,29 @@ fun BehaviorList.dropBehaviors() {
     }
 }
 
-fun <T: StateName> TaskList<T>.initTasks() {
+fun <T : StateName> TaskList<T>.initTasks() {
     this.forEach {
         it.init()
     }
 }
 
-fun <T: StateName> TaskList<T>.finishedTask(): Task<T>? {
+fun <T : StateName> TaskList<T>.finishedTask(): Task<T>? {
     return this.find {
         it.isDone()
     }
 }
 
-fun <T: StateName> taskBehavior(tasks: TaskList<T>, behavior: Behavior) = taskBehavior<T>(tasks, listOf(behavior))
+data class TaskBehavior<T : StateName>(
+    val taskList: TaskList<T>,
+    val behaviorList: BehaviorList,
+) {
+    constructor(task: Task<T>, behaviorList: BehaviorList) : this(listOf(task), behaviorList)
+    constructor(taskList: TaskList<T>, behavior: Behavior) : this(taskList, listOf(behavior))
+    constructor(task: Task<T>, behavior: Behavior) : this(listOf(task), listOf(behavior))
+}
 
-fun <T: StateName> taskBehavior(task: Task<T>, behaviors: BehaviorList) = taskBehavior<T>(listOf(task), behaviors)
-
-fun <T: StateName> taskBehavior(tasks: TaskList<T>, behaviors: BehaviorList): State<T> {
+fun <T : StateName> taskBehavior(descriptor: TaskBehavior<T>): State<T> {
+    val (tasks, behaviors) = descriptor
     return object : State<T> {
         var init = false
         override fun act(): T? {
