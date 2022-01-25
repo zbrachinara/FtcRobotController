@@ -8,7 +8,7 @@ package org.electronvolts.evlib.gamepad
  */
 class DigitalInput(
     private val extractor: () -> Boolean,
-    private val alive: () -> Boolean = {true},
+    private val alive: () -> Boolean = { true },
 ) : () -> Boolean {
 
     // set currentValue and previousValue to the reading so no edges are triggered

@@ -53,7 +53,7 @@ data class OpenTaskBehavior<T : StateName>(
     )
 }
 
-fun <T: StateName> openTaskBehavior(descriptor: OpenTaskBehavior<T>): OpenState<T> {
+fun <T : StateName> openTaskBehavior(descriptor: OpenTaskBehavior<T>): OpenState<T> {
     val (tasks, behaviors) = descriptor
 
     return {
