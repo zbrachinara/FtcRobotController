@@ -1,38 +1,5 @@
 package org.electronvolts.evlib.statemachine.internal
 
-private typealias TaskList<T> = List<Task<T>>
-private typealias BehaviorList = List<Behavior>
-
-fun BehaviorList.initBehaviors() {
-    this.forEach {
-        it.init()
-    }
-}
-
-fun BehaviorList.actBehaviors() {
-    this.forEach {
-        it.act()
-    }
-}
-
-fun BehaviorList.dropBehaviors() {
-    this.forEach {
-        it.drop()
-    }
-}
-
-fun <T : StateName> TaskList<T>.initTasks() {
-    this.forEach {
-        it.init()
-    }
-}
-
-fun <T : StateName> TaskList<T>.finishedTask(): Task<T>? {
-    return this.find {
-        it.isDone()
-    }
-}
-
 data class TaskBehavior<T : StateName>(
     val taskList: TaskList<T>,
     val behaviorList: BehaviorList,
