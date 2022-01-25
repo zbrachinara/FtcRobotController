@@ -32,3 +32,51 @@ fun <T : StateName> taskBehavior(descriptor: TaskBehavior<T>): State<T> {
         }
     }
 }
+
+// tailless version
+data class TaillessTaskBehavior<T : StateName>(
+    val taskList: TaillessTaskList<T>,
+    val behaviorList: BehaviorList,
+) {
+    constructor(taillessTask: TaillessTask<T>, behaviorList: BehaviorList) : this(
+        listOf(taillessTask),
+        behaviorList,
+    )
+
+    constructor(taillessTaskList: TaillessTaskList<T>, behavior: Behavior) : this(
+        taillessTaskList,
+        listOf(behavior),
+    )
+
+    constructor(taillessTask: TaillessTask<T>, behavior: Behavior) : this(
+        listOf(taillessTask), listOf(behavior)
+    )
+}
+
+fun <T: StateName> taillessTaskBehavior(descriptor: TaillessTaskBehavior<T>): TaillessState<T> {
+    val (tasks, behaviors) = descriptor
+
+    return {
+        object : State<T> {
+            var init = false
+            override fun act(): T? {
+                if (!init) {
+                    tasks.initTaillessTasks()
+                    behaviors.initBehaviors()
+                    init = true
+                }
+                return when (val finished = tasks.finishedTaillessTask()) {
+                    null -> {
+                        behaviors.actBehaviors()
+                        null
+                    }
+                    else -> {
+                        behaviors.dropBehaviors()
+                        it
+                    }
+                }
+            }
+        }
+    }
+
+}
