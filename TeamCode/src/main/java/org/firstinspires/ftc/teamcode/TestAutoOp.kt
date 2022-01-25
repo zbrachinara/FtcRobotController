@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import org.electronvolts.evlib.opmode.AbstractAutoOp
 import org.electronvolts.evlib.statemachine.StateMachineBuilder
 import org.electronvolts.evlib.statemachine.addEnd
+import org.electronvolts.evlib.statemachine.internal.OpenState
 import org.electronvolts.evlib.statemachine.internal.State
 import org.electronvolts.evlib.statemachine.internal.StateMachine
 import org.electronvolts.evlib.statemachine.internal.StateName
@@ -16,19 +17,22 @@ enum class TestStates : StateName {
     END,
 }
 
-val dummy = object : State<TestStates> {
-    override fun act() = TestStates.END
+val dummy = object: OpenState<TestStates> {
+    override fun invoke(name: TestStates) = object : State<TestStates> {
+        override fun act() = name
+    }
 }
 
 @Autonomous(name = "Test Auto Kotlin")
 class TestAutoOp : AbstractAutoOp<BlankConfig, TestStates>() {
     override fun buildStates(): StateMachine<TestStates> =
         StateMachineBuilder(TestStates.START, TestStates.values())
-            .addSequence(TestStates.START) {
-                it.next(TestStates.A, dummy)
-                    .next(TestStates.B, dummy)
-                    .next(TestStates.C, dummy)
-                    .next(TestStates.END, dummy)
+            .addSequence {
+                it.add(TestStates.START, dummy)
+                    .add(TestStates.A, dummy)
+                    .add(TestStates.B, dummy)
+                    .add(TestStates.C, dummy)
+                    .finish(TestStates.END)
             }
             .addEnd(TestStates.END)
             .build()
