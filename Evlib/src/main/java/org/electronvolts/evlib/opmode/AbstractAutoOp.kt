@@ -5,7 +5,7 @@ import org.electronvolts.evlib.statemachine.internal.StateMachine
 import org.electronvolts.evlib.statemachine.internal.StateName
 import org.electronvolts.evlib.util.unit.Duration
 
-abstract class AbstractAutoOp<Config: RobotCfg, State: StateName>: AbstractOpMode<Config>() {
+abstract class AbstractAutoOp<Config : RobotCfg, State : StateName> : AbstractOpMode<Config>() {
 
     private lateinit var stateMachine: StateMachine<State>
 

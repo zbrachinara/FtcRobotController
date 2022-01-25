@@ -8,7 +8,6 @@ fun fake(map: HardwareMap) = object : RobotCfg(map) {
 
 abstract class RobotCfg(
     val hardwareMap: HardwareMap,
-
 ) {
     // empty (for now)
 }

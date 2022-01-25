@@ -3,10 +3,7 @@ package org.electronvolts.evlib.statemachine
 import org.electronvolts.evlib.statemachine.internal.OpenState
 import org.electronvolts.evlib.statemachine.internal.State
 import org.electronvolts.evlib.statemachine.internal.StateName
-import java.io.InvalidClassException
 import java.lang.NullPointerException
-import java.security.InvalidParameterException
-import java.util.*
 import kotlin.collections.HashMap
 
 class StateSequenceBuilder<T : StateName> internal constructor() {
@@ -48,7 +45,7 @@ class StateSequenceBuilder<T : StateName> internal constructor() {
             sequence[prevName] = completeState
         }
         queued = Pair(name, state)
-        return this;
+        return this
     }
 
     fun finish(name: T): StateSequence<T> {

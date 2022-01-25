@@ -17,13 +17,14 @@ enum class TestStates : StateName {
     END,
 }
 
-val dummy = object: OpenState<TestStates> {
+val dummy = object : OpenState<TestStates> {
     override fun invoke(name: TestStates) = object : State<TestStates> {
         override fun act() = name
     }
 }
 
 @Autonomous(name = "Test Auto Kotlin")
+@Suppress("UNUSED")
 class TestAutoOp : AbstractAutoOp<BlankConfig, TestStates>() {
     override fun buildStates(): StateMachine<TestStates> =
         StateMachineBuilder(TestStates.START, TestStates.values())

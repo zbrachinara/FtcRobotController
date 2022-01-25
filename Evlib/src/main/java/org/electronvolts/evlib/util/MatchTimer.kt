@@ -6,7 +6,7 @@ import org.electronvolts.evlib.util.unit.dunit
 
 class MatchTimer(
     time: Duration,
-){
+) {
 
     val matchTime = time.milliseconds().toLong()
 

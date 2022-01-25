@@ -3,7 +3,7 @@ package org.electronvolts.evlib.gamepad
 import com.qualcomm.robotcore.hardware.Gamepad
 import java.util.ArrayList
 
-enum class InitButton {A, B}
+enum class InitButton { A, B }
 
 /**
  * This file was made by the electronVolts, FTC team 7393
@@ -17,7 +17,7 @@ enum class InitButton {A, B}
  */
 class GamepadManager(
     gamepad: Gamepad,
-    scalingFunction: Function = { x -> x},
+    scalingFunction: Function = { x -> x },
     initButton: InitButton? = null,
 ) {
 
@@ -85,49 +85,49 @@ class GamepadManager(
     //use this constructor for custom joystick scaling
     init {
         detectors = ArrayList<DigitalInput>()
-        val rawStart = DigitalInput({gamepad.start})
+        val rawStart = DigitalInput({ gamepad.start })
         detectors.add(rawStart)
 //        val at: AlivenessTester
 
         val at = when (initButton) {
             InitButton.A -> {
-                val rawA = DigitalInput({gamepad.a})
+                val rawA = DigitalInput({ gamepad.a })
                 detectors.add(rawA)
                 ButtonAlive(rawA, rawStart)::isAlive
             }
             InitButton.B -> {
-                val rawB = DigitalInput({gamepad.b})
+                val rawB = DigitalInput({ gamepad.b })
                 detectors.add(rawB)
                 ButtonAlive(rawB, rawStart)::isAlive
             }
             null -> {
-                {true}
+                { true }
             }
         }
 
 
         //create all the DigitalInput objects
-        a = DigitalInput({gamepad.a}, at)
-        b = DigitalInput({gamepad.b}, at)
-        x = DigitalInput({gamepad.x})
-        y = DigitalInput({gamepad.y})
-        left_bumper = DigitalInput({gamepad.left_bumper})
-        right_bumper = DigitalInput({gamepad.right_bumper})
-        dpad_up = DigitalInput({gamepad.dpad_up})
-        dpad_down = DigitalInput({gamepad.dpad_down})
-        dpad_left = DigitalInput({gamepad.dpad_left})
-        dpad_right = DigitalInput({gamepad.dpad_right})
-        left_stick_button = DigitalInput({gamepad.left_stick_button})
-        right_stick_button = DigitalInput({gamepad.right_stick_button})
-        back = DigitalInput({gamepad.back})
-        start = DigitalInput({gamepad.start}, at)
+        a = DigitalInput({ gamepad.a }, at)
+        b = DigitalInput({ gamepad.b }, at)
+        x = DigitalInput({ gamepad.x })
+        y = DigitalInput({ gamepad.y })
+        left_bumper = DigitalInput({ gamepad.left_bumper })
+        right_bumper = DigitalInput({ gamepad.right_bumper })
+        dpad_up = DigitalInput({ gamepad.dpad_up })
+        dpad_down = DigitalInput({ gamepad.dpad_down })
+        dpad_left = DigitalInput({ gamepad.dpad_left })
+        dpad_right = DigitalInput({ gamepad.dpad_right })
+        left_stick_button = DigitalInput({ gamepad.left_stick_button })
+        right_stick_button = DigitalInput({ gamepad.right_stick_button })
+        back = DigitalInput({ gamepad.back })
+        start = DigitalInput({ gamepad.start }, at)
 
         //create all the AnalogInput objects
-        left_stick_x = AnalogInput({gamepad.left_stick_x.toDouble()}, scalingFunction)
-        left_stick_y = AnalogInput({gamepad.left_stick_y.toDouble()}, scalingFunction)
-        right_stick_x = AnalogInput({gamepad.right_stick_x.toDouble()}, scalingFunction)
-        right_stick_y = AnalogInput({gamepad.right_stick_y.toDouble()}, scalingFunction)
-        left_trigger = AnalogInput({gamepad.left_trigger.toDouble()}, scalingFunction)
-        right_trigger = AnalogInput({gamepad.right_trigger.toDouble()}, scalingFunction)
+        left_stick_x = AnalogInput({ gamepad.left_stick_x.toDouble() }, scalingFunction)
+        left_stick_y = AnalogInput({ gamepad.left_stick_y.toDouble() }, scalingFunction)
+        right_stick_x = AnalogInput({ gamepad.right_stick_x.toDouble() }, scalingFunction)
+        right_stick_y = AnalogInput({ gamepad.right_stick_y.toDouble() }, scalingFunction)
+        left_trigger = AnalogInput({ gamepad.left_trigger.toDouble() }, scalingFunction)
+        right_trigger = AnalogInput({ gamepad.right_trigger.toDouble() }, scalingFunction)
     }
 }
