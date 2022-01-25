@@ -65,7 +65,7 @@ fun <T : StateName> openTaskBehavior(descriptor: OpenTaskBehavior<T>): OpenState
                     behaviors.initBehaviors()
                     init = true
                 }
-                return when (val finished = tasks.finishedOpenTask()) {
+                return when (tasks.finishedOpenTask()) {
                     null -> {
                         behaviors.actBehaviors()
                         null
