@@ -23,14 +23,8 @@ class StateMachineBuilder<T : StateName>(
         return this
     }
 
-    fun addSequence(
-        name: T,
-        add: (StateSequence<T>) -> StateSequence<T>,
-    ): StateMachineBuilder<T> {
-        var builder = StateSequence(name)
-        builder = add(builder)
-
-        stateMap += builder.sequence
+    fun addSequence(add: (StateSequenceBuilder<T>) -> StateSequence<T>): StateMachineBuilder<T> {
+        stateMap += add(StateSequenceBuilder()).sequence
         return this
     }
 
