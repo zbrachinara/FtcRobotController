@@ -17,8 +17,8 @@ enum class TestStates : StateName {
     END,
 }
 
-val dummy = object : OpenState<TestStates> {
-    override fun invoke(name: TestStates) = object : State<TestStates> {
+val dummy: OpenState<TestStates> = { name ->
+    object : State<TestStates> {
         override fun act() = name
     }
 }
