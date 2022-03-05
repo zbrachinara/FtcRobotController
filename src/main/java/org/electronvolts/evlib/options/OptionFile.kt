@@ -13,8 +13,7 @@ class OptionFile(path: File) {
 
     private val file: File = (
             Path(Environment.getExternalStorageDirectory())
-                    + Path("FTC")
-                    + Path("options")
+                    + Path("FTC/options")
                     + Path(path)
             ).file()
 
