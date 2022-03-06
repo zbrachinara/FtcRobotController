@@ -1,5 +1,5 @@
 package org.electronvolts
 
-@Target(AnnotationTarget.FUNCTION)
+@Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.SOURCE)
 annotation class StateFunction
