@@ -1,4 +1,4 @@
-package org.electronvolts.annotations
+package org.electronvolts
 
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.SOURCE)
