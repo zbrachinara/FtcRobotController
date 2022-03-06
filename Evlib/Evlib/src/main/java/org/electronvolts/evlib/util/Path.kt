@@ -1,7 +1,6 @@
 package org.electronvolts.evlib.util
 
 import java.io.File
-import java.lang.IllegalArgumentException
 
 class Path private constructor(
     raw: List<String>,
