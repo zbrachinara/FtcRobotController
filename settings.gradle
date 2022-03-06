@@ -2,5 +2,6 @@ include ':FtcRobotController'
 include ':TeamCode'
 
 // evlib projects
-include 'Evlib'
-project(':Evlib').projectDir = file('Evlib/Evlib')
+include ':Evlib'
+include ':Evlib:Evlib'
+include ':Evlib:EvAnnotations'
