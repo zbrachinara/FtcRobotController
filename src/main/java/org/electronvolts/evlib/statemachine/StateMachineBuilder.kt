@@ -1,8 +1,16 @@
 package org.electronvolts.evlib.statemachine
 
+import org.electronvolts.StateFunction
 import org.electronvolts.evlib.statemachine.internal.State
 import org.electronvolts.evlib.statemachine.internal.StateMachine
 import org.electronvolts.evlib.statemachine.internal.StateName
+
+@StateFunction
+class BlankState<T : StateName>(
+    private val next: T?
+) : State<T> {
+    override fun act() = next
+}
 
 fun <T : StateName> StateMachineBuilder<T>.addBlank(curr: T, next: T?) =
     this.add(curr, object : State<T> {
