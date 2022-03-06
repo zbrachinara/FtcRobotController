@@ -1,7 +1,6 @@
 package org.electronvolts.evlib.gamepad
 
 import com.qualcomm.robotcore.hardware.Gamepad
-import java.util.ArrayList
 
 enum class InitButton { A, B }
 
