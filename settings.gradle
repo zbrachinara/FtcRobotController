@@ -2,7 +2,6 @@ include ':FtcRobotController'
 include ':TeamCode'
 
 // evlib projects
-include ':Evlib'
 include ':Evlib:Evlib'
 include ':Evlib:EvAnnotations'
 include ':Evlib:EvSymbolProcessor'
