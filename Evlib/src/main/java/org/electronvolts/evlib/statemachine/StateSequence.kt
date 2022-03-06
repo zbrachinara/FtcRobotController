@@ -3,8 +3,6 @@ package org.electronvolts.evlib.statemachine
 import org.electronvolts.evlib.statemachine.internal.OpenState
 import org.electronvolts.evlib.statemachine.internal.State
 import org.electronvolts.evlib.statemachine.internal.StateName
-import java.lang.NullPointerException
-import kotlin.collections.HashMap
 
 class StateSequenceBuilder<T : StateName> internal constructor() {
     private val sequence = HashMap<T, State<T>>()
