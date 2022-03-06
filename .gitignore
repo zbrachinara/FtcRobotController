@@ -7,3 +7,7 @@
 gradlew
 gradlew.bat
 local.properties
+
+#build directories
+Evlib/build
+EvAnnotations/build
