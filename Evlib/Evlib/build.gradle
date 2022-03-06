@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.library'
+    id 'com.google.devtools.ksp' version '1.6.10-1.0.4'
     id 'kotlin-android'
 }
 
@@ -19,6 +20,11 @@ android {
             minifyEnabled true
         }
     }
+//
+//    sourceSets.main{
+//        java.srcDirs = ['src/main/java']
+//    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
@@ -30,4 +36,6 @@ apply from: '../build.dependencies.gradle'
 dependencies {
     implementation project(':Evlib:EvAnnotations')
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+//    implementation project(':Evlib:EvSymbolProcessor')
+    ksp project(path: ':Evlib:EvSymbolProcessor', configuration: 'default')
 }
