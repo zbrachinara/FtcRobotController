@@ -82,7 +82,18 @@ class StateFunction private constructor(
             "fun <${this.nameType}: StateName> " +
                 "StateMachineBuilder<${this.nameType}>.add${this.name}$argumentSignature"
 
-        return "${signature}{}"
+        val stateParameters = generateParameters().joinToString(",\n") {
+            "${it.first} = ${it.first}"
+        }
+
+        return """$signature {
+            |   this.add(
+            |       thisState,
+            |       $location(
+            |           $stateParameters
+            |       ),
+            |   )
+            |}""".trimMargin()
     }
 
     override fun toString(): String {
