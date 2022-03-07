@@ -2,6 +2,7 @@ package org.electronvolts.processor.statefunction
 
 import com.google.devtools.ksp.getAllSuperTypes
 import com.google.devtools.ksp.innerArguments
+import com.google.devtools.ksp.isConstructor
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.symbol.*
 
@@ -80,6 +81,31 @@ class StateFunction private constructor(
                 location = klass.qualifiedName!!.asString(),
                 arguments = constructor.parameters,
                 genericOver = klass.typeParameters.map { it.name }
+            )
+        }
+
+        fun fromConstructor(method: KSFunctionDeclaration, logger: KSPLogger): StateFunction {
+            //TODO: Forbid functions that are both non-static and non-constructor
+            val nameType = getStateNameType(method).type!!.resolve()
+
+            val returnTypeDecl = method.returnType!!.resolve().declaration
+            val returnTypeSimple = returnTypeDecl.simpleName.asString()
+
+            val location = if (method.isConstructor()) {
+                returnTypeDecl.qualifiedName!!.asString()
+            } else {
+                method.qualifiedName!!.asString()
+            }
+
+            logger.warn("Received type parameters: ${method.typeParameters.map { it.name }}")
+
+            return StateFunction(
+                loggerRef = logger,
+                name = returnTypeSimple,
+                nameType = nameType,
+                location = location,
+                arguments = method.parameters,
+                genericOver = method.typeParameters.map { it.name }
             )
         }
     }

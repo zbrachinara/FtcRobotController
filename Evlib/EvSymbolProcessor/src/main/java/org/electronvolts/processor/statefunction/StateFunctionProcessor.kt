@@ -3,6 +3,7 @@ package org.electronvolts.processor.statefunction
 import com.google.devtools.ksp.processing.*
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSClassDeclaration
+import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import org.electronvolts.processor.plusAssign
 
 class StateFunctionProcessorProvider : SymbolProcessorProvider {
@@ -23,14 +24,20 @@ class StateFunctionProcessor(
     private val definitions: MutableList<StateFunction> = arrayListOf()
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
-        val symbols = resolver
+        resolver
             .getSymbolsWithAnnotation("org.electronvolts.StateFunction")
             .filterIsInstance<KSClassDeclaration>()
+            .forEach {
+                definitions.add(StateFunction.fromClassDeclaration(it, logger))
+                logger.info(it.qualifiedName.toString())
+            }
 
-        symbols.forEach {
-            definitions.add(StateFunction.fromClassDeclaration(it, logger))
-            logger.info(it.qualifiedName.toString())
-        }
+        resolver
+            .getSymbolsWithAnnotation("org.electronvolts.StateFunction")
+            .filterIsInstance<KSFunctionDeclaration>()
+            .forEach {
+                definitions.add(StateFunction.fromConstructor(it, logger))
+            }
 
         return emptyList()
     }
