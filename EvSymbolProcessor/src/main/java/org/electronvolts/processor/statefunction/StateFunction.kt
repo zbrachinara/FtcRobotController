@@ -7,23 +7,37 @@ import com.google.devtools.ksp.symbol.*
 
 const val kclassPath_State = "org.electronvolts.evlib.statemachine.internal.State"
 
-fun isStateDeclaration(decl: KSDeclaration): Boolean {
+private fun stateType(decl: KSDeclaration): KSType? {
     return when (decl) {
         is KSClassDeclaration -> {
-            decl.getAllSuperTypes().any {
+            decl.getAllSuperTypes().find {
                 it.declaration.qualifiedName!!.asString() == kclassPath_State
             }
         }
         is KSTypeAlias -> {
-            isStateDeclaration(decl.type.resolve().declaration)
+            stateType(decl.type.resolve().declaration)
         }
         is KSTypeParameter -> {
-            decl.bounds.any { type ->
-                isStateDeclaration(type.resolve().declaration)
-            }
+            decl.bounds.find { type ->
+                stateType(type.resolve().declaration) != null
+            }?.resolve()
         }
         else -> {
             throw RuntimeException("Unexpected error: Faulty declaration passed to symbol processor")
+        }
+    }
+}
+
+private fun getStateNameType(decl: KSDeclaration): KSTypeArgument {
+    val simpleName = decl.simpleName.asString()
+    return when (val stateClass = stateType(decl)) {
+        null -> throw RuntimeException(
+            "The annotated class $simpleName does not " +
+                "extend `${kclassPath_State}`, which is required for this annotation"
+        )
+        else -> {
+            assert(stateClass.innerArguments.size == 1)
+            stateClass.innerArguments[0]
         }
     }
 }
@@ -39,20 +53,7 @@ class StateFunction private constructor(
     companion object {
         fun fromClassDeclaration(klass: KSClassDeclaration, logger: KSPLogger): StateFunction {
             val classNameSimple = klass.simpleName.asString()
-
-            val stateClass = klass.getAllSuperTypes().find {
-                it.declaration.qualifiedName!!.asString() == kclassPath_State
-            }
-
-            val nameType = when (stateClass) {
-                null -> throw RuntimeException(
-                    "The annotated class $classNameSimple does not " +
-                        "extend `${kclassPath_State}`, which is required for this annotation"
-                )
-                // get the name of the type that State<?> is generic over
-                else -> stateClass.innerArguments[0]
-            }
-            assert(isStateDeclaration(klass))
+            val nameType = getStateNameType(klass)
 
             val constructor = when (klass.primaryConstructor) {
                 null -> throw RuntimeException(
