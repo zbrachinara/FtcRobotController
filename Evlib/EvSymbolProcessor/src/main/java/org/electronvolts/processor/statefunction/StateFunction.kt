@@ -62,6 +62,7 @@ class StateFunction private constructor(
     private val arguments: List<KSValueParameter>,
 ) {
     companion object {
+        //TODO: Error if both the class and its constructors are annotated
         fun fromClassDeclaration(klass: KSClassDeclaration, logger: KSPLogger): StateFunction {
             val classNameSimple = klass.simpleName.asString()
             val nameType = getStateNameType(klass)
@@ -97,7 +98,16 @@ class StateFunction private constructor(
                 method.qualifiedName!!.asString()
             }
 
-            logger.warn("Received type parameters: ${method.typeParameters.map { it.name }}")
+            val typeParameters = if (method.isConstructor()) {
+                val parameterTypes = method.parameters.map { param ->
+                    param.type.resolve().declaration.simpleName.asString()
+                }
+                returnTypeDecl.typeParameters.filter {
+                    parameterTypes.contains(it.name.asString())
+                }
+            } else {
+                method.typeParameters
+            }
 
             return StateFunction(
                 loggerRef = logger,
@@ -105,7 +115,7 @@ class StateFunction private constructor(
                 nameType = nameType,
                 location = location,
                 arguments = method.parameters,
-                genericOver = method.typeParameters.map { it.name }
+                genericOver = typeParameters.map { it.name },
             )
         }
     }
