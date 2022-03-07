@@ -1,32 +1,33 @@
 plugins {
-    id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
+//    id 'com.android.library'
+//    id 'org.jetbrains.kotlin.android'
+    id 'kotlin'
 }
 
-android {
-    compileSdkVersion 29
-
-    defaultConfig {
-        minSdkVersion 23
-        targetSdkVersion 28
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
-    }
-//    kotlinOptions {
-//        jvmTarget = '1.8'
+//android {
+//    compileSdkVersion 29
+//
+//    defaultConfig {
+//        minSdkVersion 23
+//        targetSdkVersion 28
+//
+//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//        consumerProguardFiles "consumer-rules.pro"
 //    }
-}
+//
+//    buildTypes {
+//        release {
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//        }
+//    }
+//    compileOptions {
+//        sourceCompatibility JavaVersion.VERSION_1_7
+//        targetCompatibility JavaVersion.VERSION_1_7
+//    }
+////    kotlinOptions {
+////        jvmTarget = '1.8'
+////    }
+//}
 
-apply from: '../build.dependencies.gradle'
+//apply from: '../build.dependencies.gradle'

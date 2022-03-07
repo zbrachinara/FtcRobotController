@@ -7,11 +7,12 @@ import com.google.devtools.ksp.symbol.KSVisitorVoid
 import java.io.OutputStream
 
 class StateFunctionProcessorProvider : SymbolProcessorProvider {
-    override fun create(environment: SymbolProcessorEnvironment) = StateFunctionProcessor(
-        environment.codeGenerator,
-        environment.logger,
-        environment.options,
-    )
+    override fun create(environment: SymbolProcessorEnvironment) =
+        StateFunctionProcessor(
+            environment.codeGenerator,
+            environment.logger,
+            environment.options,
+        )
 }
 
 class StateFunctionProcessor(
@@ -35,6 +36,8 @@ class StateFunctionProcessor(
             it.accept(StateClassVisitor(file), Unit)
             logger.info(it.qualifiedName.toString())
         }
+
+//        file.close()
 
         return emptyList()
     }
