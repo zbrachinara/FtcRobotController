@@ -1,9 +1,10 @@
-package org.electronvolts.processor
+package org.electronvolts.processor.statefunction
 
 import com.google.devtools.ksp.processing.*
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSVisitorVoid
+import org.electronvolts.processor.plusAssign
 import java.io.OutputStream
 
 class StateFunctionProcessorProvider : SymbolProcessorProvider {
@@ -20,26 +21,35 @@ class StateFunctionProcessor(
     private val logger: KSPLogger,
     private val options: Map<String, String>,
 ) : SymbolProcessor {
+
+    private val definitions: MutableList<StateFunction> = arrayListOf()
+
     override fun process(resolver: Resolver): List<KSAnnotated> {
         val symbols = resolver
             .getSymbolsWithAnnotation("org.electronvolts.StateFunction")
             .filterIsInstance<KSClassDeclaration>()
 
+        symbols.forEach {
+            definitions.add(StateFunction.fromClass(it))
+            logger.info(it.qualifiedName.toString())
+        }
+
+        return emptyList()
+    }
+
+    override fun finish() {
         val file = generator.createNewFile(
-            dependencies = Dependencies(false, *resolver.getAllFiles().toList().toTypedArray()),
+            dependencies = Dependencies.ALL_FILES,
             packageName = "org.electronvolts.evlib.statemachine.states",
             fileName = "StdStates"
         )
         file += "package org.electronvolts.evlib.statemachine.states\n"
 
-        symbols.forEach {
-            it.accept(StateClassVisitor(file), Unit)
-            logger.info(it.qualifiedName.toString())
+        definitions.forEach {
+            file += "$it\n"
         }
 
-//        file.close()
-
-        return emptyList()
+        file.close()
     }
 }
 
