@@ -42,14 +42,13 @@ class StateFunction private constructor(
                 )
                 else -> klass.primaryConstructor!!
             }
-            val argumentsRaw = constructor.parameters;
 
             return StateFunction(
                 loggerRef = logger,
                 name = classNameSimple,
                 nameType = nameType.type!!.resolve(),
                 location = klass.qualifiedName!!.asString(),
-                arguments = klass.primaryConstructor!!.parameters,
+                arguments = constructor.parameters,
                 genericOver = klass.typeParameters.map { it.name }
             )
         }
@@ -59,8 +58,8 @@ class StateFunction private constructor(
         loggerRef.warn("len of generic list is ${genericOver.size}")
         val simpleTypeName = param.type.resolve().declaration.simpleName
         val qualifiedTypeName = param.type.resolve().declaration.qualifiedName!!
+
         if (this.genericOver.any {
-                loggerRef.warn("comparing ${it.asString()} and ${simpleTypeName.asString()}")
                 it.asString() == simpleTypeName.asString() // TODO: Hacky, don't do it
             }) {
             Pair(param.name!!.asString(), simpleTypeName.asString())
@@ -68,7 +67,6 @@ class StateFunction private constructor(
             Pair(param.name!!.asString(), qualifiedTypeName.asString())
         }
     }.toCollection(mutableListOf())
-//    }
 
     fun toClosedState(): String {
         val argumentList =
