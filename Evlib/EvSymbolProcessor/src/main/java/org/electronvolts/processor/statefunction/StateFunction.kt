@@ -3,12 +3,30 @@ package org.electronvolts.processor.statefunction
 import com.google.devtools.ksp.getAllSuperTypes
 import com.google.devtools.ksp.innerArguments
 import com.google.devtools.ksp.processing.KSPLogger
-import com.google.devtools.ksp.symbol.KSClassDeclaration
-import com.google.devtools.ksp.symbol.KSName
-import com.google.devtools.ksp.symbol.KSType
-import com.google.devtools.ksp.symbol.KSValueParameter
+import com.google.devtools.ksp.symbol.*
 
 const val kclassPath_State = "org.electronvolts.evlib.statemachine.internal.State"
+
+fun isDeclarationState(decl: KSDeclaration): Boolean {
+    return when (decl) {
+        is KSClassDeclaration -> {
+            decl.getAllSuperTypes().any {
+                it.declaration.qualifiedName!!.asString() == kclassPath_State
+            }
+        }
+        is KSTypeAlias -> {
+            isDeclarationState(decl.type.resolve().declaration)
+        }
+        is KSTypeParameter -> {
+            decl.bounds.any { type ->
+                isDeclarationState(type.resolve().declaration)
+            }
+        }
+        else -> {
+            throw RuntimeException("Unexpected error: Faulty declaration passed to symbol processor")
+        }
+    }
+}
 
 class StateFunction private constructor(
     private val loggerRef: KSPLogger,
@@ -34,6 +52,7 @@ class StateFunction private constructor(
                 // get the name of the type that State<?> is generic over
                 else -> stateClass.innerArguments[0]
             }
+            assert(isDeclarationState(klass))
 
             val constructor = when (klass.primaryConstructor) {
                 null -> throw RuntimeException(
