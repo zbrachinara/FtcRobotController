@@ -22,8 +22,18 @@ private fun stateType(decl: KSDeclaration): KSType? {
                 stateType(type.resolve().declaration) != null
             }?.resolve()
         }
+        is KSFunctionDeclaration -> {
+            when (val ret = decl.returnType) {
+                null -> throw RuntimeException("Nothing is returned from the given function")
+                else -> stateType(ret.resolve().declaration)
+            }
+        }
         else -> {
-            throw RuntimeException("Unexpected error: Faulty declaration passed to symbol processor")
+            throw RuntimeException(
+                "Unexpected error: Faulty declaration " +
+                    "${decl.simpleName.asString()} | ${decl.qualifiedName?.asString()} " +
+                    "passed to symbol processor"
+            )
         }
     }
 }
