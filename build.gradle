@@ -18,16 +18,11 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-
-            sourceSets.main {
-                java.srcDirs += 'build/generated/ksp/release/kotlin'
-            }
         }
     }
-//
-//    sourceSets.main{
-//        java.srcDirs = ['src/main/java']
-//    }
+    sourceSets.main {
+        java.srcDirs += 'build/generated/ksp/debug/kotlin'
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
