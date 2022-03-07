@@ -32,8 +32,8 @@ private fun getStateNameType(decl: KSDeclaration): KSTypeArgument {
     val simpleName = decl.simpleName.asString()
     return when (val stateClass = stateType(decl)) {
         null -> throw RuntimeException(
-            "The annotated class $simpleName does not " +
-                "extend `${kclassPath_State}`, which is required for this annotation"
+            "The annotated declaration $simpleName does not yield a " +
+                "`${kclassPath_State}`, which is required for this annotation"
         )
         else -> {
             assert(stateClass.innerArguments.size == 1)
