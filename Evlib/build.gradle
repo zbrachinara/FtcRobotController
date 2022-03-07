@@ -18,6 +18,10 @@ android {
     buildTypes {
         release {
             minifyEnabled true
+
+            sourceSets.main {
+                java.srcDirs += 'build/generated/ksp/release/kotlin'
+            }
         }
     }
 //
@@ -36,6 +40,6 @@ apply from: '../build.dependencies.gradle'
 dependencies {
     implementation project(':Evlib:EvAnnotations')
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
-//    implementation project(':Evlib:EvSymbolProcessor')
+    implementation project(':Evlib:EvSymbolProcessor')
     ksp project(path: ':Evlib:EvSymbolProcessor', configuration: 'default')
 }
