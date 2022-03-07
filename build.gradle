@@ -40,6 +40,5 @@ apply from: '../build.dependencies.gradle'
 dependencies {
     implementation project(':Evlib:EvAnnotations')
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
-    implementation project(':Evlib:EvSymbolProcessor')
-    ksp project(path: ':Evlib:EvSymbolProcessor', configuration: 'default')
+    ksp project(':Evlib:EvSymbolProcessor')
 }
