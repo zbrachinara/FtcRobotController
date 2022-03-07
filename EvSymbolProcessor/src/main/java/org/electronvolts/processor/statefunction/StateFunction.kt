@@ -7,7 +7,7 @@ import com.google.devtools.ksp.symbol.*
 
 const val kclassPath_State = "org.electronvolts.evlib.statemachine.internal.State"
 
-fun isDeclarationState(decl: KSDeclaration): Boolean {
+fun isStateDeclaration(decl: KSDeclaration): Boolean {
     return when (decl) {
         is KSClassDeclaration -> {
             decl.getAllSuperTypes().any {
@@ -15,11 +15,11 @@ fun isDeclarationState(decl: KSDeclaration): Boolean {
             }
         }
         is KSTypeAlias -> {
-            isDeclarationState(decl.type.resolve().declaration)
+            isStateDeclaration(decl.type.resolve().declaration)
         }
         is KSTypeParameter -> {
             decl.bounds.any { type ->
-                isDeclarationState(type.resolve().declaration)
+                isStateDeclaration(type.resolve().declaration)
             }
         }
         else -> {
@@ -52,7 +52,7 @@ class StateFunction private constructor(
                 // get the name of the type that State<?> is generic over
                 else -> stateClass.innerArguments[0]
             }
-            assert(isDeclarationState(klass))
+            assert(isStateDeclaration(klass))
 
             val constructor = when (klass.primaryConstructor) {
                 null -> throw RuntimeException(
