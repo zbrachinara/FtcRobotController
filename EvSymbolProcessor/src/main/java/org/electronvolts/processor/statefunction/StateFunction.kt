@@ -53,6 +53,7 @@ private fun getStateNameType(decl: KSDeclaration): KSTypeArgument {
     }
 }
 
+//TODO: Integrate with Visitor pattern
 class StateFunction private constructor(
     private val loggerRef: KSPLogger,
     private val name: String,
