@@ -80,7 +80,8 @@ class StateFunction private constructor(
         val argumentSignature = "($argumentList)"
         val signature =
             "fun <${this.nameType}: StateName> " +
-                "StateMachineBuilder<${this.nameType}>.add${this.name}$argumentSignature"
+                "StateMachineBuilder<${this.nameType}>.add${this.name}$argumentSignature:" +
+                "StateMachineBuilder<${this.nameType}>"
 
         val stateParameters = generateParameters().joinToString(",\n") {
             "${it.first} = ${it.first}"
@@ -93,6 +94,8 @@ class StateFunction private constructor(
             |           $stateParameters
             |       ),
             |   )
+            |   
+            |   return this
             |}""".trimMargin()
     }
 
