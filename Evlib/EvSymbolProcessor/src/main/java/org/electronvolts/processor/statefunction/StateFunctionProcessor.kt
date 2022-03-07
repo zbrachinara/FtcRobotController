@@ -3,9 +3,7 @@ package org.electronvolts.processor.statefunction
 import com.google.devtools.ksp.processing.*
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSClassDeclaration
-import com.google.devtools.ksp.symbol.KSVisitorVoid
 import org.electronvolts.processor.plusAssign
-import java.io.OutputStream
 
 class StateFunctionProcessorProvider : SymbolProcessorProvider {
     override fun create(environment: SymbolProcessorEnvironment) =
@@ -30,7 +28,7 @@ class StateFunctionProcessor(
             .filterIsInstance<KSClassDeclaration>()
 
         symbols.forEach {
-            definitions.add(StateFunction.fromClass(it))
+            definitions.add(StateFunction.fromClassDeclaration(it, logger))
             logger.info(it.qualifiedName.toString())
         }
 
@@ -40,21 +38,24 @@ class StateFunctionProcessor(
     override fun finish() {
         val file = generator.createNewFile(
             dependencies = Dependencies.ALL_FILES,
-            packageName = "org.electronvolts.evlib.statemachine.states",
-            fileName = "StdStates"
+            packageName = "org.electronvolts.evlib.statemachine.statefunction",
+            fileName = "ClosedStates"
         )
-        file += "package org.electronvolts.evlib.statemachine.states\n"
+        file += """
+            package org.electronvolts.evlib.statemachine.statefunction
+            
+            import org.electronvolts.evlib.statemachine.internal.StateName
+            import org.electronvolts.evlib.statemachine.StateMachineBuilder
+            
+            
+        """.trimIndent()
+
+        file += "\n"
 
         definitions.forEach {
-            file += "$it\n"
+            file += "${it.toClosedState()}\n\n"
         }
 
         file.close()
-    }
-}
-
-class StateClassVisitor(private val f: OutputStream) : KSVisitorVoid() {
-    override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
-        val name = "add" + classDeclaration.simpleName.toString()
     }
 }
