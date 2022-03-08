@@ -59,8 +59,6 @@ class StateFunctionProcessor(
             
         """.trimIndent()
 
-        closedStateFile += "\n"
-
         definitions.forEach {
             closedStateFile += "${it.toClosedStateFunction()}\n\n"
         }
@@ -75,8 +73,16 @@ class StateFunctionProcessor(
         openStateFile += """
             package $containingPackage 
             
+            import org.electronvolts.evlib.statemachine.internal.asOpenState
+            import org.electronvolts.evlib.statemachine.internal.StateName
             import org.electronvolts.evlib.statemachine.StateSequenceBuilder
+            
+            
         """.trimIndent()
+
+        definitions.forEach {
+            openStateFile += "${it.toOpenStateFunction()}\n\n"
+        }
 
         openStateFile.close()
     }
