@@ -30,7 +30,7 @@ class StateFunctionProcessor(
             .getSymbolsWithAnnotation("org.electronvolts.StateFunction")
             .filterIsInstance<KSClassDeclaration>()
             .forEach {
-                definitions.add(StateFunction.fromClassDeclaration(it, logger))
+                definitions += StateFunction.fromClassDeclaration(it, logger)
                 logger.info(it.qualifiedName.toString())
             }
 

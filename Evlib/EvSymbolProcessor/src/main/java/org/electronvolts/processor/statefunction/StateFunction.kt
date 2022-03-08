@@ -1,6 +1,7 @@
 package org.electronvolts.processor.statefunction
 
 import com.google.devtools.ksp.getAllSuperTypes
+import com.google.devtools.ksp.getConstructors
 import com.google.devtools.ksp.innerArguments
 import com.google.devtools.ksp.isConstructor
 import com.google.devtools.ksp.processing.KSPLogger
@@ -64,26 +65,13 @@ class StateFunction private constructor(
 ) {
     companion object {
         //TODO: Error if both the class and its constructors are annotated
-        fun fromClassDeclaration(klass: KSClassDeclaration, logger: KSPLogger): StateFunction {
-            val classNameSimple = klass.simpleName.asString()
-            val nameType = getStateNameType(klass)
-
-            val constructor = when (klass.primaryConstructor) {
-                null -> throw RuntimeException(
-                    "The annotated class is not allowed to be" +
-                        " an interface or otherwise not constructable"
-                )
-                else -> klass.primaryConstructor!!
-            }
-
-            return StateFunction(
-                loggerRef = logger,
-                name = classNameSimple,
-                nameType = nameType.type!!.resolve(),
-                location = klass.qualifiedName!!.asString(),
-                arguments = constructor.parameters,
-                genericOver = klass.typeParameters.map { it.name }
-            )
+        fun fromClassDeclaration(
+            klass: KSClassDeclaration,
+            logger: KSPLogger
+        ): List<StateFunction> {
+            return klass.getConstructors().map {
+                fromConstructor(it, logger)
+            }.toList()
         }
 
         fun fromConstructor(function: KSFunctionDeclaration, logger: KSPLogger): StateFunction {
