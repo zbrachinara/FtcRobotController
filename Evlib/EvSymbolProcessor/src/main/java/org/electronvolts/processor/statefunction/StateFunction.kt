@@ -4,7 +4,6 @@ import com.google.devtools.ksp.getAllSuperTypes
 import com.google.devtools.ksp.getConstructors
 import com.google.devtools.ksp.innerArguments
 import com.google.devtools.ksp.isConstructor
-import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.symbol.*
 import org.electronvolts.processor.reconstructTypeParameters
 
@@ -58,7 +57,6 @@ private fun getStateNameType(decl: KSDeclaration): KSTypeArgument {
 
 //TODO: Integrate with Visitor pattern
 class StateFunction private constructor(
-    private val loggerRef: KSPLogger,
     private val name: String,
     private val location: String,
     private val nameType: KSType,
@@ -68,7 +66,6 @@ class StateFunction private constructor(
     companion object {
         fun fromClassDeclaration(
             klass: KSClassDeclaration,
-            logger: KSPLogger
         ): List<StateFunction> {
             return klass.getConstructors().map {
                 // check if the constructor function is already annotated
@@ -92,11 +89,11 @@ class StateFunction private constructor(
                         }
                     }
                 }
-                fromConstructor(it, logger)
+                fromConstructor(it)
             }.toList()
         }
 
-        fun fromConstructor(function: KSFunctionDeclaration, logger: KSPLogger): StateFunction {
+        fun fromConstructor(function: KSFunctionDeclaration): StateFunction {
             // assert that this is, in fact, a function (independent from object data)
             if (
                 !function.isConstructor() &&
@@ -127,7 +124,6 @@ class StateFunction private constructor(
             }
 
             return StateFunction(
-                loggerRef = logger,
                 name = returnTypeSimple,
                 nameType = nameType,
                 location = location,
@@ -190,4 +186,153 @@ class StateFunction private constructor(
                 "StateSequenceBuilder<${this.nameType}>.add${this.name}${argumentSignature()}"
         return "$signature${genExprOpen()}"
     }
+}
+
+class StateFunctionVisitor : KSVisitor<Unit, Sequence<StateFunction>> {
+    override fun visitAnnotated(annotated: KSAnnotated, data: Unit): Sequence<StateFunction> {
+        TODO("Not yet implemented")
+    }
+
+    override fun visitAnnotation(annotation: KSAnnotation, data: Unit): Sequence<StateFunction> {
+        TODO("Not yet implemented")
+    }
+
+    override fun visitCallableReference(
+        reference: KSCallableReference,
+        data: Unit
+    ): Sequence<StateFunction> {
+        TODO("Not yet implemented")
+    }
+
+    override fun visitClassDeclaration(
+        classDeclaration: KSClassDeclaration,
+        data: Unit
+    ) = StateFunction.fromClassDeclaration(classDeclaration).asSequence()
+
+    override fun visitClassifierReference(
+        reference: KSClassifierReference,
+        data: Unit
+    ): Sequence<StateFunction> {
+        TODO("Not yet implemented")
+    }
+
+    override fun visitDeclaration(declaration: KSDeclaration, data: Unit): Sequence<StateFunction> {
+        TODO("Not yet implemented")
+    }
+
+    override fun visitDeclarationContainer(
+        declarationContainer: KSDeclarationContainer,
+        data: Unit
+    ): Sequence<StateFunction> {
+        TODO("Not yet implemented")
+    }
+
+    override fun visitDynamicReference(
+        reference: KSDynamicReference,
+        data: Unit
+    ): Sequence<StateFunction> {
+        TODO("Not yet implemented")
+    }
+
+    override fun visitFile(file: KSFile, data: Unit): Sequence<StateFunction> {
+        TODO("Not yet implemented")
+    }
+
+    override fun visitFunctionDeclaration(
+        function: KSFunctionDeclaration,
+        data: Unit
+    ) = sequenceOf(StateFunction.fromConstructor(function))
+
+    override fun visitModifierListOwner(
+        modifierListOwner: KSModifierListOwner,
+        data: Unit
+    ): Sequence<StateFunction> {
+        TODO("Not yet implemented")
+    }
+
+    override fun visitNode(node: KSNode, data: Unit): Sequence<StateFunction> {
+        TODO("Not yet implemented")
+    }
+
+    override fun visitParenthesizedReference(
+        reference: KSParenthesizedReference,
+        data: Unit
+    ): Sequence<StateFunction> {
+        TODO("Not yet implemented")
+    }
+
+    override fun visitPropertyAccessor(
+        accessor: KSPropertyAccessor,
+        data: Unit
+    ): Sequence<StateFunction> {
+        TODO("Not yet implemented")
+    }
+
+    override fun visitPropertyDeclaration(
+        property: KSPropertyDeclaration,
+        data: Unit
+    ): Sequence<StateFunction> {
+        TODO("Not yet implemented")
+    }
+
+    override fun visitPropertyGetter(
+        getter: KSPropertyGetter,
+        data: Unit
+    ): Sequence<StateFunction> {
+        TODO("Not yet implemented")
+    }
+
+    override fun visitPropertySetter(
+        setter: KSPropertySetter,
+        data: Unit
+    ): Sequence<StateFunction> {
+        TODO("Not yet implemented")
+    }
+
+    override fun visitReferenceElement(
+        element: KSReferenceElement,
+        data: Unit
+    ): Sequence<StateFunction> {
+        TODO("Not yet implemented")
+    }
+
+    override fun visitTypeAlias(typeAlias: KSTypeAlias, data: Unit): Sequence<StateFunction> {
+        TODO("Not yet implemented")
+    }
+
+    override fun visitTypeArgument(
+        typeArgument: KSTypeArgument,
+        data: Unit
+    ): Sequence<StateFunction> {
+        TODO("Not yet implemented")
+    }
+
+    override fun visitTypeParameter(
+        typeParameter: KSTypeParameter,
+        data: Unit
+    ): Sequence<StateFunction> {
+        TODO("Not yet implemented")
+    }
+
+    override fun visitTypeReference(
+        typeReference: KSTypeReference,
+        data: Unit
+    ): Sequence<StateFunction> {
+        TODO("Not yet implemented")
+    }
+
+    override fun visitValueArgument(
+        valueArgument: KSValueArgument,
+        data: Unit
+    ): Sequence<StateFunction> {
+        TODO("Not yet implemented")
+    }
+
+    override fun visitValueParameter(
+        valueParameter: KSValueParameter,
+        data: Unit
+    ): Sequence<StateFunction> {
+        TODO("Not yet implemented")
+    }
+
 }
