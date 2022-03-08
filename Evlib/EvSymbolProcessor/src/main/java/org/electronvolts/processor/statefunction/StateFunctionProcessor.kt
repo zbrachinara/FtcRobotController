@@ -6,6 +6,8 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import org.electronvolts.processor.plusAssign
 
+const val containingPackage = "org.electronvolts.evlib.statemachine.statefunction"
+
 class StateFunctionProcessorProvider : SymbolProcessorProvider {
     override fun create(environment: SymbolProcessorEnvironment) =
         StateFunctionProcessor(
@@ -43,13 +45,13 @@ class StateFunctionProcessor(
     }
 
     override fun finish() {
-        val file = generator.createNewFile(
+        val closedStateFile = generator.createNewFile(
             dependencies = Dependencies.ALL_FILES,
-            packageName = "org.electronvolts.evlib.statemachine.statefunction",
+            packageName = containingPackage,
             fileName = "ClosedStates"
         )
-        file += """
-            package org.electronvolts.evlib.statemachine.statefunction
+        closedStateFile += """
+            package $containingPackage
             
             import org.electronvolts.evlib.statemachine.internal.StateName
             import org.electronvolts.evlib.statemachine.StateMachineBuilder
@@ -57,12 +59,25 @@ class StateFunctionProcessor(
             
         """.trimIndent()
 
-        file += "\n"
+        closedStateFile += "\n"
 
         definitions.forEach {
-            file += "${it.toClosedStateFunction()}\n\n"
+            closedStateFile += "${it.toClosedStateFunction()}\n\n"
         }
 
-        file.close()
+        closedStateFile.close()
+
+        val openStateFile = generator.createNewFile(
+            dependencies = Dependencies.ALL_FILES,
+            packageName = containingPackage,
+            fileName = "OpenStates"
+        )
+        openStateFile += """
+            package $containingPackage 
+            
+            import org.electronvolts.evlib.statemachine.StateSequenceBuilder
+        """.trimIndent()
+
+        openStateFile.close()
     }
 }
