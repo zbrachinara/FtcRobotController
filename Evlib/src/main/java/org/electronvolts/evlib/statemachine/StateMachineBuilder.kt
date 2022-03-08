@@ -5,13 +5,15 @@ import org.electronvolts.evlib.statemachine.internal.State
 import org.electronvolts.evlib.statemachine.internal.StateMachine
 import org.electronvolts.evlib.statemachine.internal.StateName
 
-open class BlankState<T : StateName> @StateFunction constructor(
+@StateFunction
+open class BlankState<T : StateName> constructor(
     private val next: T?
 ) : State<T> {
     override fun act() = next
 }
 
-class EndState<T : StateName> @StateFunction constructor() : BlankState<T>(null)
+@StateFunction
+class EndState<T : StateName> constructor() : BlankState<T>(null)
 
 class StateMachineBuilder<T : StateName>(
     private val first: T,
