@@ -9,6 +9,7 @@ import com.google.devtools.ksp.symbol.*
 import org.electronvolts.processor.reconstructTypeParameters
 
 const val kclassPath_State = "org.electronvolts.evlib.statemachine.internal.State"
+const val kclassPath_StateFunction = "org.electronvolts.StateFunction"
 
 private fun stateType(decl: KSDeclaration): KSType? {
     return when (decl) {
@@ -71,6 +72,27 @@ class StateFunction private constructor(
             logger: KSPLogger
         ): List<StateFunction> {
             return klass.getConstructors().map {
+                // check if the constructor function is already annotated
+                when (val trespasser =
+                    it.annotations.find { ann -> ann.shortName.asString() == "StateFunction" }) {
+                    null -> {}
+                    else -> {
+                        if (
+                            trespasser
+                                .annotationType
+                                .resolve()
+                                .declaration
+                                .qualifiedName!!
+                                .asString() == kclassPath_StateFunction
+                        ) {
+                            throw RuntimeException(
+                                "The class ${klass.simpleName.asString()} | ${klass.qualifiedName?.asString()}, " +
+                                    "which is annotated with `StateFunction`, " +
+                                    "contains a constructor that is already annotated with `StateFunction`"
+                            )
+                        }
+                    }
+                }
                 fromConstructor(it, logger)
             }.toList()
         }

@@ -6,7 +6,7 @@ import org.electronvolts.evlib.statemachine.internal.StateMachine
 import org.electronvolts.evlib.statemachine.internal.StateName
 
 @StateFunction
-open class BlankState<T : StateName> constructor(
+open class BlankState<T : StateName> /*@StateFunction*/ constructor(
     private val next: T?
 ) : State<T> {
     override fun act() = next
