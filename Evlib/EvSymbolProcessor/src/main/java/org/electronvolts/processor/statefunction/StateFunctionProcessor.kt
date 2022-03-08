@@ -60,7 +60,7 @@ class StateFunctionProcessor(
         file += "\n"
 
         definitions.forEach {
-            file += "${it.toClosedState()}\n\n"
+            file += "${it.toClosedStateFunction()}\n\n"
         }
 
         file.close()

@@ -146,7 +146,7 @@ class StateFunction private constructor(
         }
     }.toCollection(mutableListOf())
 
-    fun toClosedState(): String {
+    fun toClosedStateFunction(): String {
         val argumentList =
             listOf(Pair("thisState", this.nameType))
                 .plus(generateParameters())
