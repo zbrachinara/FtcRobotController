@@ -19,7 +19,7 @@ class GenericState<T : StateName, U : List<V>, V>(@Suppress("UNUSED_PARAMETER") 
 }
 
 @StateFunction
-class EndState<T : StateName> constructor() : BlankState<T>(null)
+class EndState<T : StateName> : BlankState<T>(null)
 
 class StateMachineBuilder<T : StateName>(
     private val first: T,
