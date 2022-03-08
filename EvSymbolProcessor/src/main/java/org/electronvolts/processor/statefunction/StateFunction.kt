@@ -152,14 +152,14 @@ class StateFunction private constructor(
     private fun genBody() =
         """
         |{
-        |   this.add(
-        |       thisState,
-        |       $location(
-        |           ${genParameters().joinToString(",\n") { "${it.first} = ${it.first}" }}
-        |       )
-        |   )
-        |    
-        |   return this
+        |    this.add(
+        |        thisState,
+        |        $location(
+        |            ${genParameters().joinToString(",\n") { "${it.first} = ${it.first}" }}
+        |        )
+        |    )
+        |     
+        |    return this
         |}
         """.trimMargin()
 
