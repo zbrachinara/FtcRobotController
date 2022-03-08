@@ -166,10 +166,10 @@ class StateFunction private constructor(
     fun toClosedStateFunction(): String {
         val argumentList =
             genOutsideParameters()
-                .joinToString(", ") {
-                    "${it.first}: ${it.second}"
+                .joinToString(",\n") {
+                    "    ${it.first}: ${it.second}"
                 }
-        val argumentSignature = "($argumentList)"
+        val argumentSignature = "(\n$argumentList\n)"
         val signature =
             "fun <${this.nameType}: StateName> " +
                 "StateMachineBuilder<${this.nameType}>.add${this.name}$argumentSignature:" +
