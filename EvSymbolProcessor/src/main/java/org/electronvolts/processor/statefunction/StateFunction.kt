@@ -149,7 +149,13 @@ class StateFunction private constructor(
     private fun genOutsideParameters() =
         listOf(Pair("thisState", this.nameType.toString())) + genParameters()
 
-    private fun genExpr() =
+    private fun argumentSignature() = "(\n${
+        genOutsideParameters().joinToString(",\n") {
+            "    ${it.first}: ${it.second}"
+        }
+    }\n)"
+
+    private fun genExprClosed() =
         """ = this.add(
         |    thisState,
         |    $location(
@@ -158,26 +164,26 @@ class StateFunction private constructor(
         |)
         """.trimMargin()
 
+    private fun genExprOpen() =
+        """ = this.add(
+        |    thisState,
+        |    asOpenState($location(
+        |        ${genParameters().joinToString(",\n") { "${it.first} = ${it.first}" }}
+        |    ))
+        |)
+        """.trimMargin()
+
     fun toClosedStateFunction(): String {
-        val argumentList =
-            genOutsideParameters()
-                .joinToString(",\n") {
-                    "    ${it.first}: ${it.second}"
-                }
-        val argumentSignature = "(\n$argumentList\n)"
         val signature =
             "fun <${this.nameType}: StateName> " +
-                "StateMachineBuilder<${this.nameType}>.add${this.name}$argumentSignature"
-
-        return "$signature${genExpr()}"
+                "StateMachineBuilder<${this.nameType}>.add${this.name}${argumentSignature()}"
+        return "$signature${genExprClosed()}"
     }
 
     fun toOpenStateFunction(): String {
         val signature =
-            "fun <${this.nameType}: StateName> StateSequenceBuilder<${this.nameType}>.add"
-        return """
-       |       
-        """.trimMargin()
+            "fun <${this.nameType}: StateName> StateSequenceBuilder<${this.nameType}>.add${this.name}${argumentSignature()}"
+        return "$signature${genExprOpen()}"
     }
 
     override fun toString(): String {
