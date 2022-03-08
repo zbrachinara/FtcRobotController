@@ -66,7 +66,6 @@ class StateFunction private constructor(
     private val arguments: List<KSValueParameter>,
 ) {
     companion object {
-        //TODO: Error if both the class and its constructors are annotated
         fun fromClassDeclaration(
             klass: KSClassDeclaration,
             logger: KSPLogger
@@ -190,9 +189,5 @@ class StateFunction private constructor(
             "fun ${reconstructTypeParameters(genericOver.asSequence())} " +
                 "StateSequenceBuilder<${this.nameType}>.add${this.name}${argumentSignature()}"
         return "$signature${genExprOpen()}"
-    }
-
-    override fun toString(): String {
-        return "fun add${this.name}() {}"
     }
 }
