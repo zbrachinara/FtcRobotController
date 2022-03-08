@@ -132,7 +132,7 @@ class StateFunction private constructor(
         }
     }
 
-    private fun generateParameters(): List<Pair<String, String>> = this.arguments.map { param ->
+    private fun genParameters() = this.arguments.map { param ->
         loggerRef.warn("len of generic list is ${genericOver.size}")
         val simpleTypeName = param.type.resolve().declaration.simpleName
         val qualifiedTypeName = param.type.resolve().declaration.qualifiedName!!
@@ -146,10 +146,12 @@ class StateFunction private constructor(
         }
     }.toCollection(mutableListOf())
 
+    private fun genOutsideParameters() =
+        listOf(Pair("thisState", this.nameType.toString())).plus(genParameters())
+
     fun toClosedStateFunction(): String {
         val argumentList =
-            listOf(Pair("thisState", this.nameType))
-                .plus(generateParameters())
+            genOutsideParameters()
                 .joinToString(", ") {
                     "${it.first}: ${it.second}"
                 }
@@ -159,7 +161,7 @@ class StateFunction private constructor(
                 "StateMachineBuilder<${this.nameType}>.add${this.name}$argumentSignature:" +
                 "StateMachineBuilder<${this.nameType}>"
 
-        val stateParameters = generateParameters().joinToString(",\n") {
+        val stateParameters = genParameters().joinToString(",\n") {
             "${it.first} = ${it.first}"
         }
 
@@ -173,6 +175,14 @@ class StateFunction private constructor(
             |   
             |   return this
             |}""".trimMargin()
+    }
+
+    fun toOpenStateFunction(): String {
+
+
+        return """
+            |   
+        """.trimMargin()
     }
 
     override fun toString(): String {
