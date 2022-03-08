@@ -147,7 +147,7 @@ class StateFunction private constructor(
     }.toCollection(mutableListOf())
 
     private fun genOutsideParameters() =
-        listOf(Pair("thisState", this.nameType.toString())).plus(genParameters())
+        listOf(Pair("thisState", this.nameType.toString())) + genParameters()
 
     private fun genExpr() =
         """ = this.add(
