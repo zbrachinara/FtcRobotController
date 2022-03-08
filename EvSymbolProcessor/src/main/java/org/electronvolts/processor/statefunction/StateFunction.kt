@@ -86,39 +86,39 @@ class StateFunction private constructor(
             )
         }
 
-        fun fromConstructor(method: KSFunctionDeclaration, logger: KSPLogger): StateFunction {
+        fun fromConstructor(function: KSFunctionDeclaration, logger: KSPLogger): StateFunction {
             // assert that this is, in fact, a function (independent from object data)
             if (
-                !method.isConstructor() &&
+                !function.isConstructor() &&
                 !(
-                    method.functionKind == FunctionKind.TOP_LEVEL ||
-                        method.functionKind == FunctionKind.STATIC)
+                    function.functionKind == FunctionKind.TOP_LEVEL ||
+                        function.functionKind == FunctionKind.STATIC)
             ) {
                 throw RuntimeException(
-                    "${method.simpleName.asString()} is not a valid function for this" +
+                    "${function.simpleName.asString()} is not a valid function for this" +
                         "purpose"
                 )
             }
-            val nameType = getStateNameType(method).type!!.resolve()
+            val nameType = getStateNameType(function).type!!.resolve()
 
-            val returnTypeDecl = method.returnType!!.resolve().declaration
+            val returnTypeDecl = function.returnType!!.resolve().declaration
             val returnTypeSimple = returnTypeDecl.simpleName.asString()
 
-            val location = if (method.isConstructor()) {
+            val location = if (function.isConstructor()) {
                 returnTypeDecl.qualifiedName!!.asString()
             } else {
-                method.qualifiedName!!.asString()
+                function.qualifiedName!!.asString()
             }
 
-            val typeParameters = if (method.isConstructor()) {
-                val parameterTypes = method.parameters.map { param ->
+            val typeParameters = if (function.isConstructor()) {
+                val parameterTypes = function.parameters.map { param ->
                     param.type.resolve().declaration.simpleName.asString()
                 }
                 returnTypeDecl.typeParameters.filter {
                     parameterTypes.contains(it.name.asString())
                 }
             } else {
-                method.typeParameters
+                function.typeParameters
             }
 
             return StateFunction(
@@ -126,7 +126,7 @@ class StateFunction private constructor(
                 name = returnTypeSimple,
                 nameType = nameType,
                 location = location,
-                arguments = method.parameters,
+                arguments = function.parameters,
                 genericOver = typeParameters.map { it.name },
             )
         }
