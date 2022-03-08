@@ -87,7 +87,18 @@ class StateFunction private constructor(
         }
 
         fun fromConstructor(method: KSFunctionDeclaration, logger: KSPLogger): StateFunction {
-            //TODO: Forbid functions that are both non-static and non-constructor
+            // assert that this is, in fact, a function (independent from object data)
+            if (
+                !method.isConstructor() &&
+                !(
+                    method.functionKind == FunctionKind.TOP_LEVEL ||
+                        method.functionKind == FunctionKind.STATIC)
+            ) {
+                throw RuntimeException(
+                    "${method.simpleName.asString()} is not a valid function for this" +
+                        "purpose"
+                )
+            }
             val nameType = getStateNameType(method).type!!.resolve()
 
             val returnTypeDecl = method.returnType!!.resolve().declaration
