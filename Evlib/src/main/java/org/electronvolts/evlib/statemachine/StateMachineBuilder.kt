@@ -13,6 +13,12 @@ open class BlankState<T : StateName> constructor(
 }
 
 @StateFunction
+class GenericState<T : StateName, U : List<V>, V>(@Suppress("UNUSED_PARAMETER") param: U) :
+    State<T> {
+    override fun act() = null
+}
+
+@StateFunction
 class EndState<T : StateName> constructor() : BlankState<T>(null)
 
 class StateMachineBuilder<T : StateName>(

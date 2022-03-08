@@ -6,6 +6,7 @@ import com.google.devtools.ksp.innerArguments
 import com.google.devtools.ksp.isConstructor
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.symbol.*
+import org.electronvolts.processor.reconstructTypeParameters
 
 const val kclassPath_State = "org.electronvolts.evlib.statemachine.internal.State"
 
@@ -60,7 +61,7 @@ class StateFunction private constructor(
     private val name: String,
     private val location: String,
     private val nameType: KSType,
-    private val genericOver: List<KSName>,
+    private val genericOver: List<KSTypeParameter>,
     private val arguments: List<KSValueParameter>,
 ) {
     companion object {
@@ -99,12 +100,7 @@ class StateFunction private constructor(
             }
 
             val typeParameters = if (function.isConstructor()) {
-                val parameterTypes = function.parameters.map { param ->
-                    param.type.resolve().declaration.simpleName.asString()
-                }
-                returnTypeDecl.typeParameters.filter {
-                    parameterTypes.contains(it.name.asString())
-                }
+                returnTypeDecl.typeParameters
             } else {
                 function.typeParameters
             }
@@ -115,18 +111,17 @@ class StateFunction private constructor(
                 nameType = nameType,
                 location = location,
                 arguments = function.parameters,
-                genericOver = typeParameters.map { it.name },
+                genericOver = typeParameters,
             )
         }
     }
 
     private fun genParameters() = this.arguments.map { param ->
-        loggerRef.warn("len of generic list is ${genericOver.size}")
         val simpleTypeName = param.type.resolve().declaration.simpleName
         val qualifiedTypeName = param.type.resolve().declaration.qualifiedName!!
 
         if (this.genericOver.any {
-                it.asString() == simpleTypeName.asString() // TODO: Hacky, don't do it
+                it.name.asString() == simpleTypeName.asString() // TODO: Hacky, don't do it
             }) {
             Pair(param.name!!.asString(), simpleTypeName.asString())
         } else {
@@ -163,14 +158,15 @@ class StateFunction private constructor(
 
     fun toClosedStateFunction(): String {
         val signature =
-            "fun <${this.nameType}: StateName> " +
+            "fun ${reconstructTypeParameters(genericOver.asSequence())} " +
                 "StateMachineBuilder<${this.nameType}>.add${this.name}${argumentSignature()}"
         return "$signature${genExprClosed()}"
     }
 
     fun toOpenStateFunction(): String {
         val signature =
-            "fun <${this.nameType}: StateName> StateSequenceBuilder<${this.nameType}>.add${this.name}${argumentSignature()}"
+            "fun ${reconstructTypeParameters(genericOver.asSequence())} " +
+                "StateSequenceBuilder<${this.nameType}>.add${this.name}${argumentSignature()}"
         return "$signature${genExprOpen()}"
     }
 
