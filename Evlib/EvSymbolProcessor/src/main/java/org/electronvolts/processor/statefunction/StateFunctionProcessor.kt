@@ -34,6 +34,7 @@ class StateFunctionProcessor(
     }
 
     override fun finish() {
+        //TODO: Support multiple file sets in order to process multiple projects
         val closedStateFile = generator.createNewFile(
             dependencies = Dependencies.ALL_FILES,
             packageName = containingPackage,
