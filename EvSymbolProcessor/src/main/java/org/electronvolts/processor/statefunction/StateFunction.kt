@@ -55,7 +55,6 @@ private fun getStateNameType(decl: KSDeclaration): KSTypeArgument {
     }
 }
 
-//TODO: Integrate with Visitor pattern
 class StateFunction private constructor(
     private val name: String,
     private val location: String,
@@ -109,12 +108,17 @@ class StateFunction private constructor(
             val nameType = getStateNameType(function).type!!.resolve()
 
             val returnTypeDecl = function.returnType!!.resolve().declaration
-            val returnTypeSimple = returnTypeDecl.simpleName.asString()
 
             val location = if (function.isConstructor()) {
                 returnTypeDecl.qualifiedName!!.asString()
             } else {
                 function.qualifiedName!!.asString()
+            }
+
+            val name = if (function.isConstructor()) {
+                returnTypeDecl.simpleName.asString()
+            } else {
+                function.simpleName.asString().replaceFirstChar { it.titlecase() }
             }
 
             val typeParameters = if (function.isConstructor()) {
@@ -124,7 +128,7 @@ class StateFunction private constructor(
             }
 
             return StateFunction(
-                name = returnTypeSimple,
+                name = name,
                 nameType = nameType,
                 location = location,
                 arguments = function.parameters,
@@ -155,10 +159,24 @@ class StateFunction private constructor(
         }
     }\n)"
 
+    private fun genGenericParameters(): String {
+        return if (this.genericOver.isEmpty()) {
+            "<$nameType: org.electronvolts.evlib.statemachine.internal.StateName>"
+        } else {
+            reconstructTypeParameters(this.genericOver.asSequence())
+        }
+    }
+
+    private fun genGenericArguments(): String {
+        return this.genericOver.joinToString(", ", "<", ">") { arg ->
+            arg.name.asString()
+        }
+    }
+
     private fun genExprClosed() =
         """ = this.add(
         |    thisState,
-        |    $location(
+        |    $location${genGenericArguments()}(
         |        ${genParameters().joinToString(",\n") { "${it.first} = ${it.first}" }}
         |    )
         |)
@@ -167,7 +185,7 @@ class StateFunction private constructor(
     private fun genExprOpen() =
         """ = this.add(
         |    thisState,
-        |    asOpenState($location(
+        |    asOpenState($location${genGenericArguments()}(
         |        ${genParameters().joinToString(",\n") { "${it.first} = ${it.first}" }}
         |    ))
         |)
@@ -175,14 +193,14 @@ class StateFunction private constructor(
 
     fun toClosedStateFunction(): String {
         val signature =
-            "fun ${reconstructTypeParameters(genericOver.asSequence())} " +
+            "fun ${genGenericParameters()} " +
                 "StateMachineBuilder<${this.nameType}>.add${this.name}${argumentSignature()}"
         return "$signature${genExprClosed()}"
     }
 
     fun toOpenStateFunction(): String {
         val signature =
-            "fun ${reconstructTypeParameters(genericOver.asSequence())} " +
+            "fun ${genGenericParameters()} " +
                 "StateSequenceBuilder<${this.nameType}>.add${this.name}${argumentSignature()}"
         return "$signature${genExprOpen()}"
     }
