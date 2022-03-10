@@ -6,11 +6,12 @@ import org.electronvolts.evlib.statemachine.internal.StateMachine
 import org.electronvolts.evlib.statemachine.internal.StateName
 
 @StateFunction
-open class BlankState<T : StateName> /*@StateFunction*/ constructor(
-    private val next: T?
-) : State<T> {
+fun <T : StateName> blankState(next: T?) = object : State<T> {
     override fun act() = next
 }
+
+@StateFunction
+fun <T : StateName> endState() = blankState<T>(null)
 
 @StateFunction
 class GenericState<T : StateName, U : List<V>, V>(@Suppress("UNUSED_PARAMETER") param: U) :
@@ -20,9 +21,6 @@ class GenericState<T : StateName, U : List<V>, V>(@Suppress("UNUSED_PARAMETER") 
 
 @StateFunction
 fun <T : StateName, V> weirdState() = GenericState<T, List<V>, V>(listOf())
-
-@StateFunction
-fun <T : StateName> endState() = BlankState<T>(null)
 
 class StateMachineBuilder<T : StateName>(
     private val first: T,

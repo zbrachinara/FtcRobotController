@@ -10,30 +10,34 @@ import org.electronvolts.processor.reconstructTypeParameters
 const val kclassPath_State = "org.electronvolts.evlib.statemachine.internal.State"
 const val kclassPath_StateFunction = "org.electronvolts.StateFunction"
 
-private fun stateType(decl: KSDeclaration): KSType? {
+private fun stateTypeFromType(type: KSType): KSType? {
+    return when (type.declaration.qualifiedName?.asString()) {
+        kclassPath_State -> type
+        else -> stateTypeFromDecl(type.declaration)
+    }
+}
+
+private fun stateTypeFromDecl(decl: KSDeclaration): KSType? {
     return when (decl) {
         is KSClassDeclaration -> {
             decl.getAllSuperTypes().find {
                 it.declaration.qualifiedName!!.asString() == kclassPath_State
             }
         }
-        is KSTypeAlias -> {
-            stateType(decl.type.resolve().declaration)
-        }
         is KSTypeParameter -> {
             decl.bounds.find { type ->
-                stateType(type.resolve().declaration) != null
+                stateTypeFromType(type.resolve()) != null
             }?.resolve()
         }
         is KSFunctionDeclaration -> {
             when (val ret = decl.returnType) {
                 null -> throw RuntimeException("Nothing is returned from the given function")
-                else -> stateType(ret.resolve().declaration)
+                else -> stateTypeFromType(ret.resolve())
             }
         }
         else -> {
             throw RuntimeException(
-                "Unexpected error: Faulty declaration " +
+                "Faulty declaration " +
                     "${decl.simpleName.asString()} | ${decl.qualifiedName?.asString()} " +
                     "passed to symbol processor"
             )
@@ -43,7 +47,7 @@ private fun stateType(decl: KSDeclaration): KSType? {
 
 private fun getStateNameType(decl: KSDeclaration): KSTypeArgument {
     val simpleName = decl.simpleName.asString()
-    return when (val stateClass = stateType(decl)) {
+    return when (val stateClass = stateTypeFromDecl(decl)) {
         null -> throw RuntimeException(
             "The annotated declaration $simpleName does not yield a " +
                 "`${kclassPath_State}`, which is required for this annotation"
