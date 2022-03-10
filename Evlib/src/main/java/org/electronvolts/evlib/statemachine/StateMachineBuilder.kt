@@ -13,15 +13,6 @@ fun <T : StateName> blankState(next: T?) = object : State<T> {
 @StateFunction
 fun <T : StateName> endState() = blankState<T>(null)
 
-@StateFunction
-class GenericState<T : StateName, U : List<V>, V>(@Suppress("UNUSED_PARAMETER") param: U) :
-    State<T> {
-    override fun act() = null
-}
-
-@StateFunction
-fun <T : StateName, V> weirdState() = GenericState<T, List<V>, V>(listOf())
-
 class StateMachineBuilder<T : StateName>(
     private val first: T,
     private val allNames: Array<T>
