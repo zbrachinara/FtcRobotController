@@ -59,12 +59,24 @@ private fun getStateNameType(decl: KSDeclaration): KSTypeArgument {
     }
 }
 
+/**
+ * A representation of both extension functions for classes in an Evlib `StateMachineBuilder` and
+ * `StateSequenceBuilder`. It contains functions to generate receivers for these types, and builders
+ * to create them from function or class definitions related to Evlib `State`s.
+ *
+ * @param name The name of the class or function that is being represented
+ * @param location The fully qualified location of the name or class
+ * @param nameType The name of the parameter used as the `StateName` parameter to the `State` the
+ *      class or return type inherits from, directly or indirectly
+ * @param typeParams The type parameters which the function or class is generic over
+ * @param params The parameters which the constructor or function takes
+ */
 class StateFunction private constructor(
     private val name: String,
     private val location: String,
     private val nameType: KSType,
-    private val genericOver: List<KSTypeParameter>,
-    private val arguments: List<KSValueParameter>,
+    private val typeParams: List<KSTypeParameter>,
+    private val params: List<KSValueParameter>,
 ) {
     companion object {
         fun fromClassDeclaration(
@@ -85,13 +97,13 @@ class StateFunction private constructor(
                                 .asString() == kclassPath_StateFunction
                         ) {
                             throw RuntimeException(
-                                "The class ${klass.simpleName.asString()} | ${klass.qualifiedName?.asString()}, " +
-                                    "which is annotated with `StateFunction`, " +
-                                    "contains a constructor that is already annotated with `StateFunction`"
+                                """The class ${klass.simpleName.asString()} | ${klass.qualifiedName?.asString() ?: ""}, which is annotated with `StateFunction`, contains a constructor that is also annotated with `StateFunction`.
+
+This would result in double generation of the constructor, which cannot compile."""
                             )
                         }
                     }
-                }
+                } // TODO: Filter constructors on visibility
                 fromConstructor(it)
             }.toList()
         }
@@ -135,17 +147,17 @@ class StateFunction private constructor(
                 name = name,
                 nameType = nameType,
                 location = location,
-                arguments = function.parameters,
-                genericOver = typeParameters,
+                params = function.parameters,
+                typeParams = typeParameters,
             )
         }
     }
 
-    private fun genParameters() = this.arguments.map { param ->
+    private fun genParameters() = this.params.map { param ->
         val simpleTypeName = param.type.resolve().declaration.simpleName
         val qualifiedTypeName = param.type.resolve().declaration.qualifiedName!!
 
-        if (this.genericOver.any {
+        if (this.typeParams.any {
                 it.name.asString() == simpleTypeName.asString() // TODO: Hacky, don't do it
             }) {
             Pair(param.name!!.asString(), simpleTypeName.asString())
@@ -164,15 +176,15 @@ class StateFunction private constructor(
     }\n)"
 
     private fun genGenericParameters(): String {
-        return if (this.genericOver.isEmpty()) {
+        return if (this.typeParams.isEmpty()) {
             "<$nameType: org.electronvolts.evlib.statemachine.internal.StateName>"
         } else {
-            reconstructTypeParameters(this.genericOver.asSequence())
+            reconstructTypeParameters(this.typeParams.asSequence())
         }
     }
 
     private fun genGenericArguments(): String {
-        return this.genericOver.joinToString(", ", "<", ">") { arg ->
+        return this.typeParams.joinToString(", ", "<", ">") { arg ->
             arg.name.asString()
         }
     }
