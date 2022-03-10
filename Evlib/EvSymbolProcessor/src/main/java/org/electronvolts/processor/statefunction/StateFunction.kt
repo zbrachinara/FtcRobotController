@@ -1,9 +1,6 @@
 package org.electronvolts.processor.statefunction
 
-import com.google.devtools.ksp.getAllSuperTypes
-import com.google.devtools.ksp.getConstructors
-import com.google.devtools.ksp.innerArguments
-import com.google.devtools.ksp.isConstructor
+import com.google.devtools.ksp.*
 import com.google.devtools.ksp.symbol.*
 import org.electronvolts.processor.reconstructTypeParameters
 
@@ -82,30 +79,34 @@ class StateFunction private constructor(
         fun fromClassDeclaration(
             klass: KSClassDeclaration,
         ): List<StateFunction> {
-            return klass.getConstructors().map {
-                // check if the constructor function is already annotated
-                when (val trespasser =
-                    it.annotations.find { ann -> ann.shortName.asString() == "StateFunction" }) {
-                    null -> {}
-                    else -> {
-                        if (
-                            trespasser
-                                .annotationType
-                                .resolve()
-                                .declaration
-                                .qualifiedName!!
-                                .asString() == kclassPath_StateFunction
-                        ) {
-                            throw RuntimeException(
-                                """The class ${klass.simpleName.asString()} | ${klass.qualifiedName?.asString() ?: ""}, which is annotated with `StateFunction`, contains a constructor that is also annotated with `StateFunction`.
+            return klass.getConstructors()
+                .onEach {
+                    // check if the constructor function is already annotated
+                    when (val trespasser =
+                        it.annotations.find { ann -> ann.shortName.asString() == "StateFunction" }) {
+                        null -> {}
+                        else -> {
+                            if (
+                                trespasser
+                                    .annotationType
+                                    .resolve()
+                                    .declaration
+                                    .qualifiedName!!
+                                    .asString() == kclassPath_StateFunction
+                            ) {
+                                throw RuntimeException(
+                                    """The class ${klass.simpleName.asString()} | ${klass.qualifiedName?.asString() ?: ""}, which is annotated with `StateFunction`, contains a constructor that is also annotated with `StateFunction`.
 
 This would result in double generation of the constructor, which cannot compile."""
-                            )
+                                )
+                            }
                         }
                     }
-                } // TODO: Filter constructors on visibility
-                fromConstructor(it)
-            }.toList()
+                }
+                .filter {
+                    it.isPublic()
+                }
+                .map { fromConstructor(it) }.toList()
         }
 
         fun fromConstructor(function: KSFunctionDeclaration): StateFunction {
@@ -121,6 +122,14 @@ This would result in double generation of the constructor, which cannot compile.
                         "purpose"
                 )
             }
+
+            if (!function.isPublic()) {
+                throw RuntimeException(
+                    "Only public functions/classes/constructors can be" +
+                        "generated"
+                )
+            }
+
             val nameType = getStateNameType(function).type!!.resolve()
 
             val returnTypeDecl = function.returnType!!.resolve().declaration
