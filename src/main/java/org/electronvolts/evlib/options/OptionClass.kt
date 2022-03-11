@@ -7,7 +7,7 @@ private typealias Mutator<T> = (GamepadManager, T) -> T?
 
 data class TypeData<T>(
     val default: T,
-    val mutator: (GamepadManager, T) -> T?,
+    val mutator: Mutator<T>,
 ) {
     class Builder<T> {
         companion object {
