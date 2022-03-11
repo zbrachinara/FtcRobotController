@@ -25,10 +25,10 @@ class OptionFile(path: File) {
     // This is problematic, because the unsafe cast would have to be performed (potentially
     // incorrectly) outside of this function. The return type is therefore kept to prevent incorrect
     // behavior from leaking out.
-    fun <T> get(option: OptionClass<T>): T {
+    fun <T : Any> get(option: OptionClass<T>): T {
         @Suppress("UNCHECKED_CAST")
-        return optionMap[option.name] as T ?: run {
-            optionMap[option.name] = option.typeData
+        return optionMap[option.name] as T? ?: run {
+            optionMap[option.name] = option.typeData.default
             option.typeData.default
         }
     }
