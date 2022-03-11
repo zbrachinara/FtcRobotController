@@ -8,12 +8,12 @@ import org.electronvolts.evlib.util.Path
 import java.io.File
 
 // TODO: 1/21/22 Options with conflicting names can overwrite each other. Enforce!
-class OptionFile(path: File) {
+class OptionFile(path: Path) {
 
     private val file: File = (
         Path(Environment.getExternalStorageDirectory())
             + Path("FTC/options")
-            + Path(path)
+            + path
         ).file()
 
     private var optionMap: MutableMap<String, Any> = mutableMapOf()
