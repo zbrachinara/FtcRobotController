@@ -8,17 +8,14 @@ import org.electronvolts.evlib.util.unit.Duration
 
 abstract class AbstractTeleOp<Config : RobotCfg> : AbstractOpMode<Config>() {
 
-    lateinit var driver1: GamepadManager
-    lateinit var driver2: GamepadManager
+    protected lateinit var driver1: GamepadManager
+    protected lateinit var driver2: GamepadManager
 
-    abstract val joystickScalingFunction: EvFunction?
-    lateinit var joystickScale: EvFunction
+    protected val joystickScale: EvFunction = { x -> x }
 
     override val matchTime = Duration.fromMinutes(2.0)
 
     final override fun preSetup() {
-        joystickScale = joystickScalingFunction ?: { x -> x }
-
         // stage 1
         driver1 = GamepadManager.fromGamepad(gamepad1, joystickScale)
         driver2 = GamepadManager.fromGamepad(gamepad2, joystickScale)
