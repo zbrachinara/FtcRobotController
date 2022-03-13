@@ -134,25 +134,7 @@ data class GamepadManager(
         for (d in detectors) {
             d.update()
         }
-        a.update()
-        b.update()
-        x.update()
-        y.update()
-        left_bumper.update()
-        right_bumper.update()
-        left_trigger.update()
-        right_trigger.update()
-        dpad_up.update()
-        dpad_down.update()
-        dpad_left.update()
-        dpad_right.update()
-        left_stick_button.update()
-        right_stick_button.update()
-        back.update()
-        start.update()
-        left_stick_x.update()
-        left_stick_y.update()
-        right_stick_x.update()
-        right_stick_y.update()
+        digital.values.forEach { btn -> btn.update() }
+        analog.values.forEach { input -> input.update() }
     }
 }
