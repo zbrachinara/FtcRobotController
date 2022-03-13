@@ -7,7 +7,7 @@ package org.electronvolts.evlib.gamepad
  */
 class AnalogInput(
     private val extractor: () -> Double,
-    private val inputScaler: Function,
+    private val inputScaler: EvFunction,
 ) : () -> Double {
     var rawValue = 0.0
         private set
