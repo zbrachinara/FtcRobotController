@@ -2,7 +2,7 @@ package org.electronvolts.evlib
 
 import com.qualcomm.robotcore.hardware.HardwareMap
 
-fun fake(map: HardwareMap) = object : RobotCfg(map) {
+fun blankCfg(map: HardwareMap) = object : RobotCfg(map) {
     // empty
 }
 
