@@ -11,6 +11,10 @@ class DigitalInput(
     private val alive: () -> Boolean = { true },
 ) : () -> Boolean {
 
+    companion object {
+        fun blank() = DigitalInput({ false })
+    }
+
     // set currentValue and previousValue to the reading so no edges are triggered
     private var value = extractor()
     private var previousValue = extractor()
