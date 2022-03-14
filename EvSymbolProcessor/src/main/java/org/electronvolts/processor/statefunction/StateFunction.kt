@@ -4,7 +4,7 @@ import com.google.devtools.ksp.*
 import com.google.devtools.ksp.symbol.*
 import org.electronvolts.processor.reconstructTypeParameters
 
-const val kclassPath_State = "org.electronvolts.evlib.statemachine.internal.State"
+const val kclassPath_State = "org.electronvolts.evlib.statemachine.internal.OpenState"
 const val kclassPath_StateFunction = "org.electronvolts.StateFunction"
 
 private fun stateTypeFromType(type: KSType): KSType? {
@@ -180,7 +180,7 @@ This would result in double generation of the constructor, which cannot compile.
     }.toCollection(mutableListOf())
 
     private fun genOutsideParameters() =
-        listOf(Pair("thisState", this.nameType.toString())) + genParameters()
+        listOf(Pair("thisState", this.nameType.declaration.simpleName.asString())) + genParameters()
 
     private fun argumentSignature() = "(\n${
         genOutsideParameters().joinToString(",\n") {
@@ -223,14 +223,14 @@ This would result in double generation of the constructor, which cannot compile.
     fun toClosedStateFunction(): String {
         val signature =
             "fun ${genGenericParameters()} " +
-                "StateMachineBuilder<${this.nameType}>.add${this.name}${argumentSignature()}"
+                "StateMachineBuilder<${this.nameType.declaration.simpleName.asString()}>.add${this.name}${argumentSignature()}"
         return "$signature${genExprClosed()}"
     }
 
     fun toOpenStateFunction(): String {
         val signature =
             "fun ${genGenericParameters()} " +
-                "StateSequenceBuilder<${this.nameType}>.add${this.name}${argumentSignature()}"
+                "StateSequenceBuilder<${this.nameType.declaration.simpleName.asString()}>.add${this.name}${argumentSignature()}"
         return "$signature${genExprOpen()}"
     }
 }

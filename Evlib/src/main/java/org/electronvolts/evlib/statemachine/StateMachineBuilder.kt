@@ -1,13 +1,16 @@
 package org.electronvolts.evlib.statemachine
 
 import org.electronvolts.StateFunction
+import org.electronvolts.evlib.statemachine.internal.OpenState
 import org.electronvolts.evlib.statemachine.internal.State
 import org.electronvolts.evlib.statemachine.internal.StateMachine
 import org.electronvolts.evlib.statemachine.internal.StateName
 
 @StateFunction
-fun <T : StateName> blankState(next: T?) = object : State<T> {
-    override fun act() = next
+fun <Sugma : StateName> blankState(next: Sugma?): OpenState<Sugma> = { name ->
+    object : State<Sugma> {
+        override fun act() = name
+    }
 }
 
 @StateFunction
