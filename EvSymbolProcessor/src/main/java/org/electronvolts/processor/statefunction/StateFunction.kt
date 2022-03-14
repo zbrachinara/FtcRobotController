@@ -179,11 +179,11 @@ This would result in double generation of the constructor, which cannot compile.
         }
     }.toCollection(mutableListOf())
 
-    private fun genOutsideParameters() =
-        listOf(Pair("thisState", this.nameType.declaration.simpleName.asString())) + genParameters()
+    private fun genOutsideParameters(addl: List<Pair<String, String>>) =
+        addl + genParameters()
 
-    private fun argumentSignature() = "(\n${
-        genOutsideParameters().joinToString(",\n") {
+    private fun argumentSignature(addl: List<Pair<String, String>>) = "(\n${
+        genOutsideParameters(addl).joinToString(",\n") {
             "    ${it.first}: ${it.second}"
         }
     }\n)"
@@ -207,7 +207,7 @@ This would result in double generation of the constructor, which cannot compile.
         |    thisState,
         |    $location${genGenericArguments()}(
         |        ${genParameters().joinToString(",\n") { "${it.first} = ${it.first}" }}
-        |    )
+        |    )(nextState)
         |)
         """.trimMargin()
 
@@ -221,16 +221,21 @@ This would result in double generation of the constructor, which cannot compile.
         """.trimMargin()
 
     fun toClosedStateFunction(): String {
+        val nameTypeStr = this.nameType.declaration.simpleName.asString()
         val signature =
             "fun ${genGenericParameters()} " +
-                "StateMachineBuilder<${this.nameType.declaration.simpleName.asString()}>.add${this.name}${argumentSignature()}"
+                "StateMachineBuilder<${this.nameType.declaration.simpleName.asString()}>.add${this.name}" +
+                argumentSignature(listOf(Pair("thisState", nameTypeStr),
+                    Pair("nextState", nameTypeStr)))
         return "$signature${genExprClosed()}"
     }
 
     fun toOpenStateFunction(): String {
+        val nameTypeStr = this.nameType.declaration.simpleName.asString()
         val signature =
             "fun ${genGenericParameters()} " +
-                "StateSequenceBuilder<${this.nameType.declaration.simpleName.asString()}>.add${this.name}${argumentSignature()}"
+                "StateSequenceBuilder<${this.nameType.declaration.simpleName.asString()}>.add${this.name}" +
+                argumentSignature(listOf(Pair("thisState", nameTypeStr)))
         return "$signature${genExprOpen()}"
     }
 }
