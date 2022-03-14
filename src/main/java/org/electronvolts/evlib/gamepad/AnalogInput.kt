@@ -9,6 +9,10 @@ class AnalogInput(
     private val extractor: () -> Double,
     private val inputScaler: EvFunction,
 ) : () -> Double {
+    companion object {
+        fun blank() = AnalogInput({ 0.0 }, { 0.0 })
+    }
+
     var rawValue = 0.0
         private set
     var value = 0.0
