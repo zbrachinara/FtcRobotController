@@ -7,14 +7,14 @@ import org.electronvolts.evlib.statemachine.internal.StateMachine
 import org.electronvolts.evlib.statemachine.internal.StateName
 
 @StateFunction
-fun <Sugma : StateName> blankState(next: Sugma?): OpenState<Sugma> = { name ->
+fun <Sugma : StateName> blankState(): OpenState<Sugma> = { name ->
     object : State<Sugma> {
         override fun act() = name
     }
 }
 
 @StateFunction
-fun <T : StateName> endState() = blankState<T>(null)
+fun <T : StateName> endState() = blankState<T>()
 
 class StateMachineBuilder<T : StateName>(
     private val first: T,
