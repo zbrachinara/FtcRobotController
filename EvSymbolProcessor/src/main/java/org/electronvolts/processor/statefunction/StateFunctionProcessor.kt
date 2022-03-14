@@ -35,45 +35,27 @@ class StateFunctionProcessor(
 
     override fun finish() {
         //TODO: Support multiple file sets in order to process multiple projects
-        val closedStateFile = generator.createNewFile(
+        val stateFile = generator.createNewFile(
             dependencies = Dependencies.ALL_FILES,
             packageName = containingPackage,
-            fileName = "ClosedStates"
+            fileName = "StateFunctions"
         )
-        closedStateFile += """
+        stateFile += """
             package $containingPackage
-            
-            import org.electronvolts.evlib.statemachine.internal.StateName
-            import org.electronvolts.evlib.statemachine.StateMachineBuilder
-            
-            
-        """.trimIndent()
-
-        definitions.forEach {
-            closedStateFile += "${it.toClosedStateFunction()}\n\n"
-        }
-
-        closedStateFile.close()
-
-        val openStateFile = generator.createNewFile(
-            dependencies = Dependencies.ALL_FILES,
-            packageName = containingPackage,
-            fileName = "OpenStates"
-        )
-        openStateFile += """
-            package $containingPackage 
             
             import org.electronvolts.evlib.statemachine.internal.asOpenState
             import org.electronvolts.evlib.statemachine.internal.StateName
+            import org.electronvolts.evlib.statemachine.StateMachineBuilder
             import org.electronvolts.evlib.statemachine.StateSequenceBuilder
             
             
         """.trimIndent()
 
         definitions.forEach {
-            openStateFile += "${it.toOpenStateFunction()}\n\n"
+            stateFile += "${it.toClosedStateFunction()}\n\n"
+            stateFile += "${it.toOpenStateFunction()}\n\n"
         }
 
-        openStateFile.close()
+        stateFile.close()
     }
 }
