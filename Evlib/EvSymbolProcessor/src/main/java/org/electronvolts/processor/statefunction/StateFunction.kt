@@ -4,7 +4,7 @@ import com.google.devtools.ksp.*
 import com.google.devtools.ksp.symbol.*
 import org.electronvolts.processor.reconstructTypeParameters
 
-const val kclassPath_State = "org.electronvolts.evlib.statemachine.internal.State"
+const val kclassPath_State = "org.electronvolts.evlib.statemachine.internal.OpenState"
 const val kclassPath_StateFunction = "org.electronvolts.StateFunction"
 
 private fun stateTypeFromType(type: KSType): KSType? {
@@ -179,11 +179,11 @@ This would result in double generation of the constructor, which cannot compile.
         }
     }.toCollection(mutableListOf())
 
-    private fun genOutsideParameters() =
-        listOf(Pair("thisState", this.nameType.toString())) + genParameters()
+    private fun genOutsideParameters(addl: List<Pair<String, String>>) =
+        addl + genParameters()
 
-    private fun argumentSignature() = "(\n${
-        genOutsideParameters().joinToString(",\n") {
+    private fun argumentSignature(addl: List<Pair<String, String>>) = "(\n${
+        genOutsideParameters(addl).joinToString(",\n") {
             "    ${it.first}: ${it.second}"
         }
     }\n)"
@@ -207,30 +207,35 @@ This would result in double generation of the constructor, which cannot compile.
         |    thisState,
         |    $location${genGenericArguments()}(
         |        ${genParameters().joinToString(",\n") { "${it.first} = ${it.first}" }}
-        |    )
+        |    )(nextState)
         |)
         """.trimMargin()
 
     private fun genExprOpen() =
         """ = this.add(
         |    thisState,
-        |    asOpenState($location${genGenericArguments()}(
+        |    $location${genGenericArguments()}(
         |        ${genParameters().joinToString(",\n") { "${it.first} = ${it.first}" }}
-        |    ))
+        |    )
         |)
         """.trimMargin()
 
     fun toClosedStateFunction(): String {
+        val nameTypeStr = this.nameType.declaration.simpleName.asString()
         val signature =
             "fun ${genGenericParameters()} " +
-                "StateMachineBuilder<${this.nameType}>.add${this.name}${argumentSignature()}"
+                "StateMachineBuilder<${this.nameType.declaration.simpleName.asString()}>.add${this.name}" +
+                argumentSignature(listOf(Pair("thisState", nameTypeStr),
+                    Pair("nextState", nameTypeStr)))
         return "$signature${genExprClosed()}"
     }
 
     fun toOpenStateFunction(): String {
+        val nameTypeStr = this.nameType.declaration.simpleName.asString()
         val signature =
             "fun ${genGenericParameters()} " +
-                "StateSequenceBuilder<${this.nameType}>.add${this.name}${argumentSignature()}"
+                "StateSequenceBuilder<${this.nameType.declaration.simpleName.asString()}>.add${this.name}" +
+                argumentSignature(listOf(Pair("thisState", nameTypeStr)))
         return "$signature${genExprOpen()}"
     }
 }
