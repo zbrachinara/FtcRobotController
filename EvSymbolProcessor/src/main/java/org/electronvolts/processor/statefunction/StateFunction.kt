@@ -214,9 +214,9 @@ This would result in double generation of the constructor, which cannot compile.
     private fun genExprOpen() =
         """ = this.add(
         |    thisState,
-        |    asOpenState($location${genGenericArguments()}(
+        |    $location${genGenericArguments()}(
         |        ${genParameters().joinToString(",\n") { "${it.first} = ${it.first}" }}
-        |    ))
+        |    )
         |)
         """.trimMargin()
 
