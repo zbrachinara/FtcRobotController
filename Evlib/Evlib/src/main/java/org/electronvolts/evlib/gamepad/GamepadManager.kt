@@ -28,7 +28,7 @@ private typealias Analog = GamepadAnalog
  *
  * Specify nothing for scalingFunction to opt out of joystick scaling
  */
-data class GamepadManager(
+class GamepadManager(
     //this stores all the wrapped analog inputs
     private val detectors: MutableList<DigitalInput>,
 
@@ -137,4 +137,19 @@ data class GamepadManager(
         digital.values.forEach { btn -> btn.update() }
         analog.values.forEach { input -> input.update() }
     }
+
+    fun mask(
+        mask_digital: List<Digital> = listOf(),
+        mask_analog: List<Analog> = listOf(),
+    ): GamepadManager {
+//        this.digital.
+        return GamepadManager(
+            digital = this.digital
+                .mapValues { (k, v) -> if (k in mask_digital) DigitalInput.blank() else v },
+            analog = this.analog
+                .mapValues { (k, v) -> if (k in mask_analog) AnalogInput.blank() else v },
+            detectors = this.detectors
+        )
+    }
+
 }
