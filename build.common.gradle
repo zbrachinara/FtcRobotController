@@ -118,6 +118,7 @@ android {
     sourceSets.main {
         jni.srcDirs = []
         jniLibs.srcDir rootProject.file('libs')
+        java.srcDirs += 'build/generated/ksp/debug/kotlin'
     }
     ndkVersion '21.3.6528147'
 }

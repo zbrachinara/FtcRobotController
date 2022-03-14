@@ -8,6 +8,9 @@
 // please think carefully as to whether such customizations are really necessary
 // before doing so.
 
+plugins {
+    id 'com.google.devtools.ksp' version '1.6.10-1.0.4'
+}
 
 // Custom definitions may go here
 
@@ -21,4 +24,6 @@ dependencies {
     implementation project(':Evlib:Evlib')
     implementation 'junit:junit:4.12'
     annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
+    implementation project(':Evlib:EvAnnotations')
+    ksp project(':Evlib:EvSymbolProcessor')
 }

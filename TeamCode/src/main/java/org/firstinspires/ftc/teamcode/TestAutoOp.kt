@@ -1,13 +1,23 @@
 package org.firstinspires.ftc.teamcode
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
+import org.electronvolts.StateFunction
 import org.electronvolts.evlib.opmode.AbstractAutoOp
 import org.electronvolts.evlib.statemachine.StateMachineBuilder
 import org.electronvolts.evlib.statemachine.internal.OpenState
 import org.electronvolts.evlib.statemachine.internal.State
 import org.electronvolts.evlib.statemachine.internal.StateMachine
 import org.electronvolts.evlib.statemachine.internal.StateName
+import org.electronvolts.evlib.statemachine.statefunction.addBlankState2
 import org.electronvolts.evlib.statemachine.statefunction.addEndState
+
+@StateFunction
+fun <T : StateName> blankState2() = object : State<T> {
+    override fun act(): T? {
+        return null
+    }
+
+}
 
 enum class TestStates : StateName {
     START,
@@ -32,7 +42,7 @@ class TestAutoOp : AbstractAutoOp<BlankConfig, TestStates>() {
                 it.add(TestStates.START, dummy)
                     .add(TestStates.A, dummy)
                     .add(TestStates.B, dummy)
-                    .add(TestStates.C, dummy)
+                    .addBlankState2(TestStates.C)
                     .finish(TestStates.END)
             }
             .addEndState(TestStates.END)
