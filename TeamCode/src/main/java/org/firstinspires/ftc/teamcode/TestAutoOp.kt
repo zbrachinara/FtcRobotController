@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
+import org.electronvolts.evlib.RobotCfg
+import org.electronvolts.evlib.blankCfg
 import org.electronvolts.evlib.opmode.AbstractAutoOp
 import org.electronvolts.evlib.statemachine.StateMachineBuilder
 import org.electronvolts.evlib.statemachine.internal.StateMachine
@@ -18,7 +20,7 @@ enum class TestStates : StateName {
 
 @Autonomous(name = "Test Auto Kotlin")
 @Suppress("UNUSED")
-class TestAutoOp : AbstractAutoOp<BlankConfig, TestStates>() {
+class TestAutoOp : AbstractAutoOp<RobotCfg, TestStates>() {
     override fun buildStates(): StateMachine<TestStates> =
         StateMachineBuilder(TestStates.START, TestStates.values())
             .addSequence {
@@ -31,7 +33,7 @@ class TestAutoOp : AbstractAutoOp<BlankConfig, TestStates>() {
             .addEndState(TestStates.END, TestStates.END)
             .build()
 
-    override fun createRobotCfg(): BlankConfig = BlankConfig(hardwareMap)
+    override fun createRobotCfg() = blankCfg(hardwareMap)
 
     override fun setup() = Unit
 
