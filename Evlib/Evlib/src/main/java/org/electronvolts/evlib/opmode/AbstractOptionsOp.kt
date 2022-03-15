@@ -43,28 +43,40 @@ abstract class AbstractOptionsOp : AbstractTeleOp<RobotCfg>() {
     final override fun createRobotCfg() = blankCfg(hardwareMap)
     final override fun act() {
 
-        var doDisplay = true
-
         // fulfill requests to store/load file
-        if (driver1.back.justPressed()) {
-            file.forget()
-        } else if (driver1.start.justPressed()) {
-            file.sync()
+        val fileLoaded = when {
+            driver1.back.justPressed() -> {
+                file.forget()
+                true
+            }
+            driver1.start.justPressed() -> {
+                file.sync()
+                true
+            }
+            else -> {
+                false
+            }
         }
 
         // fulfill requests to choose options
-        else if (driver1.dpad_up.justPressed()) {
-            index = (index + 1).clamp(0, options.size - 1)
-        } else if (driver1.dpad_down.justPressed()) {
-            index = (index - 1).clamp(0, options.size - 1)
+        val selectModified = when {
+            driver1.dpad_up.justPressed() -> {
+                index = (index + 1).clamp(0, options.size - 1)
+                true
+            }
+            driver1.dpad_down.justPressed() -> {
+                index = (index - 1).clamp(0, options.size - 1)
+                true
+            }
+            else -> {
+                false
+            }
         }
 
         // value mutation code
-        else if (!requestMutate()) {
-            doDisplay = false
-        }
+        val mutated = requestMutate()
 
-        if (doDisplay) {
+        if (!(fileLoaded || selectModified || mutated)) {
             display()
         }
 
