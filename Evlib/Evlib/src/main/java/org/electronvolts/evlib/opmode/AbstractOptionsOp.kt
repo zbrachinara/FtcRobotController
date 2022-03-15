@@ -11,6 +11,8 @@ import org.electronvolts.evlib.util.clamp
 abstract class AbstractOptionsOp : AbstractTeleOp<RobotCfg>() {
     protected abstract val options: List<OptionClass<Any>>
     protected abstract val filePath: Path
+
+    @Suppress("LeakingThis") // `filePath` is required to be implemented by inheritor
     private val file = OptionFile(filePath)
 
     private var index = 0
