@@ -11,13 +11,12 @@ import org.electronvolts.evlib.util.clamp
 abstract class AbstractOptionsOp : AbstractTeleOp<RobotCfg>() {
     protected abstract val options: List<OptionClass<Any>>
     abstract fun filePath(): Path
-
     private val file by lazy { OptionFile(filePath()) }
 
     private var index = 0
 
     private fun display() {
-        // TODO: Complete function
+        TODO("Not yet implemented")
     }
 
     private fun requestMutate(): Boolean {
