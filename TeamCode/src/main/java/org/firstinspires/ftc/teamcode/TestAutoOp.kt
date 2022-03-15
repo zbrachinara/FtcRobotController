@@ -1,23 +1,12 @@
 package org.firstinspires.ftc.teamcode
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
-import org.electronvolts.StateFunction
 import org.electronvolts.evlib.opmode.AbstractAutoOp
 import org.electronvolts.evlib.statemachine.StateMachineBuilder
-import org.electronvolts.evlib.statemachine.internal.OpenState
-import org.electronvolts.evlib.statemachine.internal.State
 import org.electronvolts.evlib.statemachine.internal.StateMachine
 import org.electronvolts.evlib.statemachine.internal.StateName
-import org.electronvolts.evlib.statemachine.statefunction.addBlankState2
+import org.electronvolts.evlib.statemachine.statefunction.addBlankState
 import org.electronvolts.evlib.statemachine.statefunction.addEndState
-
-@StateFunction
-fun <T : StateName> blankState2() = object : State<T> {
-    override fun act(): T? {
-        return null
-    }
-
-}
 
 enum class TestStates : StateName {
     START,
@@ -27,25 +16,19 @@ enum class TestStates : StateName {
     END,
 }
 
-val dummy: OpenState<TestStates> = { name ->
-    object : State<TestStates> {
-        override fun act() = name
-    }
-}
-
 @Autonomous(name = "Test Auto Kotlin")
 @Suppress("UNUSED")
 class TestAutoOp : AbstractAutoOp<BlankConfig, TestStates>() {
     override fun buildStates(): StateMachine<TestStates> =
         StateMachineBuilder(TestStates.START, TestStates.values())
             .addSequence {
-                it.add(TestStates.START, dummy)
-                    .add(TestStates.A, dummy)
-                    .add(TestStates.B, dummy)
-                    .addBlankState2(TestStates.C)
+                it.addBlankState(TestStates.START)
+                    .addBlankState(TestStates.A)
+                    .addBlankState(TestStates.B)
+                    .addBlankState(TestStates.C)
                     .finish(TestStates.END)
             }
-            .addEndState(TestStates.END)
+            .addEndState(TestStates.END, TestStates.END)
             .build()
 
     override fun createRobotCfg(): BlankConfig = BlankConfig(hardwareMap)
