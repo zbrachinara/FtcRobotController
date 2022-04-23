@@ -19,7 +19,9 @@ abstract class AbstractOpMode<Config : RobotCfg> : OpMode() {
     protected abstract fun end()
 
     protected abstract val matchTime: Duration
-    val timer = MatchTimer(matchTime)
+    val timer: MatchTimer by lazy {
+        MatchTimer(matchTime)
+    }
 
     protected lateinit var robotConfig: RobotCfg
 
