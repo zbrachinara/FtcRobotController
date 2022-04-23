@@ -10,6 +10,7 @@
 
 plugins {
     id 'com.google.devtools.ksp' version '1.6.10-1.0.4'
+    id 'idea'
 }
 
 // Custom definitions may go here
@@ -18,6 +19,12 @@ plugins {
 apply from: '../build.common.gradle'
 apply from: '../build.dependencies.gradle'
 apply plugin: 'kotlin-android'
+
+idea {
+    module {
+        sourceDirs = sourceDirs + file('build/generated/ksp/debug/kotlin')
+    }
+}
 
 dependencies {
     implementation project(':FtcRobotController')
