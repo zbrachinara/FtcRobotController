@@ -12,27 +12,27 @@ class StateSequenceBuilder<T : StateName> internal constructor() {
     // must be queued. The state is completed when we get the name of the next state, when `add`
     // is called a second time. A diagram:
     //
-    // First call to `add`:
+    // After calling `add(Name_1, State_1)`:
     //
     //   ┌──────────┐
-    //   │  Name 1  │
+    //   │  Name_1  │
     //   ├──────────┤
-    //   │ State  1 ┼──────────> Unknown
+    //   │ State_1  ┼──────────> Unknown
     //   └──────────┘
     //
-    // Second call to `add`:
+    // After calling `add(Name_2, State_2):
     //
     //   ┌──────────┐           ┌──────────┐
-    //   │  Name 1  │     ┌─────┼> Name 2  │
+    //   │  Name_1  │     ┌─────┼> Name_2  │
     //   ├──────────┤     │     ├──────────┤
-    //   │ State  1 ┼─────┘     │ State  2 ┼──────────> Unknown
+    //   │ State_1  ┼─────┘     │ State_2  ┼──────────> Unknown
     //   └──────────┘           └──────────┘
     //
-    // As you can see, in the first call to `add` state 1 begins as an open state -- it has to,
-    // because we don't know which state comes next. But in the second call to `add`, we do.
-    // Making this work requires remembering what the previous call to `add` was, which is
-    // exactly what `queued` does. Once the second call to `add` finishes, we move it out of
-    // queued, and move the new, incomplete state, in.
+    // In the first call to `add` state 1 begins as an open state -- it has to, because we don't
+    // know which state comes next. But in the second call to `add`, we do. Making this work
+    // requires remembering what the previous call to `add` was, which is exactly what `queued`
+    // does. Once the second call to `add` finishes, we move it out of queued, and move the new,
+    // incomplete state, in.
     private var queued: Pair<T, OpenState<T>>? = null
 
     fun add(name: T, state: OpenState<T>): StateSequenceBuilder<T> {
