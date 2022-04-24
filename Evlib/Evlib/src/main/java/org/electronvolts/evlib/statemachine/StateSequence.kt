@@ -33,21 +33,23 @@ class StateSequenceBuilder<T : StateName> internal constructor() {
     // Making this work requires remembering what the previous call to `add` was, which is
     // exactly what `queued` does. Once the second call to `add` finishes, we move it out of
     // queued, and move the new, incomplete state, in.
-    private lateinit var queued: Pair<T, OpenState<T>>
+    private var queued: Pair<T, OpenState<T>>? = null
 
     fun add(name: T, state: OpenState<T>): StateSequenceBuilder<T> {
+        val queued = this.queued
         // completing the previous state, if it exists
-        if (this::queued.isInitialized) {
+        if (queued != null) {
             val (prevName, openState) = queued
             val completeState = openState(name)
             sequence[prevName] = completeState
         }
-        queued = Pair(name, state)
+        this.queued = Pair(name, state)
         return this
     }
 
     fun finish(name: T): StateSequence<T> {
-        return if (this::queued.isInitialized) {
+        val queued = this.queued
+        return if (queued != null) {
             val (prevName, openState) = queued
             val completeState = openState(name)
             sequence[prevName] = completeState
