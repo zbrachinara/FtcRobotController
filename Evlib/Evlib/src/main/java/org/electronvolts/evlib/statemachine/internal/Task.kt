@@ -8,13 +8,13 @@ interface Task<T : StateName> {
 
 internal typealias TaskList<T> = List<Task<T>>
 
-internal fun <T : StateName> TaskList<T>.initTasks() {
+internal inline fun <T : StateName, reified Tsk : Task<T>> List<Tsk>.init() {
     this.forEach {
         it.init()
     }
 }
 
-internal fun <T : StateName> TaskList<T>.finishedTask(): Task<T>? {
+internal inline fun <T : StateName, reified Tsk : Task<T>> List<Tsk>.finished(): Task<T>? {
     return this.find {
         it.isDone()
     }

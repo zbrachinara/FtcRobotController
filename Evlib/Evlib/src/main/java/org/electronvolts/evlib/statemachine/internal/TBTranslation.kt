@@ -15,17 +15,17 @@ fun <T : StateName> taskBehavior(descriptor: TaskBehavior<T>): State<T> {
         var init = false
         override fun act(): T? {
             if (!init) {
-                tasks.initTasks()
-                behaviors.initBehaviors()
+                tasks.init()
+                behaviors.init()
                 init = true
             }
-            return when (val finished = tasks.finishedTask()) {
+            return when (val finished = tasks.finished()) {
                 null -> {
-                    behaviors.actBehaviors()
+                    behaviors.act()
                     null
                 }
                 else -> {
-                    behaviors.dropBehaviors()
+                    behaviors.drop()
                     finished.next()
                 }
             }
@@ -61,17 +61,17 @@ fun <T : StateName> openTaskBehavior(descriptor: OpenTaskBehavior<T>): OpenState
             var init = false
             override fun act(): T? {
                 if (!init) {
-                    tasks.initOpenTask()
-                    behaviors.initBehaviors()
+                    tasks.init()
+                    behaviors.init()
                     init = true
                 }
-                return when (tasks.finishedOpenTask()) {
+                return when (tasks.finished()) {
                     null -> {
-                        behaviors.actBehaviors()
+                        behaviors.act()
                         null
                     }
                     else -> {
-                        behaviors.dropBehaviors()
+                        behaviors.drop()
                         it
                     }
                 }

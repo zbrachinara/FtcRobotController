@@ -15,13 +15,13 @@ data class OpenTask<T : StateName>(
 
 typealias OpenTaskList<T> = List<OpenTask<T>>
 
-internal fun <T : StateName> OpenTaskList<T>.initOpenTask() {
+internal inline fun <T : StateName, reified OTsk : OpenTask<T>> List<OTsk>.init() {
     this.forEach {
         it.init()
     }
 }
 
-internal fun <T : StateName> OpenTaskList<T>.finishedOpenTask(): OpenTask<T>? {
+internal inline fun <T : StateName, reified OTsk : OpenTask<T>> List<OTsk>.finished(): OpenTask<T>? {
     return this.find {
         it.isDone()
     }

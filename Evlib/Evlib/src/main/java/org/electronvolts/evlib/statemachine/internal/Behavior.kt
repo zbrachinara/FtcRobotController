@@ -10,19 +10,19 @@ interface Behavior {
 
 internal typealias BehaviorList = List<Behavior>
 
-internal fun BehaviorList.initBehaviors() {
+internal inline fun <reified Bhvr : Behavior> List<Bhvr>.init() {
     this.forEach {
         it.init()
     }
 }
 
-internal fun BehaviorList.actBehaviors() {
+internal inline fun <reified Bhvr : Behavior> List<Bhvr>.act() {
     this.forEach {
         it.act()
     }
 }
 
-internal fun BehaviorList.dropBehaviors() {
+internal inline fun <reified Bhvr : Behavior> List<Bhvr>.drop() {
     this.forEach {
         it.drop()
     }
