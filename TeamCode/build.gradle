@@ -31,6 +31,5 @@ dependencies {
     implementation project(':Evlib:Evlib')
     implementation 'junit:junit:4.12'
     annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
-    implementation project(':Evlib:EvAnnotations')
     ksp project(':Evlib:EvSymbolProcessor')
 }

@@ -42,7 +42,7 @@ idea {
 apply from: '../build.dependencies.gradle'
 
 dependencies {
-    implementation project(':Evlib:EvAnnotations')
+    api project(':Evlib:EvAnnotations')
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2"
     ksp project(':Evlib:EvSymbolProcessor')
 }
