@@ -56,7 +56,7 @@ data class OpenTaskBehavior<T : StateName>(
 fun <T : StateName> openTaskBehavior(descriptor: OpenTaskBehavior<T>): OpenState<T> {
     val (tasks, behaviors) = descriptor
 
-    return {
+    return { nextState ->
         object : State<T> {
             var init = false
             override fun act(): T? {
@@ -72,7 +72,7 @@ fun <T : StateName> openTaskBehavior(descriptor: OpenTaskBehavior<T>): OpenState
                     }
                     else -> {
                         behaviors.drop()
-                        it
+                        nextState
                     }
                 }
             }
