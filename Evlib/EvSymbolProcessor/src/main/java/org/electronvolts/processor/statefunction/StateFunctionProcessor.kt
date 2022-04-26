@@ -43,7 +43,6 @@ class StateFunctionProcessor(
         stateFile += """
             package $containingPackage
             
-            import org.electronvolts.evlib.statemachine.internal.asOpenState
             import org.electronvolts.evlib.statemachine.internal.StateName
             import org.electronvolts.evlib.statemachine.StateMachineBuilder
             import org.electronvolts.evlib.statemachine.StateSequenceBuilder
