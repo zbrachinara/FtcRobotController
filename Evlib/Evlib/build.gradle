@@ -39,10 +39,6 @@ idea {
     }
 }
 
-ksp {
-    arg('name', '')
-}
-
 apply from: '../build.dependencies.gradle'
 
 dependencies {
