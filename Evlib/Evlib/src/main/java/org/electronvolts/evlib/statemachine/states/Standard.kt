@@ -14,3 +14,6 @@ fun <T : StateName> blankState(): OpenState<T> = { name ->
 
 @StateFunction
 fun <T : StateName> endState() = blankState<T>()
+
+@StateFunction
+fun <T : StateName, U, V : List<U>> genericState(l: V) = blankState<T>()

@@ -2,7 +2,9 @@ package org.electronvolts.processor.statefunction
 
 import com.google.devtools.ksp.processing.*
 import com.google.devtools.ksp.symbol.KSAnnotated
-import org.electronvolts.processor.plusAssign
+import com.squareup.kotlinpoet.FileSpec
+import com.squareup.kotlinpoet.ksp.KotlinPoetKspPreview
+import com.squareup.kotlinpoet.ksp.writeTo
 
 const val containingPackage = "org.electronvolts.evlib.statemachine.statefunction"
 
@@ -33,28 +35,27 @@ class StateFunctionProcessor(
         return emptyList()
     }
 
+    @OptIn(KotlinPoetKspPreview::class)
     override fun finish() {
         //TODO: Support multiple file sets in order to process multiple projects
-        val stateFile = generator.createNewFile(
-            dependencies = Dependencies.ALL_FILES,
-            packageName = containingPackage,
-            fileName = "StateFunctions"
-        )
-        stateFile += """
-            package $containingPackage
-            
-            import org.electronvolts.evlib.statemachine.internal.StateName
-            import org.electronvolts.evlib.statemachine.StateMachineBuilder
-            import org.electronvolts.evlib.statemachine.StateSequenceBuilder
-            
-            
-        """.trimIndent()
+//        val codeFile = generator.createNewFile(
+//            dependencies = Dependencies.ALL_FILES,
+//            packageName = containingPackage,
+//            fileName = "StateFunctions"
+//        )
+
+        val builder = FileSpec.builder(containingPackage, "StateFunctions")
+            .addImport("org.electronvolts.evlib.statemachine.internal", "StateName")
+            .addImport("org.electronvolts.evlib.statemachine", "StateMachineBuilder")
+            .addImport("org.electronvolts.evlib.statemachine", "StateSequenceBuilder")
 
         definitions.forEach {
-            stateFile += "${it.toClosedStateFunction()}\n\n"
-            stateFile += "${it.toOpenStateFunction()}\n\n"
+            builder.addFunction(it.toClosedStateFunction())
+//            builder.addCode(it.toOpenStateFunction())
         }
 
-        stateFile.close()
+        builder.build().writeTo(generator, Dependencies.ALL_FILES)
+
+//        codeFile.close()
     }
 }

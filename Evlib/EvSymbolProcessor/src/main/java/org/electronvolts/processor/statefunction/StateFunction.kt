@@ -2,7 +2,14 @@ package org.electronvolts.processor.statefunction
 
 import com.google.devtools.ksp.*
 import com.google.devtools.ksp.symbol.*
-import org.electronvolts.processor.reconstructTypeParameters
+import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.FunSpec
+import com.squareup.kotlinpoet.ParameterSpec
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
+import com.squareup.kotlinpoet.TypeVariableName
+import com.squareup.kotlinpoet.ksp.KotlinPoetKspPreview
+import com.squareup.kotlinpoet.ksp.toTypeName
+import com.squareup.kotlinpoet.ksp.toTypeParameterResolver
 
 const val stateClass = "org.electronvolts.evlib.statemachine.internal.OpenState"
 const val stateFunctionClass = "org.electronvolts.StateFunction"
@@ -72,6 +79,7 @@ private fun getStateNameType(decl: KSDeclaration): KSTypeArgument {
  * @param typeParams The type parameters which the function or class is generic over
  * @param params The parameters which the constructor or function takes
  */
+@OptIn(KotlinPoetKspPreview::class)
 class StateFunction private constructor(
     private val name: String,
     private val location: String,
@@ -79,6 +87,11 @@ class StateFunction private constructor(
     private val typeParams: List<KSTypeParameter>,
     private val params: List<KSValueParameter>,
 ) {
+
+    private val paramResolver = typeParams.toTypeParameterResolver()
+    private val parameterizedStateMachine = ClassName("org.electronvolts.evlib.statemachine",
+        "StateMachineBuilder").parameterizedBy(this.nameType.toTypeName(this.paramResolver))
+
     companion object {
         fun fromClassDeclaration(
             klass: KSClassDeclaration,
@@ -167,77 +180,89 @@ This would result in double generation of the constructor, which cannot compile.
     }
 
     private fun genParameters() = this.params.map { param ->
-        val simpleTypeName = param.type.resolve().declaration.simpleName
-        val qualifiedTypeName = param.type.resolve().declaration.qualifiedName!!
 
-        if (this.typeParams.any {
-                it.name.asString() == simpleTypeName.asString() // TODO: Hacky, don't do it
-            }) {
-            Pair(param.name!!.asString(), simpleTypeName.asString())
-        } else {
-            Pair(param.name!!.asString(), qualifiedTypeName.asString())
-        }
-    }.toCollection(mutableListOf())
+        ParameterSpec.builder(
+            param.name!!.asString(),
+            param.type.toTypeName(this.paramResolver)
+        ).build()
 
-    private fun genOutsideParameters(addl: List<Pair<String, String>>) =
-        addl + genParameters()
+//        val simpleTypeName = param.type.resolve().declaration.simpleName
+//        val qualifiedTypeName = param.type.resolve().declaration.qualifiedName!!
+//
+//        // checking if the type of the parameter is a type parameter (not a known class/interface)
+//        if (this.typeParams.any {
+//                it.name.asString() == simpleTypeName.asString() // TODO: Hacky, don't do it
+//            }) {
+//            Pair(param.name!!.asString(), simpleTypeName.asString())
+//        } else {
+//            Pair(param.name!!.asString(), qualifiedTypeName.asString())
+//        }
+    }
 
-    private fun argumentSignature(addl: List<Pair<String, String>>) = "(\n${
-        genOutsideParameters(addl).joinToString(",\n") {
-            "    ${it.first}: ${it.second}"
-        }
-    }\n)"
+    private fun argumentSignature(vararg addl: ParameterSpec) =
+        addl.asList() + genParameters().toList()
 
-    private fun genGenericParameters(): String {
+    private fun genGenericParameters(): List<TypeVariableName> {
         return if (this.typeParams.isEmpty()) {
-            "<$nameType: org.electronvolts.evlib.statemachine.internal.StateName>"
+            listOf(TypeVariableName(
+                this.nameType.toString(),
+                ClassName("org.electronvolts.evlib.statemachine.internal", "OpenState")
+            ))
         } else {
-            reconstructTypeParameters(this.typeParams.asSequence())
+            this.typeParams.map { type ->
+                TypeVariableName(
+                    type.name.getShortName(),
+                    type.bounds.map { bound -> bound.toTypeName(this.paramResolver) }
+                        .toList(),
+                    // TODO: Encode variance
+                )
+            }
         }
     }
 
-    private fun genGenericArguments(): String {
-        return this.typeParams.joinToString(", ", "<", ">") { arg ->
-            arg.name.asString()
-        }
-    }
+//    private fun genExprClosed() =
+//        """
+//        |this.add(
+//        |    thisState,
+//        |    $location${genGenericArguments()}(
+//        |        ${genParameters().joinToString(",\n") { "${it.first} = ${it.first}" }}
+//        |    )(nextState)
+//        |)
+//        """.trimMargin()
+//
+//    private fun genExprOpen() =
+//        """ = this.add(
+//        |    thisState,
+//        |    $location${genGenericArguments()}(
+//        |        ${genParameters().joinToString(",\n") { "${it.first} = ${it.first}" }}
+//        |    )
+//        |)
+//        """.trimMargin()
 
-    private fun genExprClosed() =
-        """ = this.add(
-        |    thisState,
-        |    $location${genGenericArguments()}(
-        |        ${genParameters().joinToString(",\n") { "${it.first} = ${it.first}" }}
-        |    )(nextState)
-        |)
-        """.trimMargin()
+    fun toClosedStateFunction(): FunSpec =
+        FunSpec.builder("add${this.name}")
+            .receiver(this.parameterizedStateMachine)
+            .returns(this.parameterizedStateMachine)
+            .addTypeVariables(this.genGenericParameters())
+            .addParameters(argumentSignature(
+                ParameterSpec.builder("thisState", this.nameType.toTypeName(this.paramResolver))
+                    .build(),
+                ParameterSpec.builder("nextState", this.nameType.toTypeName(this.paramResolver))
+                    .build()
+            ))
+            .addCode("""
+                |return this;    
+            """.trimMargin())
+            .build()
 
-    private fun genExprOpen() =
-        """ = this.add(
-        |    thisState,
-        |    $location${genGenericArguments()}(
-        |        ${genParameters().joinToString(",\n") { "${it.first} = ${it.first}" }}
-        |    )
-        |)
-        """.trimMargin()
-
-    fun toClosedStateFunction(): String {
-        val nameTypeStr = this.nameType.declaration.simpleName.asString()
-        val signature =
-            "fun ${genGenericParameters()} " +
-                "StateMachineBuilder<${this.nameType.declaration.simpleName.asString()}>.add${this.name}" +
-                argumentSignature(listOf(Pair("thisState", nameTypeStr),
-                    Pair("nextState", nameTypeStr)))
-        return "$signature${genExprClosed()}"
-    }
-
-    fun toOpenStateFunction(): String {
-        val nameTypeStr = this.nameType.declaration.simpleName.asString()
-        val signature =
-            "fun ${genGenericParameters()} " +
-                "StateSequenceBuilder<${this.nameType.declaration.simpleName.asString()}>.add${this.name}" +
-                argumentSignature(listOf(Pair("thisState", nameTypeStr)))
-        return "$signature${genExprOpen()}"
-    }
+//    fun toOpenStateFunction(): String {
+//        val nameTypeStr = this.nameType.declaration.simpleName.asString()
+//        val signature =
+//            "fun ${genGenericParameters()} " +
+//                "StateSequenceBuilder<${this.nameType.declaration.simpleName.asString()}>.add${this.name}" +
+//                argumentSignature(listOf(Pair("thisState", nameTypeStr)))
+//        return "$signature${genExprOpen()}"
+//    }
 }
 
 class StateFunctionVisitor : KSVisitor<Unit, Sequence<StateFunction>> {
@@ -251,19 +276,19 @@ class StateFunctionVisitor : KSVisitor<Unit, Sequence<StateFunction>> {
 
     override fun visitCallableReference(
         reference: KSCallableReference,
-        data: Unit
+        data: Unit,
     ): Sequence<StateFunction> {
         TODO("Not yet implemented")
     }
 
     override fun visitClassDeclaration(
         classDeclaration: KSClassDeclaration,
-        data: Unit
+        data: Unit,
     ) = StateFunction.fromClassDeclaration(classDeclaration).asSequence()
 
     override fun visitClassifierReference(
         reference: KSClassifierReference,
-        data: Unit
+        data: Unit,
     ): Sequence<StateFunction> {
         TODO("Not yet implemented")
     }
@@ -274,14 +299,14 @@ class StateFunctionVisitor : KSVisitor<Unit, Sequence<StateFunction>> {
 
     override fun visitDeclarationContainer(
         declarationContainer: KSDeclarationContainer,
-        data: Unit
+        data: Unit,
     ): Sequence<StateFunction> {
         TODO("Not yet implemented")
     }
 
     override fun visitDynamicReference(
         reference: KSDynamicReference,
-        data: Unit
+        data: Unit,
     ): Sequence<StateFunction> {
         TODO("Not yet implemented")
     }
@@ -292,12 +317,12 @@ class StateFunctionVisitor : KSVisitor<Unit, Sequence<StateFunction>> {
 
     override fun visitFunctionDeclaration(
         function: KSFunctionDeclaration,
-        data: Unit
+        data: Unit,
     ) = sequenceOf(StateFunction.fromConstructor(function))
 
     override fun visitModifierListOwner(
         modifierListOwner: KSModifierListOwner,
-        data: Unit
+        data: Unit,
     ): Sequence<StateFunction> {
         TODO("Not yet implemented")
     }
@@ -308,42 +333,42 @@ class StateFunctionVisitor : KSVisitor<Unit, Sequence<StateFunction>> {
 
     override fun visitParenthesizedReference(
         reference: KSParenthesizedReference,
-        data: Unit
+        data: Unit,
     ): Sequence<StateFunction> {
         TODO("Not yet implemented")
     }
 
     override fun visitPropertyAccessor(
         accessor: KSPropertyAccessor,
-        data: Unit
+        data: Unit,
     ): Sequence<StateFunction> {
         TODO("Not yet implemented")
     }
 
     override fun visitPropertyDeclaration(
         property: KSPropertyDeclaration,
-        data: Unit
+        data: Unit,
     ): Sequence<StateFunction> {
         TODO("Not yet implemented")
     }
 
     override fun visitPropertyGetter(
         getter: KSPropertyGetter,
-        data: Unit
+        data: Unit,
     ): Sequence<StateFunction> {
         TODO("Not yet implemented")
     }
 
     override fun visitPropertySetter(
         setter: KSPropertySetter,
-        data: Unit
+        data: Unit,
     ): Sequence<StateFunction> {
         TODO("Not yet implemented")
     }
 
     override fun visitReferenceElement(
         element: KSReferenceElement,
-        data: Unit
+        data: Unit,
     ): Sequence<StateFunction> {
         TODO("Not yet implemented")
     }
@@ -354,35 +379,35 @@ class StateFunctionVisitor : KSVisitor<Unit, Sequence<StateFunction>> {
 
     override fun visitTypeArgument(
         typeArgument: KSTypeArgument,
-        data: Unit
+        data: Unit,
     ): Sequence<StateFunction> {
         TODO("Not yet implemented")
     }
 
     override fun visitTypeParameter(
         typeParameter: KSTypeParameter,
-        data: Unit
+        data: Unit,
     ): Sequence<StateFunction> {
         TODO("Not yet implemented")
     }
 
     override fun visitTypeReference(
         typeReference: KSTypeReference,
-        data: Unit
+        data: Unit,
     ): Sequence<StateFunction> {
         TODO("Not yet implemented")
     }
 
     override fun visitValueArgument(
         valueArgument: KSValueArgument,
-        data: Unit
+        data: Unit,
     ): Sequence<StateFunction> {
         TODO("Not yet implemented")
     }
 
     override fun visitValueParameter(
         valueParameter: KSValueParameter,
-        data: Unit
+        data: Unit,
     ): Sequence<StateFunction> {
         TODO("Not yet implemented")
     }
