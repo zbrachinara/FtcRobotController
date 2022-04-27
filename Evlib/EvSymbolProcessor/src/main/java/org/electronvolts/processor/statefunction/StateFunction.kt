@@ -209,6 +209,8 @@ This would result in double generation of the constructor, which cannot compile.
         }
     }
 
+    private fun genGenericArguments() = "<${genGenericParameters().joinToString(", ")}>"
+
 //    private fun genExprClosed() =
 //        """
 //        |this.add(
@@ -244,7 +246,11 @@ This would result in double generation of the constructor, which cannot compile.
                     .build()
             ))
             .addCode(CodeBlock.builder()
-                .addStatement("this.add()")
+                // TODO: Prettify
+                .addStatement("this.add(thisState," +
+                    "${this.emitter.packageName.asString()}.${this.emitter.simpleName.asString()}" +
+                    "${genGenericArguments()}($passthroughParameters)(nextState))"
+                )
                 .addStatement("return this")
                 .build()
             )
