@@ -4,12 +4,12 @@ import com.google.devtools.ksp.*
 import com.google.devtools.ksp.symbol.*
 import org.electronvolts.processor.reconstructTypeParameters
 
-const val kclassPath_State = "org.electronvolts.evlib.statemachine.internal.OpenState"
-const val kclassPath_StateFunction = "org.electronvolts.StateFunction"
+const val stateClass = "org.electronvolts.evlib.statemachine.internal.OpenState"
+const val stateFunctionClass = "org.electronvolts.StateFunction"
 
 private fun stateTypeFromType(type: KSType): KSType? {
     return when (type.declaration.qualifiedName?.asString()) {
-        kclassPath_State -> type
+        stateClass -> type
         else -> stateTypeFromDecl(type.declaration)
     }
 }
@@ -18,7 +18,7 @@ private fun stateTypeFromDecl(decl: KSDeclaration): KSType? {
     return when (decl) {
         is KSClassDeclaration -> {
             decl.getAllSuperTypes().find {
-                it.declaration.qualifiedName!!.asString() == kclassPath_State
+                it.declaration.qualifiedName!!.asString() == stateClass
             }
         }
         is KSTypeParameter -> {
@@ -47,7 +47,7 @@ private fun getStateNameType(decl: KSDeclaration): KSTypeArgument {
     return when (val stateClass = stateTypeFromDecl(decl)) {
         null -> throw RuntimeException(
             "The annotated declaration $simpleName does not yield a " +
-                "`${kclassPath_State}`, which is required for this annotation"
+                "`${org.electronvolts.processor.statefunction.stateClass}`, which is required for this annotation"
         )
         else -> {
             assert(stateClass.innerArguments.size == 1)
@@ -96,7 +96,7 @@ class StateFunction private constructor(
                                     .resolve()
                                     .declaration
                                     .qualifiedName!!
-                                    .asString() == kclassPath_StateFunction
+                                    .asString() == stateFunctionClass
                             ) {
                                 throw RuntimeException(
                                     """The class ${klass.simpleName.asString()} | ${klass.qualifiedName?.asString() ?: ""}, which is annotated with `StateFunction`, contains a constructor that is also annotated with `StateFunction`.
