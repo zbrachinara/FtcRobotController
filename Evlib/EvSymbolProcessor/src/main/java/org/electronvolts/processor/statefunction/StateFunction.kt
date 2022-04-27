@@ -228,8 +228,12 @@ This would result in double generation of the constructor, which cannot compile.
 //        |)
 //        """.trimMargin()
 
-    fun toClosedStateFunction(): FunSpec =
-        FunSpec.builder("add${this.emitter}")
+    fun toClosedStateFunction(): FunSpec {
+
+        val passthroughParameters =
+            this.genParameters().joinToString(",") { param -> "${param.name} = ${param.name}" }
+
+        return FunSpec.builder("add${this.emitter.simpleName.asString()}")
             .receiver(this.parameterizedStateMachine)
             .returns(this.parameterizedStateMachine)
             .addTypeVariables(this.genGenericParameters())
@@ -245,6 +249,7 @@ This would result in double generation of the constructor, which cannot compile.
                 .build()
             )
             .build()
+    }
 
 //    fun toOpenStateFunction(): String {
 //        val nameTypeStr = this.nameType.declaration.simpleName.asString()
