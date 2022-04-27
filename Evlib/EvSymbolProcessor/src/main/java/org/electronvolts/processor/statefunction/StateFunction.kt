@@ -2,11 +2,8 @@ package org.electronvolts.processor.statefunction
 
 import com.google.devtools.ksp.*
 import com.google.devtools.ksp.symbol.*
-import com.squareup.kotlinpoet.ClassName
-import com.squareup.kotlinpoet.FunSpec
-import com.squareup.kotlinpoet.ParameterSpec
+import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
-import com.squareup.kotlinpoet.TypeVariableName
 import com.squareup.kotlinpoet.ksp.KotlinPoetKspPreview
 import com.squareup.kotlinpoet.ksp.toTypeName
 import com.squareup.kotlinpoet.ksp.toTypeParameterResolver
@@ -250,9 +247,11 @@ This would result in double generation of the constructor, which cannot compile.
                 ParameterSpec.builder("nextState", this.nameType.toTypeName(this.paramResolver))
                     .build()
             ))
-            .addCode("""
-                |return this;    
-            """.trimMargin())
+            .addCode(CodeBlock.builder()
+                .addStatement("this.add()")
+                .addStatement("return this")
+                .build()
+            )
             .build()
 
 //    fun toOpenStateFunction(): String {

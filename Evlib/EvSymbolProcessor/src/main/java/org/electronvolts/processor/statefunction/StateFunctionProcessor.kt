@@ -37,13 +37,6 @@ class StateFunctionProcessor(
 
     @OptIn(KotlinPoetKspPreview::class)
     override fun finish() {
-        //TODO: Support multiple file sets in order to process multiple projects
-//        val codeFile = generator.createNewFile(
-//            dependencies = Dependencies.ALL_FILES,
-//            packageName = containingPackage,
-//            fileName = "StateFunctions"
-//        )
-
         val builder = FileSpec.builder(containingPackage, "StateFunctions")
             .addImport("org.electronvolts.evlib.statemachine.internal", "StateName")
             .addImport("org.electronvolts.evlib.statemachine", "StateMachineBuilder")
