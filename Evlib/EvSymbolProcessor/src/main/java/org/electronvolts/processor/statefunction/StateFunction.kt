@@ -32,27 +32,21 @@ private fun stateTypeFromDecl(decl: KSDeclaration): KSType? {
         }
         is KSFunctionDeclaration -> {
             when (val ret = decl.returnType) {
-                null -> throw RuntimeException("Nothing is returned from the given function")
+                null -> throw InvalidStateFunction.NoReturn(decl)
                 else -> stateTypeFromType(ret.resolve())
             }
         }
         else -> {
             throw RuntimeException(
-                "Faulty declaration " +
-                    "${decl.simpleName.asString()} | ${decl.qualifiedName?.asString()} " +
-                    "passed to symbol processor"
+                "Faulty declaration ${displayDecl(decl)} passed to symbol processor"
             )
         }
     }
 }
 
 private fun getStateNameType(decl: KSDeclaration): KSTypeArgument {
-    val simpleName = decl.simpleName.asString()
     return when (val stateClass = stateTypeFromDecl(decl)) {
-        null -> throw RuntimeException(
-            "The annotated declaration $simpleName does not yield a " +
-                "`${org.electronvolts.processor.statefunction.stateClass}`, which is required for this annotation"
-        )
+        null -> throw InvalidStateFunction.NotState(decl)
         else -> {
             assert(stateClass.innerArguments.size == 1)
             stateClass.innerArguments[0]
@@ -60,11 +54,29 @@ private fun getStateNameType(decl: KSDeclaration): KSTypeArgument {
     }
 }
 
+fun displayDecl(decl: KSDeclaration) = (decl.qualifiedName ?: decl.simpleName).asString()
+
 class ConflictingStateFunctions(klass: KSClassDeclaration) : RuntimeException(
-    "The class ${(klass.qualifiedName ?: klass.simpleName).asString()}, which is annotated with " +
-        "`StateFunction`, contains a constructor that is also annotated with `StateFunction`.\n" +
-        "This would result in double generation of the constructor, which cannot compile."
+    "The class ${displayDecl(klass)}, which is annotated with `StateFunction`, contains a " +
+        "constructor that is also annotated with `StateFunction`. This would result in double " +
+        "generation of the constructor, which cannot compile."
 )
+
+sealed class InvalidStateFunction(message: String) : RuntimeException(message) {
+    class Uncallable(fn: KSFunctionDeclaration) : InvalidStateFunction("Cannot call function " +
+        "`${displayDecl(fn)}` since that would require an object reference (this is not yet " +
+        "supported)")
+
+    class NonPublic(fn: KSFunctionDeclaration) : InvalidStateFunction("Cannot call function " +
+        "`${displayDecl(fn)}` as it is not accessible from this call site")
+
+    class NotState(decl: KSDeclaration) : InvalidStateFunction("The type `${displayDecl(decl)} " +
+        "is not a `State` or an `OpenState`, which is required for insertion into the state " +
+        "machine")
+
+    class NoReturn(fn: KSFunctionDeclaration) : InvalidStateFunction("The function " +
+        "`${displayDecl(fn)}` does not return anything")
+}
 
 /**
  * A representation of both extension functions for Evlib `StateMachineBuilder` and
@@ -91,9 +103,9 @@ class StateFunction private constructor(
 
     private val paramResolver = typeParams.toTypeParameterResolver()
     private val stateName = this.nameType.toTypeName(this.paramResolver)
-    private val parameterizedStateMachine = ClassName("org.electronvolts.evlib.statemachine",
+    private val stateMachineType = ClassName("org.electronvolts.evlib.statemachine",
         "StateMachineBuilder").parameterizedBy(this.stateName)
-    private val parameterizedStateSequence = ClassName("org.electronvolts.evlib.statemachine",
+    private val stateSequenceType = ClassName("org.electronvolts.evlib.statemachine",
         "StateSequenceBuilder").parameterizedBy(this.stateName)
     private val emitterName = emitter.simpleName.asString().replaceFirstChar { c -> c.uppercase() }
 
@@ -134,17 +146,11 @@ class StateFunction private constructor(
                     function.functionKind == FunctionKind.TOP_LEVEL ||
                         function.functionKind == FunctionKind.STATIC)
             ) {
-                throw RuntimeException(
-                    "${function.simpleName.asString()} is not a valid function for this" +
-                        "purpose"
-                )
+                throw InvalidStateFunction.Uncallable(function)
             }
 
             if (!function.isPublic()) {
-                throw RuntimeException(
-                    "Only public functions/classes/constructors can be" +
-                        "generated"
-                )
+                throw InvalidStateFunction.NonPublic(function)
             }
 
             val nameType = getStateNameType(function).type!!.resolve()
@@ -205,8 +211,8 @@ class StateFunction private constructor(
         genParameters().joinToString(", ") { param -> "${param.name} = ${param.name}" }
 
     fun toClosedStateFunction() = FunSpec.builder("add${this.emitterName}")
-        .receiver(this.parameterizedStateMachine)
-        .returns(this.parameterizedStateMachine)
+        .receiver(this.stateMachineType)
+        .returns(this.stateMachineType)
         .addTypeVariables(this.genGenericParameters())
         .addParameters(argumentSignature(
             ParameterSpec.builder("thisState", this.stateName).build(),
@@ -224,8 +230,8 @@ class StateFunction private constructor(
         .build()
 
     fun toOpenStateFunction() = FunSpec.builder("add${this.emitterName}")
-        .receiver(this.parameterizedStateSequence)
-        .returns(this.parameterizedStateSequence)
+        .receiver(this.stateSequenceType)
+        .returns(this.stateSequenceType)
         .addTypeVariables(this.genGenericParameters())
         .addParameters(argumentSignature(
             ParameterSpec.builder("thisState", stateName).build()
