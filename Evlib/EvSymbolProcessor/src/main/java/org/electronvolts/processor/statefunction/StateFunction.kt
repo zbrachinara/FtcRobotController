@@ -188,8 +188,8 @@ class StateFunction private constructor(
         ).build()
     }
 
-    private fun argumentSignature(vararg addl: ParameterSpec) =
-        addl.asList() + genParameters().toList()
+    private fun argumentSignature(vararg additional: ParameterSpec) =
+        additional.asList() + genParameters().toList()
 
     private fun genGenericParameters(): List<TypeVariableName> {
         return if (this.typeParams.isEmpty()) {
