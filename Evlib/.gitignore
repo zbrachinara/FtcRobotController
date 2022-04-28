@@ -11,3 +11,6 @@ local.properties
 #build directories
 Evlib/build
 EvAnnotations/build
+
+#native library outputs
+*.so
