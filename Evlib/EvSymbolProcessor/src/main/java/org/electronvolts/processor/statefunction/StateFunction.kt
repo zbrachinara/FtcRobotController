@@ -70,7 +70,6 @@ private fun getStateNameType(decl: KSDeclaration): KSTypeArgument {
  * a pointed description of the problem.
  *
  * @param emitter The name of the class or function that produces the `OpenState`
- * @param location The fully qualified location of the name or class
  * @param nameType The name of the parameter used as the `StateName` parameter to the `State` the
  *      class or return type inherits from, directly or indirectly
  * @param typeParams The type parameters which the function or class is generic over
