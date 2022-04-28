@@ -60,6 +60,12 @@ private fun getStateNameType(decl: KSDeclaration): KSTypeArgument {
     }
 }
 
+class ConflictingStateFunctions(klass: KSClassDeclaration) : RuntimeException(
+    "The class ${(klass.qualifiedName ?: klass.simpleName).asString()}, which is annotated with " +
+        "`StateFunction`, contains a constructor that is also annotated with `StateFunction`.\n" +
+        "This would result in double generation of the constructor, which cannot compile."
+)
+
 /**
  * A representation of both extension functions for Evlib `StateMachineBuilder` and
  * `StateSequenceBuilder`. These extension functions can generate extension functions for the given
@@ -98,11 +104,11 @@ class StateFunction private constructor(
             return klass.getConstructors()
                 .onEach {
                     // check if the constructor function is already annotated
-                    when (val trespasser =
-                        it.annotations.find { ann -> ann.shortName.asString() == "StateFunction" }) {
-                        null -> {}
-                        else -> {
+                    it.annotations.filter { ann -> ann.shortName.asString() == "StateFunction" }
+                        .forEach { trespasser ->
                             if (
+                            // security check to confirm that the detected StateFunction annotation
+                            // is *our* StateFunction annotation
                                 trespasser
                                     .annotationType
                                     .resolve()
@@ -110,14 +116,9 @@ class StateFunction private constructor(
                                     .qualifiedName!!
                                     .asString() == stateFunctionClass
                             ) {
-                                throw RuntimeException(
-                                    """The class ${klass.simpleName.asString()} | ${klass.qualifiedName?.asString() ?: ""}, which is annotated with `StateFunction`, contains a constructor that is also annotated with `StateFunction`.
-
-This would result in double generation of the constructor, which cannot compile."""
-                                )
+                                throw ConflictingStateFunctions(klass)
                             }
                         }
-                    }
                 }
                 .filter {
                     it.isPublic()
