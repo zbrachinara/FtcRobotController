@@ -44,7 +44,7 @@ class StateFunctionProcessor(
 
         definitions.forEach {
             builder.addFunction(it.toClosedStateFunction())
-//            builder.addCode(it.toOpenStateFunction())
+            builder.addFunction(it.toOpenStateFunction())
         }
 
         builder.build().writeTo(generator, Dependencies.ALL_FILES)

@@ -85,8 +85,12 @@ class StateFunction private constructor(
 ) {
 
     private val paramResolver = typeParams.toTypeParameterResolver()
+    private val stateName = this.nameType.toTypeName(this.paramResolver)
     private val parameterizedStateMachine = ClassName("org.electronvolts.evlib.statemachine",
-        "StateMachineBuilder").parameterizedBy(this.nameType.toTypeName(this.paramResolver))
+        "StateMachineBuilder").parameterizedBy(this.stateName)
+    private val parameterizedStateSequence = ClassName("org.electronvolts.evlib.statemachine",
+        "StateSequenceBuilder").parameterizedBy(this.stateName)
+    private val emitterName = emitter.simpleName.asString().replaceFirstChar { c -> c.uppercase() }
 
     companion object {
         fun fromClassDeclaration(
@@ -169,23 +173,10 @@ This would result in double generation of the constructor, which cannot compile.
     }
 
     private fun genParameters() = this.params.map { param ->
-
         ParameterSpec.builder(
             param.name!!.asString(),
             param.type.toTypeName(this.paramResolver)
         ).build()
-
-//        val simpleTypeName = param.type.resolve().declaration.simpleName
-//        val qualifiedTypeName = param.type.resolve().declaration.qualifiedName!!
-//
-//        // checking if the type of the parameter is a type parameter (not a known class/interface)
-//        if (this.typeParams.any {
-//                it.name.asString() == simpleTypeName.asString() // TODO: Hacky, don't do it
-//            }) {
-//            Pair(param.name!!.asString(), simpleTypeName.asString())
-//        } else {
-//            Pair(param.name!!.asString(), qualifiedTypeName.asString())
-//        }
     }
 
     private fun argumentSignature(vararg addl: ParameterSpec) =
@@ -210,17 +201,9 @@ This would result in double generation of the constructor, which cannot compile.
     }
 
     private fun genGenericArguments() = "<${genGenericParameters().joinToString(", ")}>"
+    private fun passthroughParameters() =
+        genParameters().joinToString(", ") { param -> "${param.name} = ${param.name}" }
 
-//    private fun genExprClosed() =
-//        """
-//        |this.add(
-//        |    thisState,
-//        |    $location${genGenericArguments()}(
-//        |        ${genParameters().joinToString(",\n") { "${it.first} = ${it.first}" }}
-//        |    )(nextState)
-//        |)
-//        """.trimMargin()
-//
 //    private fun genExprOpen() =
 //        """ = this.add(
 //        |    thisState,
@@ -230,32 +213,41 @@ This would result in double generation of the constructor, which cannot compile.
 //        |)
 //        """.trimMargin()
 
-    fun toClosedStateFunction(): FunSpec {
-
-        val passthroughParameters =
-            this.genParameters().joinToString(",") { param -> "${param.name} = ${param.name}" }
-
-        return FunSpec.builder("add${this.emitter.simpleName.asString()}")
-            .receiver(this.parameterizedStateMachine)
-            .returns(this.parameterizedStateMachine)
-            .addTypeVariables(this.genGenericParameters())
-            .addParameters(argumentSignature(
-                ParameterSpec.builder("thisState", this.nameType.toTypeName(this.paramResolver))
-                    .build(),
-                ParameterSpec.builder("nextState", this.nameType.toTypeName(this.paramResolver))
-                    .build()
-            ))
-            .addCode(CodeBlock.builder()
-                // TODO: Prettify
-                .addStatement("this.add(thisState," +
-                    "${this.emitter.packageName.asString()}.${this.emitter.simpleName.asString()}" +
-                    "${genGenericArguments()}($passthroughParameters)(nextState))"
-                )
-                .addStatement("return this")
-                .build()
+    fun toClosedStateFunction() = FunSpec.builder("add${this.emitterName}")
+        .receiver(this.parameterizedStateMachine)
+        .returns(this.parameterizedStateMachine)
+        .addTypeVariables(this.genGenericParameters())
+        .addParameters(argumentSignature(
+            ParameterSpec.builder("thisState", this.stateName).build(),
+            ParameterSpec.builder("nextState", this.stateName).build()
+        ))
+        .addCode(CodeBlock.builder()
+            // TODO: Prettify
+            .addStatement("this.add(thisState," +
+                "${this.emitter.packageName.asString()}.${this.emitter.simpleName.asString()}" +
+                "${genGenericArguments()}(${passthroughParameters()})(nextState))"
             )
+            .addStatement("return this")
             .build()
-    }
+        )
+        .build()
+
+    fun toOpenStateFunction() = FunSpec.builder("add${this.emitterName}")
+        .receiver(this.parameterizedStateSequence)
+        .returns(this.parameterizedStateSequence)
+        .addTypeVariables(this.genGenericParameters())
+        .addParameters(argumentSignature(
+            ParameterSpec.builder("thisState", stateName).build()
+        ))
+        .addCode(CodeBlock.builder()
+            .addStatement("this.add(thisState," +
+                "${this.emitter.packageName.asString()}.${this.emitter.simpleName.asString()}" +
+                "${genGenericArguments()}(${passthroughParameters()}))"
+            )
+            .addStatement("return this")
+            .build()
+        )
+        .build()
 
 //    fun toOpenStateFunction(): String {
 //        val nameTypeStr = this.nameType.declaration.simpleName.asString()
