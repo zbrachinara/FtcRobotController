@@ -63,7 +63,7 @@ class ConflictingStateFunctions(klass: KSClassDeclaration) : RuntimeException(
 )
 
 sealed class InvalidStateFunction(message: String) : RuntimeException(message) {
-    class Uncallable(fn: KSFunctionDeclaration) : InvalidStateFunction("Cannot call function " +
+    class RequiresObject(fn: KSFunctionDeclaration) : InvalidStateFunction("Cannot call function " +
         "`${displayDecl(fn)}` since that would require an object reference (this is not yet " +
         "supported)")
 
@@ -149,7 +149,7 @@ class StateFunction private constructor(
                     function.functionKind == FunctionKind.TOP_LEVEL ||
                         function.functionKind == FunctionKind.STATIC)
             ) {
-                throw InvalidStateFunction.Uncallable(function)
+                throw InvalidStateFunction.RequiresObject(function)
             }
 
             if (!function.isPublic()) {
