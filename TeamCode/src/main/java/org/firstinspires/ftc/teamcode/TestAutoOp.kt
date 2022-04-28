@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import org.electronvolts.evlib.RobotCfg
 import org.electronvolts.evlib.blankCfg
+import org.electronvolts.evlib.jni.NATIVE_INSTANCE
 import org.electronvolts.evlib.opmode.AbstractAutoOp
 import org.electronvolts.evlib.statemachine.StateMachineBuilder
 import org.electronvolts.evlib.statemachine.internal.StateMachine
@@ -41,7 +42,9 @@ class TestAutoOp : AbstractAutoOp<RobotCfg, TestStates>() {
 
     override fun go() = Unit
 
-    override fun act() = Unit
+    override fun act() {
+        telemetry.addLine(NATIVE_INSTANCE.getStr("testing"))
+    }
 
     override fun end() = Unit
 
