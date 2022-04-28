@@ -2,6 +2,12 @@ plugins {
     id 'kotlin'
 }
 
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        freeCompilerArgs += '-opt-in=kotlin.RequiresOptIn'
+    }
+}
+
 dependencies {
     implementation project(':Evlib:EvAnnotations')
     implementation 'com.google.devtools.ksp:symbol-processing-api:1.6.21-1.0.5'
