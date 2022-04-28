@@ -24,7 +24,5 @@ fun <T : StateName, U, V : List<U>> genericState(l: V) = blankState<T>()
 //    @StateFunction
 //    constructor(shouldFail: String)
 //
-//    override operator fun invoke(next: T): State<T> {
-//        blankState()(next)
-//    }
+//    override operator fun invoke(next: T): State<T> = blankState<T>()(next)
 //}

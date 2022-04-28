@@ -56,7 +56,7 @@ fun displayDecl(decl: KSDeclaration) = (decl.qualifiedName ?: decl.simpleName).a
 class ConflictingStateFunctions(klass: KSClassDeclaration) : RuntimeException(
     "The class ${displayDecl(klass)}, which is annotated with `StateFunction`, contains a " +
         "constructor that is also annotated with `StateFunction`. This would result in double " +
-        "generation of the constructor, which cannot compile."
+        "generation of the constructor wrapper, which will not compile."
 )
 
 sealed class InvalidStateFunction(message: String) : RuntimeException(message) {
@@ -114,23 +114,16 @@ class StateFunction private constructor(
             klass: KSClassDeclaration,
         ): List<StateFunction> {
             return klass.getConstructors()
-                .onEach {
-                    // check if the constructor function is already annotated
-                    it.annotations.filter { ann -> ann.shortName.asString() == "StateFunction" }
-                        .forEach { trespasser ->
-                            if (
-                            // security check to confirm that the detected StateFunction annotation
-                            // is *our* StateFunction annotation
-                                trespasser
-                                    .annotationType
-                                    .resolve()
-                                    .declaration
-                                    .qualifiedName!!
-                                    .asString() == stateFunctionClass
-                            ) {
-                                throw ConflictingStateFunctions(klass)
-                            }
+                .onEach { constructor ->
+                    constructor.annotations.forEach { ann ->
+                        // check if the constructor function is already annotated
+                        if (
+                            ann.annotationType.toTypeName() ==
+                            org.electronvolts.StateFunction::class.asTypeName()
+                        ) {
+                            throw ConflictingStateFunctions(klass)
                         }
+                    }
                 }
                 .filter {
                     it.isPublic()
