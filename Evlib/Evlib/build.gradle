@@ -48,6 +48,7 @@ cargoNdk {
     // REV Robotics hardware runs on arm, but TODO need to find whether 32 or 64 bit
     targets = ['arm64', 'arm']
     module = 'Evlib/Evlib/src/native'
+    extraCargoBuildArguments = ["-Zbuild-std"]
 }
 
 dependencies {
