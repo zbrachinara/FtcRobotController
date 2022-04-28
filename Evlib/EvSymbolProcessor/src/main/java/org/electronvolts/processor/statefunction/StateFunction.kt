@@ -47,10 +47,7 @@ private fun stateTypeFromDecl(decl: KSDeclaration): KSType? {
 private fun getStateNameType(decl: KSDeclaration): KSTypeArgument {
     return when (val stateClass = stateTypeFromDecl(decl)) {
         null -> throw InvalidStateFunction.NotState(decl)
-        else -> {
-            assert(stateClass.innerArguments.size == 1)
-            stateClass.innerArguments[0]
-        }
+        else -> stateClass.innerArguments[0]
     }
 }
 
