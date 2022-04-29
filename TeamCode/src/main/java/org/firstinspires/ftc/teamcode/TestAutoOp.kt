@@ -40,11 +40,11 @@ class TestAutoOp : AbstractAutoOp<RobotCfg, TestStates>() {
 
     override fun setupAct() = Unit
 
-    override fun go() = Unit
-
-    override fun act() {
+    override fun go() {
         telemetry.addLine(NATIVE_INSTANCE.getStr("testing"))
     }
+
+    override fun act() = Unit
 
     override fun end() = Unit
 
