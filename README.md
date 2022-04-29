@@ -7,3 +7,4 @@ Pending experiments:
 
 * JNI and Rust
 * Configure publishing for Maven Central
+* Escape java type variance with monomorphization (Options API)
