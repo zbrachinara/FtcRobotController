@@ -21,7 +21,7 @@ abstract class AbstractOptionsOp : AbstractTeleOp<RobotCfg>() {
 
     private fun requestMutate(): Boolean {
         val option = options[index]
-        val data = file.get(option)
+        val data = file[option]
 
         return when (val out = option.typeData.mutator(
             driver1.mask(mask_digital = listOf(
@@ -34,7 +34,7 @@ abstract class AbstractOptionsOp : AbstractTeleOp<RobotCfg>() {
         )) {
             null -> false
             else -> {
-                file.set(option, out)
+                file[option] = out
                 true
             }
         }

@@ -8,7 +8,9 @@ import org.electronvolts.evlib.util.Path
 import java.io.File
 
 /**
- * Controller for both in-memory and persistent storage of options.
+ * Controller for both in-memory and persistent storage of options. Access in-memory values by using
+ * map indexing operations (square brackets), and use functions `sync` and `forget` to write and
+ * read changes
  */
 // TODO: 1/21/22 Options with conflicting names can overwrite each other. Enforce!
 class OptionFile(path: Path) {
@@ -27,7 +29,7 @@ class OptionFile(path: Path) {
     // Developer's note: The unchecked cast and the redundant return type specification are
     // essential to the behavior of this function. It prevents the `Any?` type from leaking out of
     // the function from the `optionMap`.
-    fun <T : Any> get(option: OptionClass<T>): T {
+    operator fun <T : Any> get(option: OptionClass<T>): T {
         @Suppress("UNCHECKED_CAST")
         return optionMap[option.name] as T? ?: run {
             optionMap[option.name] = option.typeData.default
@@ -38,7 +40,7 @@ class OptionFile(path: Path) {
     /**
      * Sets the described option to the given value
      */
-    fun <T : Any> set(option: OptionClass<T>, value: T) {
+    operator fun <T : Any> set(option: OptionClass<T>, value: T) {
         optionMap[option.name] = value
     }
 
