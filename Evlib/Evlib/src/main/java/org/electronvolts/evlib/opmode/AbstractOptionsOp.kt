@@ -41,6 +41,12 @@ abstract class AbstractOptionsOp : AbstractTeleOp<RobotCfg>() {
     }
 
     final override fun createRobotCfg() = blankCfg(hardwareMap)
+
+    final override fun setup() {}
+    final override fun setupAct() {}
+    final override fun go() {}
+    final override fun end() {}
+
     final override fun act() {
 
         // fulfill requests to store/load file
