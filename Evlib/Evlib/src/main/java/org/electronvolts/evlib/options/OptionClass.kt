@@ -5,7 +5,14 @@ import org.electronvolts.evlib.util.clamp
 
 private typealias Mutator<T> = (GamepadManager, T) -> T?
 
-data class TypeData<T>(
+/**
+ * Represents the type of an option. Constructed by using the Builder class, giving a default object
+ * and mutator function.
+ *
+ * @param T must register a kotlinx json serializer. Subject to change
+ * @see org.electronvolts.evlib.opmode.AbstractOptionsOp
+ */
+class TypeData<T> private constructor(
     val default: T,
     val mutator: Mutator<T>,
 ) {
@@ -43,6 +50,10 @@ data class TypeData<T>(
     }
 }
 
+/**
+ * Describes one option, consisting of its name and its TypeData
+ * @see TypeData
+ */
 interface OptionClass<T> {
     companion object {
         fun <T> define(name: String, builder: TypeData.Builder<T>) = object : OptionClass<T> {
