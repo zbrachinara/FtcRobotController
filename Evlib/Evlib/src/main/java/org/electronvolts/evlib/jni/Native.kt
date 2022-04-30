@@ -4,7 +4,7 @@ val NATIVE_INSTANCE = Native()
 
 class Native {
     init {
-        System.loadLibrary("evlib_native")
+        System.loadLibrary("ev_native")
     }
 
     external fun getStr(s: String): String
