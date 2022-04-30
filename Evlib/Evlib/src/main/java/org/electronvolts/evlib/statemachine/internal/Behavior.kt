@@ -1,5 +1,10 @@
 package org.electronvolts.evlib.statemachine.internal
 
+/**
+ * Behaviors describe the actions of the state
+ *
+ * @see State
+ */
 interface Behavior {
 
     fun init()
