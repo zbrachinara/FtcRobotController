@@ -7,6 +7,10 @@ plugins {
     id 'com.github.willir.rust.cargo-ndk-android'
 }
 
+repositories {
+    mavenCentral()
+}
+
 android {
     compileSdkVersion 29
 
@@ -40,10 +44,6 @@ idea {
     }
 }
 
-repositories {
-    mavenCentral()
-}
-
 cargoNdk {
     // REV Robotics hardware runs on arm, but TODO need to find whether 32 or 64 bit
     targets = ['arm64', 'arm']
@@ -59,7 +59,4 @@ dependencies {
 
     api project(':Evlib:EvAnnotations')
     ksp project(':Evlib:EvSymbolProcessor')
-
-    //noinspection GradleDependency
-    implementation 'androidx.appcompat:appcompat:1.2.0' // this version is required for compatibility with ftc
 }
