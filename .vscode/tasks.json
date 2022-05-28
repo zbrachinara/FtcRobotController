@@ -1,0 +1,41 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "gradle",
+			"id": "/home/zeskomer/StudioProjects/FtcRobotControllerKotlinbuildFtcRobotControllerKotlin",
+			"script": "build",
+			"description": "Assembles and tests this project.",
+			"group": "build",
+			"project": "FtcRobotControllerKotlin",
+			"buildFile": "/home/zeskomer/StudioProjects/FtcRobotControllerKotlin/build.gradle",
+			"rootProject": "FtcRobotControllerKotlin",
+			"projectFolder": "/home/zeskomer/StudioProjects/FtcRobotControllerKotlin",
+			"workspaceFolder": "/home/zeskomer/StudioProjects/FtcRobotControllerKotlin",
+			"args": "",
+			"javaDebug": false,
+			"problemMatcher": [
+				"$gradle"
+			],
+			"label": "gradle: build"
+		},
+		{
+			"type": "gradle",
+			"id": "/home/zeskomer/StudioProjects/FtcRobotControllerKotlincleanFtcRobotControllerKotlin",
+			"script": "clean",
+			"description": "Deletes the build directory.",
+			"group": "build",
+			"project": "FtcRobotControllerKotlin",
+			"buildFile": "/home/zeskomer/StudioProjects/FtcRobotControllerKotlin/build.gradle",
+			"rootProject": "FtcRobotControllerKotlin",
+			"projectFolder": "/home/zeskomer/StudioProjects/FtcRobotControllerKotlin",
+			"workspaceFolder": "/home/zeskomer/StudioProjects/FtcRobotControllerKotlin",
+			"args": "",
+			"javaDebug": false,
+			"problemMatcher": [
+				"$gradle"
+			],
+			"label": "gradle: clean"
+		}
+	]
+}
