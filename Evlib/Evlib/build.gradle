@@ -46,6 +46,16 @@ idea {
     }
 }
 
+//File generatedSourceDir = new File(buildDir, 'generated/ksp/debug/kotlin')
+tasks.named("dokkaHtml") {
+    outputDirectory.set(file('build/dokka'))
+    dokkaSourceSets.configureEach {
+        sourceRoots.from(file('build/generated/ksp/debug'))
+        noAndroidSdkLink.set(false)
+        suppressGeneratedFiles.set(false)
+    }
+}
+
 cargoNdk {
     // REV Robotics hardware runs on arm, but TODO need to find whether 32 or 64 bit
     targets = ['arm64', 'arm']
