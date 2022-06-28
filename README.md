@@ -1,7 +1,7 @@
 ## Evlib + FTC = ❤️
 
-This is the place where I (zbrachinara) do all my experiments on the ftc and ev libraries. Some of
-these ideas might make it, some might not.
+This is the place where I (zbrachinara, *not* team 7393) do all my experiments on the ftc and ev
+libraries. Some of these ideas might make it, some might not.
 
 Pending experiments:
 
