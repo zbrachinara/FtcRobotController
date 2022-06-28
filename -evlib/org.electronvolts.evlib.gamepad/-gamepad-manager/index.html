@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>GamepadManager</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+const savedDarkMode = storage ? JSON.parse(storage) : false
+if(savedDarkMode === true){
+    document.getElementsByTagName("html")[0].classList.add("theme-dark")
+}</script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+</head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+            <a href="../../../index.html">
+                    <span>Evlib</span>
+            </a>
+    </div>
+    <div>
+    </div>
+    <div class="pull-right d-flex">
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" id="content" pageIds="Evlib::org.electronvolts.evlib.gamepad/GamepadManager///PointingToDeclaration//1326336654">
+  <div class="breadcrumbs"><a href="../../../index.html">Evlib</a><span class="delimiter">/</span><a href="../index.html">org.electronvolts.evlib.gamepad</a><span class="delimiter">/</span><a href="index.html">GamepadManager</a></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Gamepad</span><wbr></wbr><span><span>Manager</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":Evlib:Evlib:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">GamepadManager</a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;detectors<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html">MutableList</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../-digital-input/index.html">DigitalInput</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;digital<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../-gamepad-digital/index.html">GamepadDigital</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="../-digital-input/index.html">DigitalInput</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;analog<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../-gamepad-analog/index.html">GamepadAnalog</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="../-analog-input/index.html">AnalogInput</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">This file was made by the electronVolts, FTC team 7393 Date Created: 1/9/16</p><p class="paragraph">This class wraps a gamepad and adds: Edge detection to the digital inputs (buttons and dpad) {@see DigitalInput} Scaling to the analog inputs (joysticks and triggers) {@see AnalogInput}</p><p class="paragraph">Specify nothing for scalingFunction to opt out of joystick scaling</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Types">Types</button><button class="section-tab" data-togglable="Constructors">Constructors</button><button class="section-tab" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Properties">Properties</button></div>
+    <div class="tabs-section-body">
+      <h2 class="tabbedcontent">Constructors</h2>
+      <div class="table" data-togglable="Constructors"><a data-name="797300233%2FConstructors%2F1326336654" anchor-label="GamepadManager" id="797300233%2FConstructors%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":Evlib:Evlib:dokkaHtml/release" data-filterable-set=":Evlib:Evlib:dokkaHtml/release">
+          <div class="main-subrow keyValue TabbedContent">
+            <div class=""><span class="inline-flex">
+                <div><a href="-gamepad-manager.html"><span>Gamepad</span><wbr></wbr><span><span>Manager</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="797300233%2FConstructors%2F1326336654"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":Evlib:Evlib:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="-gamepad-manager.html"><span class="token function">GamepadManager</span></a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;detectors<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html">MutableList</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../-digital-input/index.html">DigitalInput</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;digital<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../-gamepad-digital/index.html">GamepadDigital</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="../-digital-input/index.html">DigitalInput</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;analog<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../-gamepad-analog/index.html">GamepadAnalog</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="../-analog-input/index.html">AnalogInput</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Types</h2>
+      <div class="table" data-togglable="Types"><a data-name="1238836951%2FClasslikes%2F1326336654" anchor-label="Companion" id="1238836951%2FClasslikes%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":Evlib:Evlib:dokkaHtml/release" data-filterable-set=":Evlib:Evlib:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-companion/index.html"><span><span>Companion</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1238836951%2FClasslikes%2F1326336654"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":Evlib:Evlib:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">object </span><a href="-companion/index.html">Companion</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Functions</h2>
+      <div class="table" data-togglable="Functions"><a data-name="-1751034459%2FFunctions%2F1326336654" anchor-label="justTriggered" id="-1751034459%2FFunctions%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":Evlib:Evlib:dokkaHtml/release" data-filterable-set=":Evlib:Evlib:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="just-triggered.html"><span>just</span><wbr></wbr><span><span>Triggered</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1751034459%2FFunctions%2F1326336654"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":Evlib:Evlib:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="just-triggered.html"><span class="token function">justTriggered</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="490835657%2FFunctions%2F1326336654" anchor-label="mask" id="490835657%2FFunctions%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":Evlib:Evlib:dokkaHtml/release" data-filterable-set=":Evlib:Evlib:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="mask.html"><span><span>mask</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="490835657%2FFunctions%2F1326336654"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":Evlib:Evlib:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="mask.html"><span class="token function">mask</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">mask_digital<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><span data-unresolved-link="org.electronvolts.evlib.gamepad/Digital///PointingToDeclaration/">Digital</span><span class="token operator">&gt;</span><span class="token operator"> = </span>listOf()<span class="token punctuation">, </span></span><span class="parameter ">mask_analog<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><span data-unresolved-link="org.electronvolts.evlib.gamepad/Analog///PointingToDeclaration/">Analog</span><span class="token operator">&gt;</span><span class="token operator"> = </span>listOf()</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">GamepadManager</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="327714337%2FFunctions%2F1326336654" anchor-label="update" id="327714337%2FFunctions%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":Evlib:Evlib:dokkaHtml/release" data-filterable-set=":Evlib:Evlib:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="update.html"><span><span>update</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="327714337%2FFunctions%2F1326336654"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":Evlib:Evlib:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="update.html"><span class="token function">update</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Properties</h2>
+      <div class="table" data-togglable="Properties"><a data-name="1488934735%2FProperties%2F1326336654" anchor-label="a" id="1488934735%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":Evlib:Evlib:dokkaHtml/release" data-filterable-set=":Evlib:Evlib:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="a.html"><span><span>a</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1488934735%2FProperties%2F1326336654"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":Evlib:Evlib:dokkaHtml/release"><a data-name="1488934735%2FProperties%2F1326336654" anchor-label="a" id="1488934735%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="a.html">a</a><span class="token operator">: </span><a href="../-digital-input/index.html">DigitalInput</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1519954542%2FProperties%2F1326336654" anchor-label="b" id="1519954542%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":Evlib:Evlib:dokkaHtml/release" data-filterable-set=":Evlib:Evlib:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="b.html"><span><span>b</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1519954542%2FProperties%2F1326336654"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":Evlib:Evlib:dokkaHtml/release"><a data-name="1519954542%2FProperties%2F1326336654" anchor-label="b" id="1519954542%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="b.html">b</a><span class="token operator">: </span><a href="../-digital-input/index.html">DigitalInput</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1474582275%2FProperties%2F1326336654" anchor-label="back" id="1474582275%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":Evlib:Evlib:dokkaHtml/release" data-filterable-set=":Evlib:Evlib:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="back.html"><span><span>back</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1474582275%2FProperties%2F1326336654"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":Evlib:Evlib:dokkaHtml/release"><a data-name="1474582275%2FProperties%2F1326336654" anchor-label="back" id="1474582275%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="back.html">back</a><span class="token operator">: </span><a href="../-digital-input/index.html">DigitalInput</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1286126434%2FProperties%2F1326336654" anchor-label="dpad_down" id="-1286126434%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":Evlib:Evlib:dokkaHtml/release" data-filterable-set=":Evlib:Evlib:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="dpad_down.html"><span><span>dpad_down</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1286126434%2FProperties%2F1326336654"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":Evlib:Evlib:dokkaHtml/release"><a data-name="-1286126434%2FProperties%2F1326336654" anchor-label="dpad_down" id="-1286126434%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="dpad_down.html">dpad_down</a><span class="token operator">: </span><a href="../-digital-input/index.html">DigitalInput</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-765332263%2FProperties%2F1326336654" anchor-label="dpad_left" id="-765332263%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":Evlib:Evlib:dokkaHtml/release" data-filterable-set=":Evlib:Evlib:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="dpad_left.html"><span><span>dpad_left</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-765332263%2FProperties%2F1326336654"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":Evlib:Evlib:dokkaHtml/release"><a data-name="-765332263%2FProperties%2F1326336654" anchor-label="dpad_left" id="-765332263%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="dpad_left.html">dpad_left</a><span class="token operator">: </span><a href="../-digital-input/index.html">DigitalInput</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1017055682%2FProperties%2F1326336654" anchor-label="dpad_right" id="-1017055682%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":Evlib:Evlib:dokkaHtml/release" data-filterable-set=":Evlib:Evlib:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="dpad_right.html"><span><span>dpad_right</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1017055682%2FProperties%2F1326336654"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":Evlib:Evlib:dokkaHtml/release"><a data-name="-1017055682%2FProperties%2F1326336654" anchor-label="dpad_right" id="-1017055682%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="dpad_right.html">dpad_right</a><span class="token operator">: </span><a href="../-digital-input/index.html">DigitalInput</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-134723195%2FProperties%2F1326336654" anchor-label="dpad_up" id="-134723195%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":Evlib:Evlib:dokkaHtml/release" data-filterable-set=":Evlib:Evlib:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="dpad_up.html"><span><span>dpad_up</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-134723195%2FProperties%2F1326336654"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":Evlib:Evlib:dokkaHtml/release"><a data-name="-134723195%2FProperties%2F1326336654" anchor-label="dpad_up" id="-134723195%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="dpad_up.html">dpad_up</a><span class="token operator">: </span><a href="../-digital-input/index.html">DigitalInput</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="641130901%2FProperties%2F1326336654" anchor-label="left_bumper" id="641130901%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":Evlib:Evlib:dokkaHtml/release" data-filterable-set=":Evlib:Evlib:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="left_bumper.html"><span><span>left_bumper</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="641130901%2FProperties%2F1326336654"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":Evlib:Evlib:dokkaHtml/release"><a data-name="641130901%2FProperties%2F1326336654" anchor-label="left_bumper" id="641130901%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="left_bumper.html">left_bumper</a><span class="token operator">: </span><a href="../-digital-input/index.html">DigitalInput</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1764793783%2FProperties%2F1326336654" anchor-label="left_stick_button" id="1764793783%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":Evlib:Evlib:dokkaHtml/release" data-filterable-set=":Evlib:Evlib:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="left_stick_button.html"><span><span>left_stick_button</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1764793783%2FProperties%2F1326336654"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":Evlib:Evlib:dokkaHtml/release"><a data-name="1764793783%2FProperties%2F1326336654" anchor-label="left_stick_button" id="1764793783%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="left_stick_button.html">left_stick_button</a><span class="token operator">: </span><a href="../-digital-input/index.html">DigitalInput</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1168847321%2FProperties%2F1326336654" anchor-label="left_stick_x" id="1168847321%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":Evlib:Evlib:dokkaHtml/release" data-filterable-set=":Evlib:Evlib:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="left_stick_x.html"><span><span>left_stick_x</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1168847321%2FProperties%2F1326336654"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":Evlib:Evlib:dokkaHtml/release"><a data-name="1168847321%2FProperties%2F1326336654" anchor-label="left_stick_x" id="1168847321%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="left_stick_x.html">left_stick_x</a><span class="token operator">: </span><a href="../-analog-input/index.html">AnalogInput</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1199867128%2FProperties%2F1326336654" anchor-label="left_stick_y" id="1199867128%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":Evlib:Evlib:dokkaHtml/release" data-filterable-set=":Evlib:Evlib:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="left_stick_y.html"><span><span>left_stick_y</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1199867128%2FProperties%2F1326336654"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":Evlib:Evlib:dokkaHtml/release"><a data-name="1199867128%2FProperties%2F1326336654" anchor-label="left_stick_y" id="1199867128%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="left_stick_y.html">left_stick_y</a><span class="token operator">: </span><a href="../-analog-input/index.html">AnalogInput</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-757872758%2FProperties%2F1326336654" anchor-label="left_trigger" id="-757872758%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":Evlib:Evlib:dokkaHtml/release" data-filterable-set=":Evlib:Evlib:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="left_trigger.html"><span><span>left_trigger</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-757872758%2FProperties%2F1326336654"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":Evlib:Evlib:dokkaHtml/release"><a data-name="-757872758%2FProperties%2F1326336654" anchor-label="left_trigger" id="-757872758%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="left_trigger.html">left_trigger</a><span class="token operator">: </span><a href="../-analog-input/index.html">AnalogInput</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-224624668%2FProperties%2F1326336654" anchor-label="right_bumper" id="-224624668%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":Evlib:Evlib:dokkaHtml/release" data-filterable-set=":Evlib:Evlib:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="right_bumper.html"><span><span>right_bumper</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-224624668%2FProperties%2F1326336654"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":Evlib:Evlib:dokkaHtml/release"><a data-name="-224624668%2FProperties%2F1326336654" anchor-label="right_bumper" id="-224624668%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="right_bumper.html">right_bumper</a><span class="token operator">: </span><a href="../-digital-input/index.html">DigitalInput</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="24380614%2FProperties%2F1326336654" anchor-label="right_stick_button" id="24380614%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":Evlib:Evlib:dokkaHtml/release" data-filterable-set=":Evlib:Evlib:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="right_stick_button.html"><span><span>right_stick_button</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="24380614%2FProperties%2F1326336654"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":Evlib:Evlib:dokkaHtml/release"><a data-name="24380614%2FProperties%2F1326336654" anchor-label="right_stick_button" id="24380614%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="right_stick_button.html">right_stick_button</a><span class="token operator">: </span><a href="../-digital-input/index.html">DigitalInput</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="100228458%2FProperties%2F1326336654" anchor-label="right_stick_x" id="100228458%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":Evlib:Evlib:dokkaHtml/release" data-filterable-set=":Evlib:Evlib:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="right_stick_x.html"><span><span>right_stick_x</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="100228458%2FProperties%2F1326336654"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":Evlib:Evlib:dokkaHtml/release"><a data-name="100228458%2FProperties%2F1326336654" anchor-label="right_stick_x" id="100228458%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="right_stick_x.html">right_stick_x</a><span class="token operator">: </span><a href="../-analog-input/index.html">AnalogInput</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="131248265%2FProperties%2F1326336654" anchor-label="right_stick_y" id="131248265%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":Evlib:Evlib:dokkaHtml/release" data-filterable-set=":Evlib:Evlib:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="right_stick_y.html"><span><span>right_stick_y</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="131248265%2FProperties%2F1326336654"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":Evlib:Evlib:dokkaHtml/release"><a data-name="131248265%2FProperties%2F1326336654" anchor-label="right_stick_y" id="131248265%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="right_stick_y.html">right_stick_y</a><span class="token operator">: </span><a href="../-analog-input/index.html">AnalogInput</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1826491621%2FProperties%2F1326336654" anchor-label="right_trigger" id="-1826491621%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":Evlib:Evlib:dokkaHtml/release" data-filterable-set=":Evlib:Evlib:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="right_trigger.html"><span><span>right_trigger</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1826491621%2FProperties%2F1326336654"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":Evlib:Evlib:dokkaHtml/release"><a data-name="-1826491621%2FProperties%2F1326336654" anchor-label="right_trigger" id="-1826491621%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="right_trigger.html">right_trigger</a><span class="token operator">: </span><a href="../-analog-input/index.html">AnalogInput</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-808074002%2FProperties%2F1326336654" anchor-label="start" id="-808074002%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":Evlib:Evlib:dokkaHtml/release" data-filterable-set=":Evlib:Evlib:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="start.html"><span><span>start</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-808074002%2FProperties%2F1326336654"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":Evlib:Evlib:dokkaHtml/release"><a data-name="-808074002%2FProperties%2F1326336654" anchor-label="start" id="-808074002%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="start.html">start</a><span class="token operator">: </span><a href="../-digital-input/index.html">DigitalInput</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-2092577000%2FProperties%2F1326336654" anchor-label="x" id="-2092577000%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":Evlib:Evlib:dokkaHtml/release" data-filterable-set=":Evlib:Evlib:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="x.html"><span><span>x</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2092577000%2FProperties%2F1326336654"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":Evlib:Evlib:dokkaHtml/release"><a data-name="-2092577000%2FProperties%2F1326336654" anchor-label="x" id="-2092577000%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="x.html">x</a><span class="token operator">: </span><a href="../-digital-input/index.html">DigitalInput</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-2061557193%2FProperties%2F1326336654" anchor-label="y" id="-2061557193%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":Evlib:Evlib:dokkaHtml/release" data-filterable-set=":Evlib:Evlib:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="y.html"><span><span>y</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2061557193%2FProperties%2F1326336654"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":Evlib:Evlib:dokkaHtml/release"><a data-name="-2061557193%2FProperties%2F1326336654" anchor-label="y" id="-2061557193%2FProperties%2F1326336654" data-filterable-set=":Evlib:Evlib:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="y.html">y</a><span class="token operator">: </span><a href="../-digital-input/index.html">DigitalInput</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2022 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+    </div>
+</div>
+</body>
+</html>
