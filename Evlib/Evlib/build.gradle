@@ -5,6 +5,8 @@ plugins {
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.6.21'
     id 'idea'
     id 'com.github.willir.rust.cargo-ndk-android'
+
+    id 'org.jetbrains.dokka'
 }
 
 repositories {
