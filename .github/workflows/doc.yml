@@ -11,8 +11,8 @@ jobs:
         steps:
             - uses: actions/checkout@v2
 
-            - name: Run Gradle doc task
-            - run: ./gradlew Evlib:Evlib:dokkaHtml
+            - name: Gradle doc build task
+              run: ./gradlew Evlib:Evlib:dokkaHtml
 
             - name: Deploy
               uses: peaceiris/actions-gh-pages@v3
